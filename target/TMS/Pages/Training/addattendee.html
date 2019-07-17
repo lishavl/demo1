@@ -1,0 +1,64 @@
+<!-- 
+/**
+ * @Author JOSSINA JOSE.
+ */
+ -->
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div id="addattendee"
+		ng-controller="AddInterestedAttendeeController as ctrl">
+		<div class="title-block">
+			<h1 class="title"> 	Add Attendee </h1>
+		</div>
+		
+		<section class="section">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="card">
+						<div class="card-block">
+							<div class="card-title-block">
+								<section class="example">
+									<div class="table-responsive">
+										<table class="table table-striped table-bordered table-hover">
+											<thead>
+												<tr>
+													<th style="width: 1%;">Date:</th>
+													<td style="width: 1%;">{{ctrl.interestedAttendees.startDateTime
+															| date:'MM/dd/yyyy HH:mm:ss'}}</td>
+													</tr>
+													<tr>
+														<th style="width: 1%;">Topic:</th>
+														<td style="width: 1%;">{{ctrl.interestedAttendees.topicname}}</td>
+						
+													</tr>
+													<tr>
+														<th style="width: 1%;">Attendee:</th>
+														<td style="width: 1%;">{{ctrl.interestedAttendees.attendeefn}}
+															{{ctrl.interestedAttendees.attendeeln}}</td>
+													</tr>
+											</thead>
+										</table>
+											<div class="form-actions">
+											<button
+													 ng-click="ctrl.allowUser(ctrl.interestedAttendees.topicid,ctrl.interestedAttendees.id)"
+													 class="btn btn-success custom-width">Add
+													Attendee</button>
+											
+										</div>
+									</div>
+								</section>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+  </div>
+</body>
+</html>

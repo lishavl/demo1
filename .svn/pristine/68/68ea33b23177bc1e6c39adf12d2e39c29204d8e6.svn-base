@@ -1,0 +1,25 @@
+<div class="card-header">
+	<div class="header-block">
+		<h3 class="title">Graphical Result</h3>
+	</div>
+</div>
+<hr style="padding: 0; margin: 0;">
+<div class="card-block" style="height: 350px; width: 350px;"
+	align="center">
+	<div>
+		Test : <select ng-model="dashCtrl.selectedTest"
+			class="form-control form-control-sm underlined"
+			ng-change="dashCtrl.drowTestChart()"
+			style="display: inline; width: 150px; margin-bottom: 5px;">
+			<option value="">Select</option>
+			<option ng-repeat="tst in dashCtrl.testsForCriteria"
+				value="{{tst.testId}}">{{tst.title}}</option>
+		</select>
+	</div>
+	<div style="float: none;" ng-show="dashCtrl.showTestChart">
+		<nvd3 options="dashCtrl.testChartOptions"
+			data="dashCtrl.testChartData" style="padding: 0; margin: 0;"></nvd3>
+	</div>
+
+
+</div>

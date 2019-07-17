@@ -1,0 +1,158 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Trainer_Update Profile</title>
+
+</head>
+
+<body>
+
+	<div id="editprofile" ng-controller="UpdateProfileController as ctrl">
+		<div id="updateprofile">
+			<div class="card card-block sameheight-item">
+
+				<div class="title-block">
+					<h2 class="title">Edit Profile</h2>
+					<hr style="margin: 5px 0px;">
+				</div>
+
+				<form ng-submit="ctrl.submit($event)" name="editProfileForm"
+					novalidate>
+
+					<div id="imagediv"
+						style="float: right; height: 142px; margin-right: -1%; margin-top: -1%; width: 180px;">
+						
+						<img
+							ng-if="ctrl.userid != null && ctrl.userid != '0' && ctrl.profile.imageExist"
+							src="./uploads/profileimages/{{ctrl.userid}}.jpeg ? x={{ctrl.x}}"
+							;
+							style="width: 155px; height: 150px;" id="profileimage" />
+						<img
+							ng-if="!(ctrl.userid != null && ctrl.userid != '0' && ctrl.profile.imageExist)"
+							src="./images/defaultuser.png"
+							style="width: 155px; height: 150px;" id="profileimage" /> <input
+							type="file" file-model="myFile"
+							style="cursor: pointer; height: 100px; margin-left: 3%; margin-right: 103px; margin-top: -139px; min-height: 158px; opacity: 0; position: absolute; width: 98px;"
+							id="i_file" /><label class="change-text"
+							style="margin-left: 29%;">Change </label> <a
+							ng-if="ctrl.profile.imageExist"
+							ng-click="ctrl.deleteUserImage()" title="Delete Image"
+							href="javascript:void(0)"><i class="fa fa-trash  fa-lg"
+							aria-hidden="true"></i></a>
+
+
+					</div>
+
+					<div class="form-group" style="width: 60%"
+						ng-class="{ 'has-error': editProfileForm.firstName.$invalid && ctrl.showerrors}">
+						<label class="control-lable">Name<span class="mandatory">*</span>
+						</label> <input type="text" ng-model="ctrl.profile.firstName"
+							id="firstName" name="firstName" class="form-control underlined"
+							placeholder="Name" required /> <span class="has-error"
+							ng-show="editProfileForm.firstName.$invalid && ctrl.showerrors">Enter
+							your name </span>
+					</div>
+
+					<div class="form-group" style="width: 60%">
+						<label class="control-lable">Address</label>
+						<textarea style="height: 60px" maxlength="500"
+							ng-model="ctrl.profile.address" id="address"
+							class="form-control underlined" placeholder="Address"> </textarea>
+					</div>
+
+					<div class="form-group" style="width: 60%"
+						ng-class="{ 'has-error':editProfileForm.phoneNumber.$invalid &&ctrl.showerrors}">
+						<label class="control-lable">Phone Number <span
+							class="mandatory">*</span>
+						</label> <input type="text" ng-model="ctrl.profile.phoneNumber"
+							maxlength="10" ng-minlength="10" ng-pattern="/^\d{10}$/"
+							id="phoneNumber" class="form-control underlined"
+							name="phoneNumber" placeholder="Phone Number" required /> <span
+							class="has-error"
+							ng-show="editProfileForm.phoneNumber.$invalid &&ctrl.showerrors">Enter
+							10 digits phone number </span>
+					</div>
+
+
+
+					<div class="form-group"
+						ng-class="{ 'has-error':editProfileForm.skills.$invalid && ctrl.showerrors}">
+						<label class="control-lable">Skill Set <span
+							class="mandatory">*</span>
+						</label>
+						<tags-input ng-model="tags" add-on-paste="true" required="true"
+							name="skills" class="form-control underlined"> <auto-complete
+							source="loadTags($query)" min-length="1"></auto-complete> </tags-input>
+						<span class="has-error"
+							ng-show="editProfileForm.skills.$invalid && ctrl.showerrors">Enter
+							your skills </span>
+					</div>
+
+					<div class="form-group"
+						ng-class="{ 'has-error':editProfileForm.department.$invalid && ctrl.showerrors}">
+						<label class="control-label">Department <span
+							class="mandatory">*</span></label> <select
+							class="form-control form-control-sm underlined width_30perc"
+							ng-model="ctrl.profile.department" name="department" required>
+							<option value=''>Select</option>
+							<option ng-repeat="department in ctrl.departmentlist"
+								value="{{department.id}}">{{department.department}}</option>
+
+						</select> <span class="has-error"
+							ng-show="editProfileForm.department.$invalid && ctrl.showerrors">Select
+							Department</span>
+					</div>
+
+					<div class="form-group"
+						ng-class="{ 'has-error':editProfileForm.dob.$invalid && ctrl.showerrors}">
+						<label class="control-lable">Date of Birth <span
+							class="mandatory">*</span>
+						</label>
+						<md-datepicker ng-model="ctrl.profile.dob"
+							md-placeholder="Date of Birth" required="required" name="dob"
+							class="form-control underlined"></md-datepicker>
+						<span class="has-error"
+							ng-show="editProfileForm.dob.$invalid && ctrl.showerrors">Select
+							your DOB </span>
+					</div>
+
+					<div class="form-group">
+						<label class="control-lable">Gender</label> <br>
+						<c:if test="$ctrl.profile.gender='M'}">
+							<input type="radio" name="gender" id="gender" value="M"
+								selected="true" ng-model="ctrl.profile.gender" name="gender"
+								style="margin-top: 1%">Male <input type="radio"
+								name="gender" id="gender" value="F"
+								ng-model="ctrl.profile.gender" style="margin-left: 60px;"
+								name="gender">Female
+					<hr style="margin: 5px 0px;">
+					</div>
+
+					<div class="form-group"
+						ng-class="{ 'has-error':editProfileForm.email.$invalid && ctrl.showerrors}">
+						<label class="control-lable">Email <span class="mandatory">*</span>
+						</label> <input type="email" ng-model="ctrl.profile.email" id="email"
+							class="form-control underlined" placeholder="Email-Id"
+							name="email" readonly="readonly" /> <span class="has-error"
+							ng-show="editProfileForm.email.$invalid && ctrl.showerrors">Please
+							Enter Valid Email-id </span>
+					</div>
+
+					<div class="form-group">
+						<label class="control-lable">Password</label> <br> <a
+							href="#changepassword" style="margin-top: 1%">Change
+							Password?</a>
+					</div>
+
+					<div class="form-group">
+						<input type="submit" value="Update"
+							class="btn btn-success custom-width">
+					</div>
+
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

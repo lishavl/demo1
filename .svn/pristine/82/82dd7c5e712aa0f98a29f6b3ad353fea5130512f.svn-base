@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<annotation-driven />
+<!-- 	<annotation-driven validator="validator" /> -->
+
+
+	<resources mapping="/uploads/**" location="file:///home/user/Desktop/uploads/" />
+
+
+<!-- 	<resources mapping="/uploads/**" -->
+<!-- 		location="file:///var/www/vhosts/pumexinfotech.com/tms.pumexinfotech.com/tms_uploads/uploads/" /> -->
+
+
+<!-- 	<resources mapping="/uploads/**" -->
+<!-- 		location="file:///var/www/vhosts/pumexinfotech.com/tms.pumexinfotech.com/uploads_demo/uploads/" /> -->
+
+	<resources mapping="/*" location="/" />
+
+
+
+
+
+	<beans:bean id="viewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<beans:property name="prefix" value="/WEB-INF/jsp/" />
+		<beans:property name="suffix" value=".jsp" />
+	</beans:bean>
+
+	<beans:bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<!-- setting maximum upload size -->
+		<beans:property name="maxUploadSize" value="20971520" /> <!-- 20MB -->
+		<!-- max size of file in memory (in bytes) -->
+		<beans:property name="maxInMemorySize" value="1048576" /> <!-- 1MB -->
+
+	</beans:bean>
+	<!-- Configuring interceptors based on URI -->
+	<interceptors>
+		<interceptor>
+			<mapping path="/**" />
+			<mapping path="/*/*/" />
+			<mapping path="/*/*/*/" />
+
+			<exclude-mapping path="/" />
+
+			<exclude-mapping path="/login/" />
+			<exclude-mapping path="/issessionnotexist/" />
+			<exclude-mapping path="/loadhomepagedata/" />
+			<exclude-mapping path="/logout" />
+			<exclude-mapping path="/requestforresetpassword/**" />
+			<exclude-mapping path="/isvalidresetpassword/**" />
+			<exclude-mapping path="/resetpassword/**" />
+			<exclude-mapping path="/register/" />
+			<exclude-mapping path="/fetchupcomingtrainingprograms/" />
+			<exclude-mapping path="/activateuser/**" />
+
+			<exclude-mapping path="/Pages/**" />
+			<exclude-mapping path="/assets/**" />
+			<exclude-mapping path="/Dashboard/**" />
+			<exclude-mapping path="/uploads/**" />
+			<exclude-mapping path="/images/**" />
+			<exclude-mapping path="/fonts/**" />
+			<exclude-mapping path="/js/**" />
+			<exclude-mapping path="/images/**" />
+			<exclude-mapping path="/css/**" />
+			<exclude-mapping path="/secure/active/**" />
+			<exclude-mapping path="/secure/changepassword/**" />
+			<exclude-mapping path="/addattendee/interested/***" />
+			<exclude-mapping path="/fetchAllInterestedAttendees/*/*/*" />
+			<exclude-mapping path="/addinterestedattendee/*/*" />
+
+			<beans:bean class="com.pumex.tms.configurations.RequestInterceptor"></beans:bean>
+		</interceptor>
+	</interceptors>
+
+	<context:component-scan base-package="com.pumex." />
+
+
+</beans:beans>

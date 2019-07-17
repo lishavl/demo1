@@ -1,0 +1,141 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+	<div id="login" ng-controller="LoginController as ctrl">
+
+		<div ng-show="ctrl.showloginoption">
+
+			<button aria-hidden="true" data-dismiss="modal" class="close"
+				type="button" style="margin: -37px 10px;" ng-click="cancel()">x</button>
+
+			<!-- 				<img style="float: right; margin-top: -4%;" src="images/close.png" -->
+			<!-- 					ng-click="cancel()" /> -->
+
+			<form ng-submit="ctrl.submit($event)" name="loginForm" novalidate
+				style="margin: 40px 50px 40px 50px;">
+				<div class="form-group"
+					ng-class="{ 'has-error': loginForm.email.$invalid && ctrl.showerrors}">
+					<label for="username">Email</label> <input type="test"
+						ng-model="ctrl.login.email" id="loginUserName" name="email"
+						class="form-control underlined" placeholder="Email ID"
+						required="true" /> <span class="has-error"
+						ng-show="loginForm.email.$invalid && ctrl.showerrors">Enter
+						your email ID</span>
+				</div>
+				<div class="form-group"
+					ng-class="{ 'has-error': loginForm.password.$invalid && ctrl.showerrors}">
+					<label for="password">Password</label> <input type="password"
+						ng-model="ctrl.login.password" id="loginPassword" name="password"
+						class="form-control underlined" required="true" autocomplete="off" />
+					<span class="has-error"
+						ng-show="loginForm.password.$invalid && ctrl.showerrors">Enter
+						your password</span>
+				</div>
+				<div class="form-group">
+					<label for="remember"> <input class="checkbox"
+						id="remember" ng-model="ctrl.staysignin" type="checkbox">
+						<span>Remember me</span>
+					</label> <a href="javascript:void(0)" ng-click="ctrl.showloginoption=false"
+						class="forgot-btn pull-right">Forgot password?</a>
+				</div>
+				<div class="form-group" style="color: red; font-size: 13px;"
+					align="center">
+					<span class="has-error" ng-show="ctrl.loginfailed">Invalid
+						Username or Password</span> <span class="has-error"
+						ng-show="ctrl.blocked">Account blocked, please contact
+						administrator</span> <span class="has-error" ng-show="ctrl.err">Error
+						While Login,Please Contact Administrator</span>
+				</div>
+
+				<div align="center">
+					<img ng-show="ctrl.showthrobber"
+						style="border: none; width: 50%; margin-bottom: 15px;"
+						src="images/horizontal_loading.gif" alt="" />
+				</div>
+
+				<div class="form-group">
+					<button type="submit" class="btn btn-block btn-primary">Login</button>
+				</div>
+				<div class="form-group">
+					<p class="text-muted text-xs-center">
+						Do not have an account? <a href="javascript:void(0)"
+							ng-click="openRegisterWindow()">Sign Up!</a>
+					</p>
+				</div>
+
+			</form>
+		</div>
+		<div ng-show="!ctrl.showloginoption">
+			<button aria-hidden="true" data-dismiss="modal" class="close"
+				type="button" style="margin: 5px 10px;" ng-click="cancel()">x</button>
+			<div id="aside" ng-show="!ctrl.changerequestsubmitted">
+				<div class="forgotPwdStyle">
+
+					<form ng-submit="ctrl.requestForChangePassword($event)"
+						name="forgotPasswordForm" novalidate>
+						<div class="form-group"
+							ng-class="{ 'has-error': ctrl.showerrorforforgotpassword}">
+							<label for="email1">Email</label> <input type="email"
+								class="form-control underlined" ng-model="ctrl.email"
+								name="email" placeholder="Your email ID" required> <span
+								class="has-error" ng-show="ctrl.showerrorforforgotpassword">{{ctrl.forgotPwdErrorMsg}}</span>
+
+						</div>
+						<div align="center">
+							<img ng-show="ctrl.showthrobber"
+								style="border: none; width: 50%; margin-bottom: 15px;"
+								src="images/horizontal_loading.gif" alt="" />
+						</div>
+						<div class="form-group">
+							<button type="submit" class="btn btn-block btn-primary">Reset</button>
+						</div>
+						<div class="form-group clearfix">
+							<a class="pull-left" href="javascript:void(0)"
+								ng-click="openLoginWindow()">Login</a> <a class="pull-right"
+								href="javascript:void(0)" ng-click="openRegisterWindow()">Sign
+								Up</a>
+						</div>
+					</form>
+				</div>
+			</div>
+
+
+			<div id="aside" ng-show="ctrl.changerequestsubmitted"
+				style="padding: 30px;">
+
+
+
+				<h1 style="margin-top: 16px; margin-left: -6px;">
+					<center>
+						<span class="last"
+							style="color: green; font-size: 20px; font-weight: normal;">Requested
+							Successfully</span>
+					</center>
+
+					<h2
+						style="font-size: 17px; font-weight: normal; margin-bottom: 10px; margin-left: 6px; margin-right: 1%; margin-top: 10px;">
+						Mail has been sent to your registered email. Kindly follow the
+						link to change your password.</h2>
+				</h1>
+
+				<center>
+					<button type="button" ng-click="cancel()" class="button_1"
+						style="margin-top: 2%;">OK</button>
+				</center>
+
+
+			</div>
+
+
+		</div>
+
+	</div>
+</body>
+</html>
+
+

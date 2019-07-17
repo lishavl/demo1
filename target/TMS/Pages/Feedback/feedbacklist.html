@@ -1,0 +1,259 @@
+<!-- /**
+ * @Author JOSSINA JOSE.
+ */
+ -->
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div id="feedbacklist" ng-controller="FeedbackController as ctrl">
+		<div id="feedbacklist" ng-show="ctrl.showlistwindow">
+			<div class="title-block"
+				style="padding-bottom: 5px; margin-bottom: 10px;">
+
+				<h6>
+					<b>Feedback</b>
+				</h6>
+
+			</div>
+			<section class="section">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="card">
+							<div class="card-block">
+								<section class="example">
+									<div class="table-responsive">
+
+										<table datatable="ng"
+											class="table table-striped table-bordered table-hover">
+											<thead>
+												<tr>
+													<th style="text-align: center; width: 1%;">Date</th>
+													<th style="text-align: center; width: 1%;">Topic</th>
+													<th style="text-align: center; width: 1%;">Trainer</th>
+													<th
+														style="text-align: center; width: 1%; text-align: center">Actions</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr ng-repeat="u in ctrl.feedbacklist">
+													<td style="text-align: center;"><span
+														ng-bind="'{{u.startDateTime | date:'MM/dd/yyyy HH:mm:ss'}}'"></span></td>
+													<td style="text-align: center;"><span
+														>{{u.topicname}}</span></td>
+													<td style="text-align: center;"><span
+														> {{u.trainername}} {{u.lastname}}</span></td>
+
+
+													<td style="text-align: center">
+														<span ng-if="u.status==0">Absent</span>
+														<button ng-if="u.count == 0 && u.status == 1" 
+															ng-click="ctrl.getSelectedData(u.id)"
+															class="btn btn-success custom-width" style="width: 85px;">Feedback</button>
+
+														<button ng-if="u.count == 1 && u.status == 1"
+															ng-click="ctrl.getToViewFeedBack(u.topicid,u.trainerid,u.topicname,u.trainername,u.lastname)"
+															class="btn btn-primary btn-sm custom-width"
+															style="width: 85px;">View</button>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</section>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+		</div>
+		<!-- ----------------------------------------------------------------- -->
+		<div id="feedback" ng-show="ctrl.showfeedbackwindow">
+			<div class="card card-block sameheight-item">
+				<div class="title-block">
+					<h2 class="title">Feedback</h2>
+					<hr style="margin: 5px 0px;">
+				</div>
+				<form ng-submit="ctrl.submit($event)" name="feedbackform" novalidate>
+					<div class="form-group">
+						<label class="control-label">Topic</label> <input type="text"
+							class="form-control underlined"
+							ng-model="ctrl.feedback.topicname" name="Topic" maxlength="100"
+							ng-readonly="true" /> <input type="hidden"
+							ng-model="ctrl.feedback.topicid">
+
+					</div>
+					<div class="form-group">
+						<label class="control-label">Trainer</label> <input type="text"
+							class="form-control underlined"
+							ng-model="ctrl.feedback.trainername" name="Topic" maxlength="100"
+							ng-readonly="true" /> <input type="hidden"
+							ng-model="ctrl.feedback.trainerid">
+					</div>
+					<div class="form-group" ng-init="ctrl.feedback.report" value="3">
+						<label class="control-label">Feedback</label>
+						<div>
+							<label> <input class="radio" type="radio" name="radios"
+								ng-checked="checked" ng-model="ctrl.feedback.report" value="5">
+								<span>Excellent</span>
+							</label>
+						</div>
+						<div>
+							<label> <input class="radio" type="radio" name="radios"
+								ng-model="ctrl.feedback.report" value="3"> <span>Good</span>
+							</label>
+						</div>
+						<div>
+							<label> <input class="radio" type="radio" name="radios"
+								ng-model="ctrl.feedback.report" value="1"> <span>Can
+									improve</span>
+							</label>
+						</div>
+						<span class="has-error"
+							ng-show="feedbackform.radios.$invalid && ctrl.showerrors">Choose 
+							one option
+						</span>
+					</div>
+					<div class="form-group"
+						ng-class="{ 'has-error': feedbackform.data.$invalid && ctrl.showerrors}">
+						<label class="control-label"> Why you think this training was appropriate for you? <br>
+						Did it help you in your work? 
+						</label>
+						<textarea ng-model="ctrl.feedback.data" maxlength="500"
+							class="form-control underlined" style="height: 60px;"
+							required="true" name="data" placeholder="Description" />
+						<span class="has-error"
+							ng-show="feedbackform.data.$invalid && ctrl.showerrors"> Enter your opinion </span>
+					</div>
+					<div class="form-group"
+						ng-class="{ 'has-error': feedbackform.comment.$invalid && ctrl.showerrors}">
+						<label class="control-label"> Comment</label>
+						<textarea ng-model="ctrl.feedback.comment" maxlength="500"
+							class="form-control underlined" style="height: 60px;"
+							required="true" name="comment" placeholder="Comments" />
+						<span class="has-error"
+							ng-show="feedbackform.comment.$invalid && ctrl.showerrors">Enter comments</span>
+					</div>
+					<div class="form-group">
+						<label class="control-label">Follow-up session needed? </label>
+						<div>
+							<label> <input class="radio" type="radio"
+								name="inline-radios" ng-model="ctrl.feedback.followup" value="1">
+								<span>Yes</span>
+							</label> <label> <input class="radio" type="radio"
+								name="inline-radios" ng-model="ctrl.feedback.followup" value="0">
+								<span>No</span>
+							</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label">Demo needed? </label>
+						<div>
+							<label> <input class="radio" type="radio"
+								name="demo-radios" ng-model="ctrl.feedback.demo" value="1">
+								<span>Yes</span>
+							</label> <label> <input class="radio" type="radio"
+								name="demo-radios" ng-model="ctrl.feedback.demo" value="0">
+								<span>No</span>
+							</label> <label> <input class="radio" type="radio"
+								name="demo-radios" ng-model="ctrl.feedback.demo" value="2">
+								<span>Not applicable</span>
+							</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<input type="submit"
+							ng-show="ctrl.test.testId==null || ctrl.test.testId=='0'"
+							value="Save" class="btn btn-success"> <input
+							type="submit" value="Update"
+							ng-show="ctrl.test.testId!=null && ctrl.test.testId!='0'"
+							class="btn btn-success">
+						<button type="button" ng-click="ctrl.backToFeedback()"
+							class="btn btn-warning">Cancel</button>
+
+					</div>
+				</form>
+			</div>
+		</div>
+
+
+		<div id="showfeedbacks" ng-show="ctrl.showfeedbacks">
+		    <div class="title-block"
+				style="padding-bottom: 5px; margin-bottom: 10px;">
+
+				<h6>
+					<b>Feedback</b>
+				</h6>
+
+			</div>
+		    <div class=""
+				style="margin-bottom: 1px; margin-left: 55px; padding-bottom: 20px; padding-top: 10px;">
+				<b>Topic</b>&nbsp;<input type="text" ng-model="ctrl.viewtopic"
+					id="topic" name="topic" readonly="readonly"
+					style="height: 30px; width: 20%; margin-right: 20px" />
+				  &nbsp;&nbsp;&nbsp;&nbsp; 
+				 <b>Trainer</b>&nbsp;<input
+					type="text" ng-model="ctrl.viewtrainerfirst" id="topic"
+					name="topic" style="width: 294px; height: 30px"
+					placeholder="Enter the Topic" readonly="readonly"/>
+
+				<hr
+					style="margin-bottom: 5px; margin-left: -53px; margin-right: 0; margin-top: 18px;">
+			</div>
+			<div class="container">
+				<table class="result_table" border="1"
+					style="width: 72%; margin-left: 14%;">
+
+
+					<tr>
+						<td width="70%">Feedback</td>
+
+						<td ng-if="ctrl.feedback.report ==5" align="center">Excellent</td>
+						<td ng-if="ctrl.feedback.report ==3" align="center">Good</td>
+						<td ng-if="ctrl.feedback.report ==1" align="center">Can
+							improve</td>
+
+					</tr>
+					<tr>
+						<td width="70%">Why you think this training was appropriate for you? <br>
+						Did it help you in your work? </td>
+						<td align="center">{{ctrl.feedback.data}}</td>
+
+					</tr>
+					<tr>
+						<td width="70%">Comments</td>
+						<td  align="center">{{ctrl.feedback.comment}}</td>
+					</tr>
+					<tr>
+						<td width="70%">Is demo needed ?</td>
+						
+						<td ng-if="ctrl.feedback.followup ==0" align="center">No</td>
+						<td ng-if="ctrl.feedback.followup ==1" align="center">Yes</td>
+					</tr>
+					<tr>
+						<td width="70%">Is follow-up needed ?</td>
+						
+						<td ng-if="ctrl.feedback.demo ==0" align="center">No</td>
+						<td ng-if="ctrl.feedback.demo ==1" align="center">Yes</td>
+						<td ng-if="ctrl.feedback.demo ==2" align="center">Not applicable</td>
+					</tr>
+				</table>
+				<br>
+				<button type="button" ng-click="ctrl.backToFeedback()"
+					class="btn btn-warning btn-sm"
+					style="margin-left: 80%; margin-bottom: 20px;">Back</button>
+			</div>
+		</div>
+
+	</div>
+
+	</div>
+
+	</div>
+</body>
+</html>

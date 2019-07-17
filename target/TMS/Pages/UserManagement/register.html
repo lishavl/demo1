@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Attendee Registration</title>
+
+</head>
+
+<body>
+	<div id="register" ng-controller="RegisterController as ctrl">
+
+		<button aria-hidden="true" data-dismiss="modal" class="close"
+			type="button" style="margin: 0px 10px;" ng-click="cancel()">x</button>
+
+
+		<div id="aside" ng-show="ctrl.registerwindow">
+
+
+			<form ng-submit="ctrl.submit($event)" name="regForm" novalidate
+				style="margin: 40px 50px 40px 50px;">
+				<div class="form-group"
+					ng-class="{ 'has-error': regForm.firstName.$invalid && ctrl.showerrors}">
+					<label for="firstname">Full Name <span class="mandatory">
+							*</span></label> <input type="text" ng-model="ctrl.register.firstName"
+						name="firstName" id="firstName" class="form-control underlined"
+						autocomplete="off" placeholder="Enter full name" required="true" />
+					<span class="has-error"
+						ng-show="regForm.firstName.$invalid && ctrl.showerrors">Enter
+						full name </span>
+
+				</div>
+				<div class="form-group"
+					ng-class="{ 'has-error': regForm.email.$invalid && ctrl.showerrors || ctrl.showemailerrors}">
+					<label for="email">Email <span class="mandatory"> *</span>
+					</label> <input type="email" ng-model="ctrl.register.email" id="email"
+						name="email" class="form-control underlined" autocomplete="off"
+						placeholder="Email" required="true" /> <span class="field_error"
+						ng-show="regForm.email.$invalid && ctrl.showerrors">Enter
+						valid email ID </span> <span class="field_error"
+						ng-show="ctrl.showemailerrors">This email ID already
+						exists,please try another one</span>
+
+				</div>
+				<div class="form-group"
+					ng-class="{ 'has-error': regForm.password.$invalid && ctrl.showerrors || regForm.password.$invalid && ctrl.showerrors || ctrl.showpassworderrors}">
+					<label for="password">Password <span class="mandatory">
+							*</span></label>
+					<div class="row">
+						<div class="col-sm-6">
+							<input type="password" ng-model="ctrl.register.password"
+								autocomplete="off" ng-minlength="6" name="password"
+								id="password" class="form-control underlined" required="true"
+								placeholder="Password" /> <span class="field_error"
+								ng-show="regForm.password.$invalid && ctrl.showerrors">Enter
+								valid password (min length:6) </span> <span class="field_error"
+								ng-show="regForm.confirmPassword.$invalid && ctrl.showerrors && !regForm.password.$invalid">Please
+								confirm your password </span> <span class="field_error"
+								ng-show="ctrl.showpassworderrors">Password mismatch</span>
+
+
+						</div>
+						<div class="col-sm-6">
+							<input type="password" autocomplete="off"
+								ng-model="ctrl.register.confirmPassword" id="confirmPassword"
+								name="confirmPassword" class="form-control underlined"
+								placeholder="Confirm password" required="true" />
+						</div>
+
+
+					</div>
+				</div>
+				<div class="form-group">
+					<span class="error_message" ng-show="ctrl.registrationfailed">Registration
+						Failed</span>
+				</div>
+
+				<div class="form-group">
+					<p class="text-muted text-xs-center">
+						<img ng-show="ctrl.showthrobber"
+							style="border: none; width: 185px; height: 2px"
+							src="images/throbber.gif" alt="" />
+					</p>
+				</div>
+
+				<div class="form-group">
+					<button type="submit" class="btn btn-block btn-primary">Sign
+						Up</button>
+				</div>
+				<div class="form-group">
+					<p class="text-muted text-xs-center">
+						Already have an account? <a href="javascript:void(0)"
+							ng-click="openLoginWindow()">Login!</a>
+					</p>
+				</div>
+			</form>
+
+		</div>
+
+		<div id="registrationsuccess" ng-show="ctrl.showsuccesswindow"
+			style="margin-left: 2%; margin-right: 15%; margin-top: 4%; max-height: 20%; min-height: 165px; min-width: 44%; padding-left: 10px; padding-right: 10px; width: 95%; padding-top: 2%;">
+
+			<p class="text-xs-center">
+			<h1 style="margin-top: 16px; margin-left: -6px;">
+				<center>
+					<span class="last"
+						style="color: green; font-size: 20px; font-weight: normal;">Registration
+						Successful</span>
+				</center>
+
+				<h2
+					style="font-size: 17px; font-weight: normal; margin-bottom: 10px; margin-left: 6px; margin-right: 1%; margin-top: 10px;">Please
+					check registered email-id for activation link.</h2>
+			</h1>
+			</p>
+			<br>
+		</div>
+		</form>
+	</div>
+</body>
+</html>

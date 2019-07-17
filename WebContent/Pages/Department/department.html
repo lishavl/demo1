@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Department</title>
+</head>
+<body>
+ 	<div ng-controller="DepartmentController as ctrl">
+	 	<div ng-show="ctrl.departmentlistview"> 
+			
+			<div class="title-block"
+			style="padding-bottom: 5px; margin-bottom: 0px;">
+
+			<h6>
+				<b>Department List</b>
+			</h6>
+
+		   </div>
+		   <section class="section">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="card">
+								<div class="card-block">
+									<section class="example">
+										<div class="table-responsive">
+										   <div align="right">
+
+												<button type="button" ng-click="ctrl.departmentview()"
+													class="btn btn-primary btn-sm">Add New</button>
+											</div>
+											<table datatable="ng"
+												class="table table-striped table-bordered table-hover">
+												<thead>
+													<tr>
+														<th style="text-align: center;">#</th>
+														<th style="text-align: center;">Department</th>
+														<th style="text-align: center;">Action</th>
+												</thead>
+												<tbody>
+													<tr ng-repeat="deptname  in ctrl.departmentlist">
+														<td style="text-align: center;">{{$index + 1}}</td>
+														<td style="text-align: center;"><span
+															ng-bind="'{{deptname.department}}'"> </span></td>
+														<td class="align_center" style="width: 30%">
+
+															<ol class="main_ul" ng-mouseleave="hoverOut()">
+																<li><a href="javascript:void(0)"
+																	ng-click="hoverIn()"
+																	class="dropbtn action_settings_butons"><i
+																		class="fa fa-cog fa-lg" aria-hidden="true"></i></a></li>
+																<li>
+																	<ol class="sub_ul" ng-show="hoverEdit">
+
+																		<li><a ng-click="ctrl.edit(deptname.id)"
+																			title="Edit" href="javascript:void(0)"><i
+																				class="fa fa-pencil-square-o" aria-hidden="true"></i></a></li>
+																		<li><a ng-click="ctrl.deletedepartment(deptname.id)"
+																			title="Delete" href="javascript:void(0)"><i
+																				class="fa fa-trash" aria-hidden="true"></i></a></li>
+																	</ol>
+
+																</li>
+														</td>
+													</tr>
+												</tbody>
+											</table>
+
+										</div>
+									</section>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+	    </div>
+<!-- 	   ---------------  End of department list---------------- -->
+<!-- 	   ------------------ start of department creation or edit---- -->
+	    <div ng-show="ctrl.departmenteditview"> 
+		    <div class="card card-block sameheight-item">
+			<div class="title-block">
+					<h2 class="title">
+						<b>Department</b>
+					</h2>
+					<hr style="margin: 5px 0px;">
+				</div>
+				<form  ng-submit="ctrl.submit($event)" name="deprtform" novalidate>
+				   	<div class="form-group" style="width: 60%"
+						ng-class="{ 'has-error': deprtform.department.$invalid && ctrl.showerrors}">
+						<label class="control-lable">Department<span class="mandatory">*</span></label>
+						
+						<input type="text" ng-model="ctrl.department.department" id="department"
+							name="department" class="form-control underlined" 	placeholder=" Department name"
+							required /> 
+						 <span class="has-error" ng-show="companyform.name.$invalid && ctrl.showerrors">
+						     Enter Department 
+						</span>
+					</div>
+<!-- 					<div class="form-group" ng-class="{ 'has-error': deprtform.department.$invalid && ctrl.showerrors}"> -->
+<!-- 						<label class="control-label">Department:</label> -->
+<!-- 						<input id="exampleInputEmail3" class="form-control" type="text" required -->
+<!-- 						placeholder=" Department name" name="department" ng-model="ctrl.department.department"> -->
+<!-- 						<span class="has-error" ng-show="companyform.name.$invalid && ctrl.showerrors"> -->
+<!-- 						  Enter Department  -->
+<!-- 						</span> -->
+<!-- 					</div> -->
+					
+					<div class="form-group">
+						<input type="submit" value="Save" class="btn btn-success custom-width">
+						<button type="button" ng-click="ctrl.back()" class="btn btn-warning">Cancel</button>
+				    </div>
+				</form>
+			</div>
+	    </div>
+ 	</div>
+</body>
+</html>

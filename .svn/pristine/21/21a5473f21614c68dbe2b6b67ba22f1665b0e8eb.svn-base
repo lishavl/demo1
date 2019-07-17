@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div ng-controller="CompanyController as ctrl">
+		<div class="card card-block sameheight-item">
+			<div class="title-block">
+				<h2 class="title">Organization Profile</h2>
+				<hr style="margin: 5px 0px;">
+			</div>
+			<form ng-submit="ctrl.submit($event)" name="companyform" novalidate>
+				<div class="form-group" style="width: 60%"
+					ng-class="{ 'has-error': companyform.name.$invalid && ctrl.showerrors}">
+					<label class="control-lable">Name<span class="mandatory">*</span></label>
+					<input type="text" ng-model="ctrl.profile.companyname" id="name"
+						name="name" class="form-control underlined" placeholder="Organization Name"
+						required /> <span class="has-error"
+						ng-show="companyform.name.$invalid && ctrl.showerrors">
+						Please Enter Organization Name </span>
+				</div>
+				<div class="form-group" style="width: 60%"
+					ng-class="{ 'has-error':companyform.address.$invalid && ctrl.showerrors}">
+					<label class="control-lable">Address</label>
+					<textarea style="height: 60px" maxlength="500"
+						ng-model="ctrl.profile.address" id="address" name="address"
+						class="form-control underlined" placeholder="Address"
+						required="required"> 
+					</textarea>
+					<span class="has-error"
+						ng-show="companyform.address.$invalid && ctrl.showerrors">
+						Please Enter Address </span>
+				</div>
+				<div class="form-group" style="width: 60%"
+					ng-class="{ 'has-error': companyform.contactperson.$invalid && ctrl.showerrors}">
+					<label class="control-lable">Contact Person<span
+						class="mandatory">*</span></label> <input type="text"
+						ng-model="ctrl.profile.contactperson" id="contactperson"
+						name="contactperson" class="form-control underlined"
+						placeholder="Name" required /> <span class="has-error"
+						ng-show="companyform.contactperson.$invalid && ctrl.showerrors">
+						Please Enter Your Name  </span>
+				</div>
+				<div class="form-group" style="width: 60%"
+					ng-class="{ 'has-error': companyform.phn1.$invalid && ctrl.showerrors}">
+					<label class="control-lable">Phone Number 1<span
+						class="mandatory">*</span></label> <input type="text"
+						ng-model="ctrl.profile.mobile" id="phn1" name="phn1"
+						maxlength="10" ng-minlength="10" ng-pattern="/^\d{10}$/"
+						class="form-control underlined" placeholder="Phone Number 1"
+						required /> <span class="has-error"
+						ng-show="companyform.phn1.$invalid && ctrl.showerrors">
+						Please Enter 10 digits Phone Number  </span>
+				</div>
+				<div class="form-group" style="width: 60%">
+					<label class="control-lable">Phone Number 2</label> <input
+						type="text" ng-model="ctrl.profile.phn2" id="phn2" name="phn2"
+						class="form-control underlined" placeholder="Phone Number 2"
+						 maxlength="10" ng-minlength="10" ng-pattern="/^\d{10}$/" />
+				</div>
+				<div class="form-group" style="width: 60%"
+					ng-class="{ 'has-error': companyform.email.$invalid && ctrl.showerrors}">
+					<label class="control-lable">Email ID<span
+						class="mandatory">*</span></label> <input type="text"
+						ng-model="ctrl.profile.email" id="email" name="email"
+						class="form-control underlined" placeholder="Email ID" required />
+					<span class="has-error"
+						ng-show="companyform.email.$invalid && ctrl.showerrors">
+						Please Enter Valid Email-Id  </span>
+				</div>
+				<div class="form-group" style="width: 60%"
+					ng-class="{ 'has-error':companyform.website.$invalid && ctrl.showerrors}">
+					<label class="control-lable">Web Site<span
+						class="mandatory">*</span></label> <input type="text"
+						ng-model="ctrl.profile.website" id="website" name="website"
+						class="form-control underlined" placeholder="Website" required />
+					<span class="has-error"
+						ng-show="companyform.website.$invalid && ctrl.showerrors">
+						Please Enter Web Site Address </span>
+				</div>
+				<div class="form-group"
+					ng-class="{ 'has-error':companyform.logo.$invalid && ctrl.showerrors}">
+					<label class="control-lable">Change Logo:</label>
+					 <md-button style="margin:0px;min-height: 31px;  min-width: 30px;"> <i class="fa fa-info-circle" aria-hidden="true"></i>
+						 <md-tooltip md-visible="demo.showTooltip" md-direction="right" style="font-size:12px;" >
+								 Maximum file size allowed is 1 MB
+						</md-tooltip>
+					   </md-button>
+					 <input type="file" file-model="logo" ng-model ="ctrl.logo" name="logo"
+						class="form-control underlined" /> <span class="has-error"
+							ng-show="companyform.logo.$invalid && ctrl.showerrors">Maximum
+						size allowed is 1 MB </span>
+				</div>
+				<div class="form-group">
+					<input type="submit" value="Update"
+						class="btn btn-success custom-width">
+					<button type="button" ng-click="ctrl.back()"
+						class="btn btn-warning">Cancel</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</body>
+</html>

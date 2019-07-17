@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div id="home" ng-controller="AboutUsCuntroller as ctrl"
+		style="width: 94%; margin-left: 3%; text-align: justify;">
+
+		<div class="col-lg-12">
+			<div class="col-xl-12">
+				<br>
+				<h3>
+					About <span style="color: #59c2e6;">Us</span>
+				</h3>
+				<p>&emsp;&emsp; Pumex Infotech is a software development
+					services firm that provides technology solutions and services. We
+					develop customized, process driven, end-to-end scalable technology
+					solutions that enable businesses for a competitive advantage. We
+					strive to empower growing businesses to use technology to operate
+					more efficiently. Our services include Customised Application
+					Development, Product Development, Web Application Development and
+					Mobile Application Development. Since 2003, we have been providing
+					the right solution to our customers who are in businesses like
+					banking and financial services, insurance, entertainment,
+					healthcare, manufacturing, travel, retail etc. At Pumex Infotech,
+					we have a highly motivated and competent workforce who plays the
+					most significant role to deliver value to our customers across the
+					globe. We provide technology, product & software solutions. We
+					provide effective and affordable solutions which allow companies to
+					meet their business needs and improve productivity. We strive to
+					satisfy our customers through continuous technical innovations and
+					improvements. Our customer base-falls across verticals like
+					Healthcare, Banking & Insurance, Retail, leisure & Travel, Telecom.
+					We are committed to provide quality solutions and services to our
+					customers.</p>
+			</div>
+
+		</div>
+		<div class="col-lg-12">
+			<div class="col-xl-6">
+				<h4>
+					Our <span style="color: #59c2e6;">Mission</span>
+				</h4>
+				<p>&emsp;&emsp;We help businesses save money and increase their
+					productivity by providing quality & cost-effective information
+					technology and creative solutions and products. We bring ROI to all
+					stake holders through passionate innovation.</p>
+			</div>
+			<div class="col-xl-6">
+				<h4>
+					Our <span style="color: #59c2e6;">Vision</span>
+				</h4>
+				<p>&emsp;&emsp;To become a premier integrated solutions provider
+					using a mixed model of development technologies and providing cost
+					effective solutions that leverage cutting edge technologies, and
+					the best service available to our clients, by utilizing the
+					strengths and abilities of our people. We are driven by solving our
+					customers' unique business challenges.</p>
+					<br><br>
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>

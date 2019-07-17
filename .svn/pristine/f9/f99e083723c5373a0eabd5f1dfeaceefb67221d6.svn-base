@@ -1,0 +1,169 @@
+
+<!-- /**
+ * @Author JOSSINA JOSE.
+ */
+ -->
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="UTF-8">
+<title>Test Management</title>
+</head>
+<body>
+	<div ng-controller="MarkAttendanceController as ctrl">
+	      <div class="title-block"
+				style="padding-bottom: 5px; margin-bottom: 10px;">
+
+				<h6>
+					<b>Attendance </b>
+				</h6>
+
+			</div>
+			
+			<div class="panel-heading" style="margin-bottom: 10px;">
+						Select Training : &nbsp; 
+						<select class="criteria-form-control underlined"
+							style="height: 30px; width: 30%;"
+							ng-model="ctrl.user.testid"
+							ng-change="getUsers()" name="training" required>
+							<option value="">Select</option>
+							<option ng-repeat="trn in ctrl.trainings" value="{{trn.id}}">
+								{{trn.topic}}</option>
+						</select> <span class="field_error"
+							ng-show="trainingForm.training.$invalid && ctrl.showerrors">Select
+							Topic</span> 
+							<span class="field_error" ng-if="ctrl.status.errorCode==2">{{ctrl.status.errorMessage}}</span>
+
+			</div>
+			<section class="section">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="card">
+							<div class="card-block">
+								<section class="example">
+									<div class="table-responsive">
+										<form name="trainingForm">
+										<table datatable="ng"
+											class="table table-striped table-bordered table-hover">
+											<thead>
+												<tr>
+												    <th style="text-align: center; width: 1%;">#</th>
+													<th style="text-align: center; width: 1%;">Attendee</th>
+<!-- 													<th style="text-align: center; width: 1%;">Attendance</th> -->
+													<th style="text-align: center; width: 1%;">Select all <input
+														type="checkbox" ng-model="ctrl.master" ng-true-value="1"
+														ng-false-value="0" ng-change=" ctrl.checkAllElements()"></th>
+																</thead>
+											<tbody>
+												<tr ng-repeat="test in ctrl.attendane">
+												    <td style="text-align: center;">{{$index + 1}}</td>
+													<td style="text-align: center;"><span
+														ng-bind="'{{test.attendee}}'"> </span></td>
+													<td style="text-align: center;"><span
+														ng-if="test.attendedStatus == 0" class="animate-if"> <input
+															type="checkbox" checklist-model="ctrl.user.userids"
+															checklist-value="test.id">
+					
+													</span> <span ng-if="test.attendedStatus == 1" class="animate-if">
+															<input type="checkbox" checklist-model="ctrl.user.userids"
+															ng-checked="true" checklist-value="test.id">
+													</span></td>
+<!-- 													<TD></TD> -->
+												</tr>
+					
+											</tbody>
+												<tbody>
+													<tr>
+														<td style="text-align: center;"><b> Total expected: </b>{{ctrl.attendane.length}}
+														</td>
+						
+						
+														<td style="text-align: center;"><b>Present: </b>{{ctrl.user.userids.length}}</td>
+						
+						
+														<td style="text-align: center;"><b>Absent: </b>{{ctrl.attendane.length
+															- ctrl.user.userids.length}}</td>
+													</tr>
+											  </tbody>	
+										</table>
+										<div class="form-actions">
+											<button ng-click="ctrl.saveAttendance()" value="Save"
+												class="btn btn-success custom-width" style="float: right; width: 84px;">Save</button>
+					
+											<!-- <button type="button" ng-click="ctrl.back()"
+													class="btn btn-success custom-width" style="margin-right: 2%;float:right">Back</button> -->
+										</div>
+										</form>
+									</div>
+								</section>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+	</div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

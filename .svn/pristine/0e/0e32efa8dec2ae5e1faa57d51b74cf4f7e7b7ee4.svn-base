@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div id="upcomingtraining"
+		ng-controller="UpcomingTrainingController as ctrl">
+		<div ng-show="ctrl.testresultlist">
+			<div class="title-block"
+					style="padding-bottom: 5px; margin-bottom: 10px;">
+	
+					<h6>
+						<b>Test Results</b>
+					</h6>
+	
+			   </div>
+					<section class="section">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="card">
+								<div class="card-block">
+									<section class="example">
+										<div class="table-responsive">
+	
+											<table datatable="ng"
+												class="table table-striped table-bordered table-hover">
+													<thead>
+														<tr>
+															<th style="text-align: center; width: 1%;">Test</th>
+															<th style="text-align: center; width: 1%;">Marks</th>
+														<!-- 	<th style="text-align: center; width: 1%;">Total marks</th> -->
+															<th style="text-align: center; width: 1%;">Pass mark</th>
+															<th style="text-align: center; width: 1%;">Status</th>
+															<th style="text-align: center; width: 1%;">Answer sheet</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr ng-repeat="u in ctrl.testresult.testresult">
+															<td style="text-align: center;"><span
+																ng-bind="'{{u.testname}}'"></span></td>
+															<td style="text-align: center;"><span
+																ng-bind="'{{u.mark}}/{{u.numberOfQuestions * u.correctAnswerMark}}'"></span></td>
+															<!-- <td style="text-align: center;"><span
+																ng-bind="'{{u.numberOfQuestions}}'"></span></td> -->
+															<td style="text-align: center;"><span
+																ng-bind="'{{u.passMark}}'"></span></td>
+															<td style="text-align: center;"><span
+																ng-if="u.mark >= u.passMark" style="color:green;">Passed</span> <span
+																ng-if="u.mark < u.passMark" style="color:red">Failed</span></td>
+															<td style="text-align: center"><button class="btn btn-primary btn-sm custom-width ng-scope"
+																 ng-click="ctrl.viewResult(u.testid)" style="width: 85px;">View</button>
+														</tr>
+													</tbody>
+											</table>
+										</div>
+									</section>
+									
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+		</div>	
+		<div ng-show="ctrl.resultview">
+			<div class="title-block"
+					style="padding-bottom: 5px; margin-bottom: 10px;">
+
+					<h6>
+						<b>Answer sheet</b>
+					</h6>
+			</div>
+			<section class="section">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="card">
+								<div class="card-block">
+									<section class="example">
+										<div class="table-responsive">
+	
+											<table datatable="ng"
+												class="table table-striped table-bordered table-hover">
+													<thead>
+														<tr>
+														    <th style="text-align: center; width: .5%;">#</th>
+															<th style="text-align: center; width: 2%;">Question</th>
+															<th style="text-align: center; width: 2%;">Your Answer</th>
+															<th style="text-align: center; width: .5%;">Result</th>
+															<th style="text-align: center; width: 2%;">Correct Answer</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr ng-repeat="u in ctrl.answersheet">
+															<td style="text-align: center;">{{$index + 1}}</td>
+															
+															<td style="text-align: center;"><span
+																></span>{{u.question}}</td>
+																
+															<td style="text-align: center;">
+																<span ng-show="u.attendeeanswer==0"><I>Not Answered</I></span>
+																
+																<span ng-show="u.attendeeanswer==1">{{u.choice1}}</span>
+																
+																<span ng-show="u.attendeeanswer==2">{{u.choice2}}</span>
+																
+																<span ng-show="u.attendeeanswer==3">{{u.choice3}}</span>
+																
+																<span ng-show="u.attendeeanswer==4">{{u.choice4}}</span>
+															</td>
+																
+																
+															<td style="text-align: center;">
+																<span ng-show="u.successstatus==1"><i class="fa fa-check" aria-hidden="true"></i></span>
+
+																<span ng-show="u.successstatus==0"><i  class="fa fa-times" aria-hidden="true"></i></span>
+															</td>
+															
+															<td style="text-align: center;">
+															   <span ng-show="u.correctanswer==1">{{u.choice1}}</span>
+																
+																<span ng-show="u.correctanswer==2">{{u.choice2}}</span>
+																
+																<span ng-show="u.correctanswer==3">{{u.choice3}}</span>
+																
+																<span ng-show="u.correctanswer==4">{{u.choice4}}</span>
+															</td>
+																
+														</tr>
+													</tbody>
+											</table>
+											<div class="form-actions">
+												<button style="margin-left: 89%; margin-top: 1%; width: 7%;"
+														 ng-click="ctrl.backtoresultlist()"
+														 class="btn btn-warning btn-sm">Back
+												</button>
+											
+										  </div>
+										</div>
+									</section>
+									
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+		</div>
+	</div>
+</body>
+</html>

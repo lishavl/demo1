@@ -1,0 +1,1567 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+	<!--         START OF ADD NEW TRAINING SCHEDULE & Edit TRAINING SCHEDULE       -->
+
+	<div id="scheduletraining"
+		ng-controller="MyTrainingListController as ctrl">
+
+		<div id="Schedule" ng-show="ctrl.showaddwindow">
+
+			<div class="card card-block sameheight-item">
+
+				<div class="title-block">
+					<h2 class="title"
+						ng-show="ctrl.tschedule.id==null || ctrl.tschedule.id=='0'">Add
+						New Training Schedule</h2>
+					<h2 class="title"
+						ng-show="ctrl.tschedule.id!=null && ctrl.tschedule.id!='0'">Edit
+						Training Schedule</h2>
+					<hr style="margin: 5px 0px;">
+				</div>
+
+
+				<form ng-submit="ctrl.submit($event)" name="trainingListForm"
+					novalidate>
+
+					<div class="form-group"
+						ng-class="{ 'has-error': trainingListForm.topic.$invalid && ctrl.showerrors}">
+						<label class="control-lable">Topic<span class="mandatory">*</span>
+						</label> <input type="text" ng-model="ctrl.tschedule.topic" id="topic"
+							name="topic" class="form-control underlined"
+							placeholder="Topic Name" required="required" maxlength="50px" />
+						<span class="has-error"
+							ng-show="trainingListForm.topic.$invalid && ctrl.showerrors">Enter
+							topic </span>
+					</div>
+
+
+
+					<div class="form-group"
+						ng-class="{ 'has-error': trainingListForm.category.$invalid && ctrl.showerrors}">
+						<label class="control-lable">Category <span
+							class="mandatory">*</span>
+						</label> <select
+							class="form-control form-control-sm underlined width_30perc"
+							ng-model="ctrl.tschedule.maincategory"
+							style="margin-bottom: 5px; width: 295px;"
+							ng-change="ctrl.chooseSubCategory()" name="category"
+							required="required">
+							<option value='' disabled selected>Category</option>
+							<option value=0>Add New</option>
+							<option ng-repeat="x in ctrl.category" value="{{x.id}}">{{x.category}}</option>
+						</select> <span class="has-error"
+							ng-show="trainingListForm.category.$invalid && ctrl.showerrors">Select
+							category</span>
+
+					</div>
+
+					<div class="form-group" ng-if="ctrl.tschedule.maincategory == '0'"
+						ng-class="{ 'has-error': trainingListForm.categoryName.$invalid && ctrl.showerrors}">
+						<label class="control-lable">Category Name <span
+							class="mandatory">*</span></label> <input type="text"
+							ng-model="ctrl.tschedule.categoryName" name="categoryName"
+							id="categoryName" class="form-control underlined"
+							placeholder="Category Name" required="required" /> <span
+							class="has-error"
+							ng-show="trainingListForm.categoryName.$invalid && ctrl.showerrors">Enter
+							category name</span>
+
+					</div>
+
+					<div class="form-group">
+						<label class="control-lable">Sub Category</label> <select
+							class="form-control form-control-sm underlined width_30perc"
+							ng-model="ctrl.tschedule.subCategory"
+							style="margin-bottom: 5px; width: 295px;"
+							ng-change="showSubCategory()">
+							<option value='' disabled selected>Sub Category</option>
+							<option value=0>Add New</option>
+							<option ng-repeat="x in ctrl.subcategory" value="{{x.id}}">{{x.category}}</option>
+						</select>
+
+					</div>
+
+					<div class="form-group" ng-if="ctrl.tschedule.subCategory == '0'"
+						ng-class="{ 'has-error': trainingListForm.subCategoryName.$invalid && ctrl.showerrors}">
+						<label class="control-lable">Sub Category Name <span
+							class="mandatory">*</span></label> <input type="text"
+							ng-model="ctrl.tschedule.subCategoryName" id="subCategoryName"
+							name="subCategoryName" class="form-control underlined"
+							placeholder="Sub Category Name" required="required" /> <span
+							class="has-error"
+							ng-show="trainingListForm.subCategoryName.$invalid && ctrl.showerrors">Enter
+							category name</span>
+					</div>
+
+					<div class="form-group">
+						<label class="control-lable">Syllabus</label>
+
+						<textarea style="height: 60px" maxlength="500"
+							ng-model="ctrl.tschedule.description" id="description"
+							class="form-control underlined" maxlength="100"
+							placeholder="Syllabus"></textarea>
+					</div>
+
+					<div class="form-group"
+						ng-class="{ 'has-error': trainingForm.sdate.$invalid && ctrl.showerrors || ctrl.startdateerror||ctrl.dateerror||ctrl.starttimeerror}">
+						<label class="control-lable">Start Date & Time <span
+							class="mandatory">*</span>
+						</label> <input datetime-picker ng-model="ctrl.tschedule.startDateTime"
+							date-format="yyyy-MM-dd HH:mm" close-on-select="false"
+							style="width: 360px; height: 30px;"
+							placeholder="Start Date & Time" class="form-control underlined"
+							name="sdate" id="sdate" required /> <span class="field_error"
+							ng-show="trainingListForm.sdate.$invalid && ctrl.showerrors">Select
+							start date & time</span> <span class="field_error"
+							ng-show="ctrl.startdateerror"> Please select date less
+							than end date</span> <span class="field_error" ng-show="ctrl.dateerror">Start
+							date should not be before today</span> <span class="field_error"
+							ng-show="ctrl.starttimeerror">Select valid start time</span>
+					</div>
+
+					<div class="form-group"
+						ng-class="{ 'has-error': trainingForm.edate.$invalid && ctrl.showerrors ||ctrl.enddateerror||ctrl.dateerror||ctrl.endtimeerror}">
+						<label class="control-lable">End Date & Time<span
+							class="mandatory">*</span>
+						</label> <input ng-model="ctrl.tschedule.endDateTime" datetime-picker
+							date-format="yyyy-MM-dd HH:mm" min-date="model.startDate"
+							close-on-select="false" name="edate" id="edate"
+							style="width: 360px; height: 30px;" placeholder="End Date & Time"
+							class="form-control underlined" required /> <span
+							class="field_error"
+							ng-show="trainingListForm.edate.$invalid && ctrl.showerrors">Select
+							end date & time</span> <span class="field_error"
+							ng-show="ctrl.enddateerror"> Please select date greater
+							than start date</span> <span class="field_error"
+							ng-show="ctrl.dateerror">end date should not be before
+							today</span> <span class="field_error" ng-show="ctrl.endtimeerror">Select
+							valid end time</span>
+					</div>
+
+					<div class="form-group"
+						ng-class="{ 'has-error': trainingListForm.trainer.$invalid && ctrl.showerrors}">
+						<label class="control-lable">Trainer(s) <span
+							class="mandatory">*</span>
+						</label>
+
+						<tags-input ng-model="trainers" add-on-paste="true"
+							required="true" placeholder="Trainers" name="trainer"
+							class="form-control underlined" add-from-autocomplete-only="true"
+							replace-spaces-with-dashes="false"> <auto-complete
+							source="loadTags($query)" min-length="1"></auto-complete> </tags-input>
+
+						<span class="has-error"
+							ng-show="trainingListForm.trainer.$invalid && ctrl.showerrors">Add
+							trainers </span>
+					</div>
+					<div class="form-group"
+						ng-class="{ 'has-error': trainingListForm.attendee.$invalid && ctrl.showerrors}">
+						<label class="control-lable">Attendee(s) <span
+							class="mandatory">*</span></label>
+						<!-- 							<div ng-dropdown-multiselect="" options="ctrl.departmentlist" selected-model="ctrl.profile.department" checkboxes="true" extra-settings=""></div>   -->
+						<div class="row form-group">
+							<div class="col-xs-4">
+								<select
+									class="form-control form-control-sm underlined width_30perc"
+									ng-model="ctrl.profile.department" name="department"
+									style="margin-bottom: 5px; width: 295px;" id="department"
+									ng-change="ctrl.getAllAttendeesbydeprt()">
+									<option value='' disabled selected>Select Department</option>
+									<option value=0>All</option>
+									<option ng-repeat="department in ctrl.departmentlist"
+										value="{{department.id}}">{{department.department}}</option>
+								</select>
+							</div>
+							<div class="col-xs-4">
+								<label> <input class="checkbox" type="checkbox"
+									id="selctchkbox" ng-model="ctrl.selectall" ng-true-value="1"
+									ng-false-value="0" ng-change="ctrl.selectAllattendees()">
+									<span style="font-size: 12px;">Select all</span>
+								</label>
+							</div>
+						</div>
+						<tags-input ng-model="attendees" add-on-paste="true"
+							required="true" placeholder="Attendee" name="attendee"
+							class="form-control underlined" add-from-autocomplete-only="true"
+							replace-spaces-with-dashes="false"> <auto-complete
+							source="loadAttendees($query)" min-length="1"></auto-complete> </tags-input>
+
+						<span class="has-error"
+							ng-show="trainingListForm.attendee.$invalid && ctrl.showerrors">Add
+							attendees </span>
+					</div>
+
+					<div class="form-group">
+						<input type="submit"
+							ng-show="ctrl.tschedule.id==null || ctrl.tschedule.id=='0'"
+							value="Save" class="btn btn-success custom-width"> <input
+							type="submit" value="Update"
+							ng-show="ctrl.tschedule.id!=null && ctrl.tschedule.id!='0'"
+							class="btn btn-success custom-width">
+						<button type="button" ng-click="ctrl.cancel()"
+							class="btn btn-warning">Cancel</button>
+					</div>
+				</form>
+			</div>
+		</div>
+		<!--         END OF ADD NEW TRAINING SCHEDULE & Edit TRAINING SCHEDULE         -->
+
+
+		<!--         START OF MY TRAINING LIST         -->
+
+		<div id="listtrainingschedules" ng-show="ctrl.showlistwindow">
+
+			<div class="card sameheight-item" data-exclude="xs"
+				style="height: auto;">
+				<div class="card-header card-header-sm bordered"
+					ng-show="ctrl.completedsearch">
+					<div class="col-md-12" align="center"
+						style="padding-top: 1%; padding-bottom: 1%">
+						From : &nbsp;
+						<md-datepicker ng-model="ctrl.fromDate" md-max-date="ctrl.toDate"
+							ng-change="ctrl.CompletedTopicsearch()" md-placeholder="From"
+							name="fromdate"></md-datepicker>
+						&nbsp; &nbsp;To : &nbsp;
+						<md-datepicker ng-model="ctrl.toDate" md-min-date="ctrl.fromDate"
+							ng-change="ctrl.CompletedTopicsearch()" md-placeholder="To"
+							name="todate"></md-datepicker>
+						&nbsp;&nbsp;
+					</div>
+				</div>
+				<div class="card-header card-header-sm bordered"
+					ng-show="ctrl.upcomingsearch">
+
+					<div class="col-md-12" align="center"
+						style="padding-top: 1%; padding-bottom: 1%">
+						From : &nbsp;
+						<md-datepicker ng-model="ctrl.fromDate" md-max-date="ctrl.toDate"
+							ng-change="ctrl.UpcomingTopicSearch()" md-placeholder="From"
+							name="fromdate"></md-datepicker>
+						&nbsp; &nbsp;To : &nbsp;
+						<md-datepicker ng-model="ctrl.toDate" md-min-date="ctrl.fromDate"
+							ng-change="ctrl.UpcomingTopicSearch()" md-placeholder="To"
+							name="todate"></md-datepicker>
+						&nbsp;&nbsp;
+					</div>
+				</div>
+
+				<div class="card-header card-header-sm bordered">
+
+					<div class="header-block">
+						<h3 class="title">My Training Programs</h3>
+					</div>
+
+					<ul class="nav nav-tabs pull-right" role="tablist">
+
+						<li class="nav-item"><a class="nav-link"
+							ng-class="{ 'active': ctrl.showCalendarTab }"
+							href="javascript:void(0)" role="tab" data-toggle="tab"
+							ng-click="openCalendarTab()">Calendar</a></li>
+						<li class="nav-item"><a class="nav-link"
+							ng-class="{ 'active': ctrl.showUpcomingTab }"
+							href="javascript:void(0)" role="tab" data-toggle="tab"
+							ng-click="openUpcomingTab()">Upcoming</a></li>
+						<li class="nav-item"><a class="nav-link"
+							href="javascript:void(0)"
+							ng-class="{ 'active': !ctrl.showUpcomingTab && !ctrl.showCalendarTab }"
+							ng-click="openCompletedTab()" role="tab" data-toggle="tab">Completed</a></li>
+					</ul>
+
+				</div>
+
+				<section class="section">
+					<div class="row" ng-show="!ctrl.showCalendarTab">
+						<div class="col-md-12">
+							<div class="card">
+								<div class="card-block">
+									<section class="example">
+										<div class="table-responsive">
+
+											<div align="right">
+												<button type="button" ng-click="ctrl.add()"
+													class="btn btn-primary btn-sm"
+													ng-if="(ctrl.trainingstatus == 0) && (ctrl.role == 1 || ctrl.role == 2)">Add
+													New</button>
+											</div>
+
+											<table datatable="
+												ng"
+												class="table table-striped table-bordered table-hover">
+												<thead>
+													<tr>
+														<th class="align_center">#</th>
+														<th class="align_center">Topic</th>
+														<th class="align_center">Start Date</th>
+														<th class="align_center">End Date</th>
+														<th class="align_center"
+															ng-if="ctrl.role == 1 || ctrl.role == 2">Attendees
+															Planned</th>
+														<th class="align_center">Trainer</th>
+														<th class="align_center">Actions</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr ng-repeat="t in ctrl.traininglist">
+														<td class="align_center">{{$index+1}}</td>
+														<td class="align_center" style="width: 30%">{{t.topic}}</td>
+														<td class="align_center">{{t.startdatetime |
+															date:'dd/MM/yyyy HH:mm' : timezone}}</td>
+
+														<td class="align_center">{{t.enddatetime |
+															date:'dd/MM/yyyy HH:mm' : timezone}}</td>
+
+														<td class="align_center"
+															ng-if="ctrl.role == 1 || ctrl.role == 2">
+
+															<button type="button" ng-if="t.attendeecount != 0"
+																ng-click=ctrl.expectedPeople(t.topicid)
+																class="btn btn-primary btn-sm"
+																ng-bind="'{{t.attendeecount}}'" style="width: 130px"></button>
+
+
+															<button ng-if="t.attendeecount == 0" type="button"
+																ng-click="ctrl.addAttendees(t.topicid,t.topic,t.startdatetime)"
+																class="btn btn-primary btn-sm" style="width: 130px">Add
+																Attendee</button>
+														</td>
+
+														<td class="align_center"><span
+															ng-repeat="names in t.trainernames"><pre
+																	style="font-family: Arial;">{{names}}</pre> </span></td>
+
+														<td class="align_center" style="width: 20%"
+															ng-if="ctrl.role == 1" ng-mouseleave="hoverOut()">
+
+															<ol class="main_ul" ng-mouseleave="hoverOut()">
+																<li><a href="javascript:void(0)"
+																	ng-click="hoverIn()"
+																	class="dropbtn action_settings_butons"><i
+																		class="fa fa-cog fa-lg" aria-hidden="true"></i></a></li>
+																<li>
+																	<ol class="sub_ul" ng-show="hoverEdit">
+
+																		<li><a ng-click="ctrl.edit(t.topicid)"
+																			title="Edit" href="javascript:void(0)"><i
+																				class="fa fa-pencil-square-o" aria-hidden="true"></i></a></li>
+
+																		<li ng-if="ctrl.trainingstatus == 0 && t.status == 1"><a
+																			title="Email Sent"><i class=" fa fa-envelope-o "
+																				aria-hidden="true"></i></a></li>
+
+																		<li ng-if="ctrl.trainingstatus == 0 && t.status == 0"><a
+																			ng-click="ctrl.sendMailforAttendees(t.topicid)"
+																			title="Send Email" href="javascript:void(0)"><i
+																				class="fa fa-envelope " aria-hidden="true"></i></a></li>
+
+
+																		<li ng-if="t.attendancestatus == 1"><a
+																			ng-click="ctrl.markAttendace(t.topicid,t.topic)"
+																			title="Mark Attendance" href="javascript:void(0)"><i
+																				class=" fa fa-hand-o-up" aria-hidden="true"></i></a></li>
+
+																		<li ng-if="t.topicstatus == 'Completed'"><a
+																			ng-click="ctrl.viewAttendedPeople(t.topicid,t.topic)"
+																			title="View Feedback" href="javascript:void(0)"><i
+																				class=" fa fa-comment" aria-hidden="true"></i></a></li>
+
+																		<li><a
+																			ng-click="ctrl.manageMaterial(t.topicid,t.topic)"
+																			title="View Material" href="javascript:void(0)"><i
+																				class=" fa fa-book" aria-hidden="true"></i></a></li>
+
+																		<li ng-if="ctrl.trainingstatus == 0"><a
+																			ng-click="ctrl.deleteSchedule(t.topicid)"
+																			title="Delete" href="javascript:void(0)"><i
+																				class="fa fa-trash" aria-hidden="true"></i></a></li>
+																	</ol>
+																</li>
+															</ol>
+														<td class="align_center" style="width: 24%"
+															ng-if="ctrl.role == 2" ng-mouseleave="hoverOut()">
+															<ol class="main_ul">
+																<li><a href="javascript:void(0)"
+																	ng-click="hoverIn()"
+																	class="dropbtn action_settings_butons"><i
+																		class="fa fa-cog fa-lg" aria-hidden="true"></i></a></li>
+																<li>
+																	<ol class="sub_ul" ng-show="hoverEdit">
+
+																		<li><a
+																			ng-click="ctrl.edit(t.topicid)" title="Edit"
+																			href="javascript:void(0)"><i
+																				class="fa fa-pencil-square-o" aria-hidden="true"></i></a></li>
+
+																		<li
+																			ng-if="ctrl.trainingstatus == 0 && t.status == 1"><a
+																			title="Email Sent"><i class=" fa fa-envelope-o "
+																				aria-hidden="true"></i></a></li>
+
+																		<li
+																			ng-if="ctrl.trainingstatus == 0 && t.status == 0"><a
+																			ng-click="ctrl.sendMailforAttendees(t.topicid)"
+																			title="Send Email" href="javascript:void(0)"><i
+																				class="fa fa-envelope " aria-hidden="true"></i></a></li>
+
+																		<li ng-if="t.attendancestatus == 1"><a
+																			ng-click="ctrl.markAttendace(t.topicid,t.topic)"
+																			title="Mark Attendance" href="javascript:void(0)"><i
+																				class=" fa fa-hand-o-up" aria-hidden="true"></i></a></li>
+
+																		<li ng-if="t.topicstatus == 'Completed'"><a
+																			ng-click="ctrl.viewAttendedPeople(t.topicid,t.topic)"
+																			title="View Feedback" href="javascript:void(0)"><i
+																				class=" fa fa-comment" aria-hidden="true"></i></a></li>
+
+																		<li><a
+																			ng-click="ctrl.manageMaterial(t.topicid,t.topic)"
+																			title="Add Material" href="javascript:void(0)"><i
+																				class="fa fa-paperclip" aria-hidden="true"></i></a></li>
+
+																		<li ng-if="ctrl.trainingstatus == 0"><a
+																			ng-click="ctrl.deleteSchedule(t.topicid)"
+																			title="Delete" href="javascript:void(0)"><i
+																				class="fa fa-trash" aria-hidden="true"></i></a></li>
+																	</ol>
+																</li>
+															</ol>
+														</td>
+
+														<td class="align_center" style="width: 20%"
+															ng-if="ctrl.role == 3" ng-mouseleave="hoverOut()">
+
+															<ol class="main_ul" ng-mouseleave="hoverOut()">
+																<li><a href="javascript:void(0)"
+																	ng-click="hoverIn()"
+																	class="dropbtn action_settings_butons"><i
+																		class="fa fa-cog fa-lg" aria-hidden="true"></i></a></li>
+																<li>
+																	<ol class="sub_ul" ng-show="hoverEdit">
+
+																		<li ng-if="t.count == 0 && ctrl.trainingstatus == 0"><a
+																			ng-click="ctrl.sendMail(t.topicid)"
+																			title="Show Interest" href="javascript:void(0)"><i
+																				class="fa fa-heart-o" aria-hidden="true"></i></a></li>
+
+																		<li ng-if="t.count == 1 && t.status >= 0"><a
+																			title="Enrolled"><i class="fa fa-check-square-o"
+																				aria-hidden="true"></i></a></li>
+
+																		<li ng-if="t.count == 0 && ctrl.trainingstatus == 1"><a
+																			title="Not Enrolled"><i class=" fa fa-ban"
+																				aria-hidden="true"></i></a></li>
+
+																		<li ng-if="t.status == -1"><a
+																			title="Awaiting Confirmation"><i
+																				class="fa fa-hourglass" aria-hidden="true"
+																				style="font-size: 14px"></i></a></li>
+
+																		<li ng-if="ctrl.trainingstatus == 1"><a
+																			ng-click="ctrl.manageMaterial(t.topicid,t.topic)"
+																			title="View Material" href="javascript:void(0)"><i
+																				class="fa fa-book" aria-hidden="true"></i></a></li>
+
+																		<li ng-if="t.count == 1 && ctrl.trainingstatus == 1"><a
+																			ng-click="ctrl.addViewFeedback(t.topicid,t.topic)"
+																			title="Feedback" href="javascript:void(0)"><i
+																				class="fa fa-comment-o" aria-hidden="true"></i></a></li>
+																	</ol>
+																</li>
+															</ol>
+														</td>
+
+													</tr>
+												</tbody>
+
+											</table>
+										</div>
+									</section>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="row" ng-show="ctrl.showCalendarTab">
+
+						<div style="float: right; margin-right: 5%; margin-top: 7%;">
+							<table>
+								<tr>
+									<td><div
+											style="width: 15px; height: 15px; border-radius: 10px; background-color: rgb(30, 144, 255); margin: 5px;">
+										</div></td>
+									<td>Upcoming</td>
+								</tr>
+								<tr>
+									<td><div
+											style="width: 15px; height: 15px; border-radius: 10px; background-color: rgb(227, 188, 8); margin: 5px;">
+										</div></td>
+									<td>Completed</td>
+								</tr>
+								<tr>
+									<td><div
+											style="width: 15px; height: 15px; border-radius: 10px; background-color: rgb(173, 33, 33); margin: 5px;">
+										</div></td>
+									<td>Cancelled</td>
+								</tr>
+							</table>
+						</div>
+
+						<div style="width: 70%; margin-left: 15%;">
+							<br>
+							<h2 class="text-center">{{ ctrl.calendarTitle }}</h2>
+							<br>
+
+							<div class="row"">
+
+								<div class="col-md-6 text-center">
+									<div class="btn-group">
+
+										<button class="btn btn-primary" mwl-date-modifier
+											date="ctrl.viewDate" decrement="ctrl.calendarView"
+											ng-click="ctrl.cellIsOpen = false">Previous</button>
+										<button class="btn btn-default" mwl-date-modifier
+											date="ctrl.viewDate" set-to-today
+											ng-click="ctrl.cellIsOpen = false">Today</button>
+										<button class="btn btn-primary" mwl-date-modifier
+											date="ctrl.viewDate" increment="ctrl.calendarView"
+											ng-click="ctrl.cellIsOpen = false">Next</button>
+									</div>
+								</div>
+
+								<br class="visible-xs visible-sm">
+
+								<div class="col-md-6 text-center">
+									<div class="btn-group">
+										<label class="btn btn-primary" ng-model="ctrl.calendarView"
+											uib-btn-radio="'year'" ng-click="ctrl.cellIsOpen = false">Year</label>
+										<label class="btn btn-primary" ng-model="ctrl.calendarView"
+											uib-btn-radio="'month'" ng-click="ctrl.cellIsOpen = false">Month</label>
+										<label class="btn btn-primary" ng-model="ctrl.calendarView"
+											uib-btn-radio="'week'" ng-click="ctrl.cellIsOpen = false">Week</label>
+										<label class="btn btn-primary" ng-model="ctrl.calendarView"
+											uib-btn-radio="'day'" ng-click="ctrl.cellIsOpen = false">Day</label>
+									</div>
+								</div>
+
+							</div>
+
+							<br>
+
+							<mwl-calendar events="ctrl.events" view="ctrl.calendarView"
+								view-title="ctrl.calendarTitle" view-date="ctrl.viewDate"
+								on-event-click="ctrl.eventClicked(calendarEvent)"
+								on-event-times-changed="ctrl.eventTimesChanged(calendarEvent); calendarEvent.startsAt = calendarNewEventStart; calendarEvent.endsAt = calendarNewEventEnd"
+								cell-is-open="ctrl.cellIsOpen" day-view-start="06:00"
+								day-view-end="22:59" day-view-split="30"
+								cell-modifier="ctrl.modifyCell(calendarCell)"
+								cell-auto-open-disabled="true"
+								on-timespan-click="ctrl.timespanClicked(calendarDate, calendarCell)">
+							</mwl-calendar>
+
+							<br>
+
+
+						</div>
+
+					</div>
+
+				</section>
+			</div>
+		</div>
+		<!--         END OF MY TRAINING LIST         -->
+
+
+
+		<!--         START OF LISTING ATTENDEES FOR TRAINING PROGRAM WHICH IS COMPLETED         -->
+
+		<div id="viewattendees" ng-show="ctrl.showattendeelist">
+			<div id="attendeelist">
+
+				<div class="title-block"
+					style="padding-bottom: 5px; margin-bottom: 10px;">
+
+					<h6>
+						<b>Feedback</b>
+					</h6>
+				</div>
+
+				<div class="title-block"
+					style="padding-bottom: 5px; margin-bottom: 10px;">
+					<b>Topic :</b>&nbsp; <input type="text"
+						ng-model="ctrl.training.topic" id="topic" name="topic"
+						readonly="readonly" style="height: 30px; width: 90%;" />
+				</div>
+
+				<section class="section">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="card">
+								<div class="card-block">
+									<section class="example">
+										<div class="table-responsive">
+											<table datatable="ng"
+												class="table table-striped table-bordered table-hover">
+
+												<thead>
+													<tr>
+														<th class="align_center">#</th>
+														<th class="align_center">Attendee</th>
+														<th class="align_center">Feedback</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr ng-repeat="t in ctrl.training">
+														<td class="align_center">{{$index+1}}</td>
+														<td class="align_center">{{t.firstName}}
+															{{t.lastName}}</td>
+
+														<td class="align_center"><input type="button"
+															Value="View" id="viewFeedback" name="viewFeedback"
+															ng-click="ctrl.viewFeedbackbyTrainer(t.attendeeid)"
+															class="btn btn-primary" ng-if="t.count != 0" /> <span
+															ng-if="t.count == 0 && t.t != 0" class="ng-scope">Pending</span>
+															<span ng-if="t.count == 0 && t.t== 0" class="ng-scope">Absent</span></td>
+													</tr>
+
+												</tbody>
+
+											</table>
+
+											<button type="button" ng-click="ctrl.cancel()"
+												class="btn btn-warning"
+												style="margin-left: 89%; margin-top: 1%; width: 7%;">Back</button>
+										</div>
+									</section>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+			</div>
+		</div>
+		<!--         END OF LISTING  ATTENDEES FOR TRAINING PROGRAM WHICH IS COMPLETED        -->
+
+
+		<!--         START OF SHOW FEEDBAK FOR TRAINING PROGRAM WHICH IS COMPLETED         -->
+
+
+
+		<div id="Trainerfeedbackview" ng-show="ctrl.showfeedbacks">
+
+			<div class="title-block"
+				style="padding-bottom: 5px; margin-bottom: 10px;">
+
+				<h6>
+					<b>Attendee Feedback</b>
+				</h6>
+
+			</div>
+			<div class=""
+				style="margin-bottom: 1px; margin-left: 55px; padding-bottom: 20px; padding-top: 10px;">
+				<b>Topic</b>&nbsp;<input type="text" ng-model="ctrl.training.topic"
+					id="topic" name="topic" readonly="readonly"
+					style="height: 30px; width: 90%; margin-right: 10px" />
+				&nbsp;&nbsp;&nbsp;&nbsp; <b>Attendee</b>&nbsp;<input type="text"
+					ng-model="ctrl.feedback.attendeename" id="topic" name="topic"
+					style="width: 294px; height: 30px" placeholder="Enter the Topic"
+					readonly="readonly" />
+
+				<hr
+					style="margin-bottom: 5px; margin-left: -53px; margin-right: 0; margin-top: 18px;">
+			</div>
+
+			<div class="panel panel-default">
+				<br> <br>
+				<div class="container">
+					<table class="result_table" border="1"
+						style="width: 72%; margin-left: 14%;">
+						<tr>
+							<td width="70%">Feedback</td>
+							<td align="center" ng-if="ctrl.feedback.report ==0">Excellent</td>
+							<td align="center" ng-if="ctrl.feedback.report ==1">Good</td>
+							<td align="center" ng-if="ctrl.feedback.report ==2">Can
+								improve</td>
+						</tr>
+						<tr>
+							<td width="70%">Why you think this training was appropriate
+								for you? <br> Did it help you in your work?
+							</td>
+							<td align="center" ng-bind="ctrl.feedback.data"></td>
+
+						</tr>
+
+						<tr>
+							<td width="70%">Comments</td>
+							<td align="center" ng-bind="ctrl.feedback.comment"></td>
+						</tr>
+						<tr>
+							<td width="70%">Is follow-up needed ?</td>
+							<td align="center" ng-if="ctrl.feedback.followup ==0">No</td>
+							<td align="center" ng-if="ctrl.feedback.followup ==1">Yes</td>
+						</tr>
+						<tr>
+							<td width="70%">Is demo needed ?</td>
+							<td align="center" ng-if="ctrl.feedback.demo ==0">No</td>
+							<td align="center" ng-if="ctrl.feedback.demo ==1">Yes</td>
+							<td align="center" ng-if="ctrl.feedback.demo ==2">Not
+								Applicable</td>
+						</tr>
+					</table>
+					<br>
+					<button type="button" ng-click="ctrl.back()"
+						class="btn btn-warning"
+						style="margin-left: 89%; margin-top: 1%; width: 7%;">Back</button>
+				</div>
+			</div>
+
+		</div>
+		<!--        END OF SHOW FEEDBAK FOR TRAINING PROGRAM WHICH IS COMPLETED         -->
+
+
+		<!--         START OF ADDING ATTENDEES FOR TRAINING PROGRAM WHICH IS PENDING         -->
+
+
+
+		<div id="showexpecteddetails" ng-show="ctrl.showexpectedattendeelist">
+
+			<div id="expectedattendeelist">
+
+				<div class="title-block"
+					style="padding-bottom: 5px; margin-bottom: 10px;">
+
+					<h6>
+						<b>Add Attendees</b>
+					</h6>
+
+				</div>
+				<div class="title-block"
+					style="margin-left: 1%; padding-bottom: 1%; padding-top: 1%;">
+					<div>
+						<b>Topic&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</b>&nbsp;&nbsp;<input
+							type="text" ng-model="ctrl.training.topic" id="topic"
+							name="topic" readonly="readonly"
+							style="height: 30px; width: 80%;"
+							class="ng-pristine ng-untouched ng-valid ng-not-empty"
+							aria-invalid="false">
+					</div>
+					<div style="margin-top: 1%">
+						<b>Start Date &amp; Time :</b>&nbsp;&nbsp;<input
+							ng-model="ctrl.training.startDateTime | date:'MM/dd/yyyy HH:mm'"
+							style="height: 30px; width: 30%; margin-right: 45px;"
+							readonly="readonly"
+							class="ng-pristine ng-untouched ng-valid ng-not-empty"
+							aria-invalid="false">
+					</div>
+				</div>
+				<table class="addattendee_table"
+					style="width: 72%; margin-left: 14%;">
+					<tbody>
+						<tr>
+							<td class="align_center" style="width: 29%; border: none;">
+
+								<div
+									style="text-align: center; width: 55%; margin-left: 20%; padding: 4% 2% 1%;">
+									<label> Choose Attendees </label>
+								</div> <select multiple ng-multiple="true" ng-model="ctrl.attendees"
+								class="form-control"
+								style="width: 220px; height: 370px; margin-left: 17%;">
+									<option ng-repeat="x in ctrl.attendeelist"
+										value="{{x.user_id}}">{{x.firstName}} {{x.lastName}}</option>
+							</select>
+							</td>
+							<td class="align_center" style="width: 10%; border: none;">
+
+								<table style="margin-top: 21%; border: none; margin-left: 5%">
+									<tr style="border: none">
+										<td style="border: none"><button type="button"
+												ng-click="loadToNextList()"
+												class="btn btn-primary custom-width">>></button></td>
+									</tr>
+
+
+									<tr style="margin-top: 3%; border: none">
+										<td style="border: none"><button type="button"
+												ng-click="unLoadFromList()"
+												class="btn btn-primary custom-width"><<</button></td>
+									</tr>
+
+								</table>
+
+							</td>
+							<td class="align_center" style="width: 29%; border: none;">
+								<div
+									style="text-align: center; width: 55%; margin-left: 20%; padding: 4% 2% 1%;">
+									<label>Selected Attendees</label>
+								</div> <select multiple ng-multiple="true" class="form-control"
+								ng-model="ctrl.selectedattendeesid"
+								style="width: 220px; height: 370px; margin-left: 17%;">
+									<option ng-repeat="x in ctrl.selectedattendees"
+										value="{{x.user_id}}">{{x.firstName}} {{x.lastName}}</option>
+							</select>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<hr
+					style="margin-bottom: 5px; margin-left: 1px; margin-right: 0; margin-top: 18px;">
+				<div class="form-group" style="margin-top: 2%;">
+					<input type="submit" value="Save"
+						class="btn btn-success custom-width"
+						ng-click="ctrl.addnewAttendees()">
+					<button type="button" ng-click="ctrl.reset()"
+						class="btn btn-warning" style="margin-left: 10px">Cancel</button>
+				</div>
+
+			</div>
+		</div>
+		<!--         END OF ADDING ATTENDEES FOR TRAINING PROGRAM WHICH IS PENDING       -->
+
+
+		<!--START OF  FEEDBACK VIEW FOR ADMIN -->
+
+		<div id="" ng-show="ctrl.showAdminfeedback">
+
+			<div ng-show="ctrl.showAttendees">
+				<div class="title-block"
+					style="padding-bottom: 5px; margin-bottom: 10px;">
+
+					<h6>
+						<b>Feedback</b>
+					</h6>
+
+				</div>
+
+				<div class="title-block"
+					style="padding-bottom: 5px; margin-bottom: 10px; padding-left: 3%">
+					<div>
+
+						<b>Topic &nbsp;&nbsp;&nbsp; :</b>&nbsp; &nbsp; <input type="text"
+							ng-model="ctrl.training.topic" id="topic" name="topic"
+							readonly="readonly" style="height: 30px; width: 90%;" /> </select>&nbsp;&nbsp;&nbsp;&nbsp;
+					</div>
+					<div style="margin-top: 1%">
+						<b>Trainer : </b> &nbsp;&nbsp; <select
+							class="criteria-form-control underlined"
+							style="height: 30px; width: 30%;" ng-model="ctrl.trainerid"
+							name="trainername" ng-change="ctrl.getAllAttendees()">
+							<option value='' disabled selected="selected">Select</option>
+							<option ng-repeat="trn in ctrl.trainernames"
+								value="{{trn.trainer.userId}}">{{trn.trainer.firstName}}
+								{{trn.trainer.lastName}}</option>
+						</select>
+					</div>
+
+				</div>
+
+				<section class="section">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="card">
+								<div class="card-block">
+									<section class="example">
+										<div class="table-responsive">
+											<table datatable="ng"
+												class="table table-striped table-bordered table-hover">
+												<thead>
+													<tr>
+														<th style="text-align: center;">#</th>
+														<th style="text-align: center;">Attendee</th>
+														<th style="text-align: center;">Actions</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr ng-repeat="test in ctrl.attendees">
+														<td style="text-align: center;">{{$index+1}}</td>
+														<td style="text-align: center;">{{test.attendee}}
+															{{test.attendeelastname}}</td>
+
+														<td style="text-align: center;"><a
+															ng-if="test.count != 0"
+															ng-click="ctrl.viewFeedbacks(test.userId,test.topic,test.trainernames)"
+															title="View" href="javascript:void(0)"><i
+																class="fa fa-eye" aria-hidden="true"></i></a> <span
+															ng-if="test.count ==0 && test.attendedStatus != 0">Pending
+														</span> <span ng-if="test.attendedStatus==0 && test.count == 0">Absent
+														</span></td>
+													</tr>
+												</tbody>
+											</table>
+
+											<button type="button" ng-click="ctrl.cancel()"
+												class="btn btn-warning"
+												style="margin-top: 1%; width: auto; text-align: left;">Back</button>
+										</div>
+									</section>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+			</div>
+
+			<!-- -----------------------------------------------------------------------------
+	Feedback view for admin -->
+
+			<div id="showfeedbacks" ng-show="ctrl.showadminfeedbackview">
+				<div class="title-block"
+					style="padding-bottom: 5px; margin-bottom: 10px;">
+
+					<h6>
+						<b>Feedback</b>
+					</h6>
+
+				</div>
+				<div class="title-block"
+					style="padding-bottom: 5px; margin-bottom: 10px; padding-left: 3%">
+
+					<div>
+						<b>Topic &nbsp;&nbsp;&nbsp;&nbsp;: </b>&nbsp; <input type="text"
+							ng-model="ctrl.training.topic" id="topic" name="topic"
+							readonly="readonly" style="height: 30px; width: 90%;" />
+					</div>
+					<div style="margin-top: 1%; margin-bottom: 5px">
+						<b>Trainer : </b>&nbsp;&nbsp;<input type="text"
+							ng-model="ctrl.feedback.trainername" id="trainer" name="trainer"
+							style="width: 37%; height: 30px; margin-right: 8.5%;"
+							readonly="readonly" /><b>Attendee : </b>&nbsp;<input type="text"
+							ng-model="ctrl.feedback.attendeename" id="attendee"
+							name="trainer" style="width: 37%; height: 30px"
+							readonly="readonly" />
+					</div>
+
+
+				</div>
+				<section class="section">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="card">
+								<div class="card-block">
+									<section class="example">
+										<div class="table-responsive">
+											<table class="result_table" border="1" style="width: 100%;">
+
+												<tr>
+													<td width="60%">Feedback</td>
+
+													<td ng-if="ctrl.feedback.report ==5" align="center">Excellent</td>
+													<td ng-if="ctrl.feedback.report ==3" align="center">Good</td>
+													<td ng-if="ctrl.feedback.report ==1" align="center">Can
+														improve</td>
+
+												</tr>
+												<tr>
+													<td width="60%">Why you think this training was
+														appropriate for you? <br> Did it help you in your
+														work? ?
+													</td>
+													<td align="center" ng-bind="ctrl.feedback.data"></td>
+
+												</tr>
+												<tr>
+													<td width="60%">Comments</td>
+													<td ng-bind="ctrl.feedback.comment" align="center"></td>
+												</tr>
+												<tr>
+													<td width="60%">Is follow-up needed ?</td>
+													<td ng-if="ctrl.feedback.followup ==0" align="center">No</td>
+													<td ng-if="ctrl.feedback.followup ==1" align="center">Yes</td>
+												</tr>
+												<tr>
+													<td width="60%">Is demo needed ?</td>
+													<td ng-if="ctrl.feedback.demo ==0" align="center">No</td>
+													<td ng-if="ctrl.feedback.demo ==1" align="center">Yes</td>
+													<td ng-if="ctrl.feedback.demo ==2" align="center">Not
+														Applicable</td>
+												</tr>
+											</table>
+											<br>
+											<button type="button" ng-click="ctrl.backtofeedback()"
+												class="btn btn-warning"
+												style="margin-top: 1%; width: auto; text-align: left;">Back</button>
+										</div>
+									</section>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+			</div>
+		</div>
+
+		<!--END OF  FEEDBACK VIEW FOR ADMIN -->
+
+
+		<!-- START OF MARK ATTENDANCE -->
+
+		<div id="" ng-show="ctrl.showattendance">
+
+			<div class="title-block"
+				style="padding-bottom: 5px; margin-bottom: 10px;">
+
+				<h6>
+					<b>Attendance </b>
+				</h6>
+
+			</div>
+
+			<div class="title-block"
+				style="padding-bottom: 5px; margin-bottom: 10px; padding-left: 3%; padding-bottom: 1%">
+
+				<b>Topic :</b>&nbsp; <input type="text" ng-model="ctrl.topicname"
+					id="topic" name="topic" readonly="readonly"
+					style="height: 30px; width: 90%;" /> <span class="field_error"
+					ng-show="trainingForm.training.$invalid && ctrl.showerrors">Select
+					Topic</span> <span class="field_error" ng-if="ctrl.status.errorCode==2">{{ctrl.status.errorMessage}}</span>
+			</div>
+
+			<section class="section">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="card">
+							<div class="card-block">
+								<section class="example">
+									<div class="table-responsive">
+										<form name="trainingForm" ng-submit="ctrl.save($event)"
+											novalidate>
+
+											<table datatable="ng"
+												class="table table-striped table-bordered table-hover">
+												<thead>
+													<tr>
+														<th style="text-align: center; width: 1%;">#</th>
+														<th style="text-align: center; width: 1%;">Attendee</th>
+														<th style="text-align: center; width: 1%;">Select all
+															<input type="checkbox" ng-model="ctrl.master"
+															ng-true-value="1" ng-false-value="0"
+															ng-change=" ctrl.checkAllElements()">
+														</th>
+												</thead>
+												<tbody>
+													<tr ng-repeat="test in ctrl.attendane">
+														<td style="text-align: center;">{{$index + 1}}</td>
+														<td style="text-align: center;"><span
+															ng-bind="'{{test.attendee}}'"> </span></td>
+														<td style="text-align: center;"><span
+															ng-if="test.attendedStatus == 0" class="animate-if">
+																<input type="checkbox"
+																checklist-model="ctrl.user.userids"
+																checklist-value="test.id">
+
+														</span> <span ng-if="test.attendedStatus == 1" class="animate-if">
+																<input type="checkbox"
+																checklist-model="ctrl.user.userids" ng-checked="true"
+																checklist-value="test.id">
+														</span></td>
+													</tr>
+												</tbody>
+												<tbody>
+													<tr>
+														<td style="text-align: center;"><b> Total
+																expected: </b>{{ctrl.attendane.length}}</td>
+
+
+														<td style="text-align: center;"><b>Present: </b>{{ctrl.user.userids.length}}</td>
+
+
+														<td style="text-align: center;"><b>Absent: </b>{{ctrl.attendane.length
+															- ctrl.user.userids.length}}</td>
+													</tr>
+												</tbody>
+											</table>
+											<div class="form-actions">
+
+												<input type="submit" value="Save"
+													class="btn btn-success custom-width">
+
+												<button type="button" ng-click="ctrl.backFromAttendance()"
+													class="btn btn-warning">Back</button>
+											</div>
+										</form>
+									</div>
+								</section>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+		</div>
+
+		<!-- END OF MARK ATTENDANCE -->
+
+
+
+
+		<!-- START OF TRAINING MATERIALS -->
+
+		<!-- start od adding materials -->
+
+		<div id="adduser" ng-show="ctrl.showmaterialaddwindow">
+
+			<div class="card card-block sameheight-item">
+
+				<div class="title-block">
+					<h2 class="title"
+						ng-show="ctrl.material.material_id==null || ctrl.material.material_id=='0'"
+						class="last">Add New Training Material</h2>
+					<h2 class="title"
+						ng-show="ctrl.material.material_id!=null && ctrl.material.material_id!='0'"
+						class="last">
+						Edit Training Material</span>
+					</h2>
+
+					<hr style="margin: 5px 0px;">
+				</div>
+
+				<form ng-submit="ctrl.MaterialManagement($event)"
+					name="addTrainingMaterialForm" novalidate>
+
+					<div class="form-group"
+						ng-class="{ 'has-error': ctrl.showfileerror || addTrainingMaterialForm.material.$invalid && ctrl.showerrors}">
+						<label class="control-lable">Material:</label>
+						<md-button style="margin:0px;min-height: 31px;  min-width: 30px;">
+						<i class="fa fa-info-circle" aria-hidden="true"></i> <md-tooltip
+							md-visible="demo.showTooltip" md-direction="right"
+							style="font-size:12px;"> (Maximum file size allowed
+						is 1 MB) </md-tooltip> </md-button>
+						<input type="file" file-model="myFile" name="material"
+							required="required" class="form-control underlined" /> <span
+							class="field_error" ng-show="ctrl.showfileerror">Choose
+							file</span><span class="field_error"
+							ng-show="addTrainingMaterialForm.material.$invalid && ctrl.showerrors">Maximum
+							size allowed is 1 MB</span>
+
+					</div>
+
+					<div class="form-group">
+						<label class="control-lable">Description</label>
+						<textarea style="height: 60px" maxlength="500"
+							ng-model="ctrl.material.description" id="description"
+							class="form-control underlined"></textarea>
+					</div>
+
+
+
+					<div class="form-group">
+						<label class="control-lable">Reference </label> <label
+							style="font-weight: initial">(Use comma to add multiple
+							links)</label>
+
+						<textarea style="height: 60px" maxlength="500"
+							ng-model="ctrl.material.reference" id="reference"
+							class="form-control underlined"></textarea>
+					</div>
+
+					<div class="form-group">
+						<input type="submit"
+							ng-show="ctrl.material.material_id==null || ctrl.material.material_id=='0'"
+							value="Save" class="btn btn-success custom-width"> <input
+							type="submit" value="Update"
+							ng-show="ctrl.material.material_id!=null && ctrl.material.material_id!='0'"
+							class="btn btn-success custom-width">
+						<button type="button" ng-click="ctrl.cancel()"
+							class="btn btn-warning">Cancel</button>
+					</div>
+				</form>
+			</div>
+		</div>
+
+		<!-- end of Adding Training Materials -->
+
+
+		<!--Start  of Listing Training Materials -->
+
+		<div id="materiallist" ng-show="ctrl.showmateriallistwindow">
+
+			<div id="listmaterials">
+
+
+				<div class="title-block"
+					style="padding-bottom: 5px; margin-bottom: 10px;">
+
+					<h6>
+						<b>Training Materials</b>
+					</h6>
+				</div>
+
+				<div class="title-block"
+					style="padding-bottom: 5px; margin-bottom: 10px; padding-left: 3%;">
+					Topic : &nbsp; <input type="text" ng-model="ctrl.material.topic"
+						id="topic" name="topic" readonly="readonly"
+						style="height: 30px; width: 90%" />
+				</div>
+
+				<section class="section">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="card">
+								<div class="card-block">
+									<section class="example">
+										<div class="table-responsive">
+
+											<div align="right" ng-if="ctrl.role == 2">
+												<button type="button" ng-click="ctrl.addMaterials()"
+													class="btn btn-primary btn-sm">Add New</button>
+											</div>
+
+											<table datatable="
+												ng"
+												class="table table-striped table-bordered table-hover">
+												<thead>
+													<tr>
+														<th class="align_center">#</th>
+														<th class="align_center">Material</th>
+														<th class="align_center" style="width: 20%;">Reference</th>
+														<th class="align_center" style="width: 20%;">Description</th>
+														<th class="align_center" ng-if="ctrl.role == 2">Actions</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr ng-repeat="u in ctrl.materials">
+														<td class="align_center">{{$index+1}}</td>
+														<td class="align_center"><a
+															href="./uploads/trainingmaterials/{{u.filepath}}"
+															target="_blank"> <img
+																style="width: 20px; height: 20px;"
+																src="images/attachment.png" alt="" /></a></td>
+
+
+														<td style="width: 50%;"><span
+															ng-if="u.reference != ''"
+															ng-repeat="a in u.reference.split(',')"><i
+																class="fa fa-arrow-circle-right" aria-hidden="true"
+																ng-if="u.reference.length != 0"></i> <a href="{{a}}"
+																target="_blank"> {{a}}</a><br></span> <span
+															ng-if="u.reference == ''"><i>No links added</i></span></td>
+
+
+
+														<td style="width: 20%">{{u.description}} <span
+															ng-if="u.description == ''"><i>No text</i></span>
+														</td>
+
+														<td class="align_center" style="width: 20%"
+															ng-if="ctrl.role == 2">
+															<ol class="main_ul" ng-mouseleave="hoverOut()">
+																<li><a href="javascript:void(0)"
+																	ng-click="hoverIn()"
+																	class="dropbtn action_settings_butons"><i
+																		class="fa fa-cog fa-lg" aria-hidden="true"></i></a></li>
+																<li>
+																	<ol class="sub_ul" ng-show="hoverEdit">
+
+																		<li><a ng-click="ctrl.edit(u.material_id)"
+																			title="Edit" href="javascript:void(0)"><i
+																				class="fa fa-pencil-square-o" aria-hidden="true"></i></a></li>
+
+
+																		<li><a
+																			ng-click="ctrl.deleteMaterial(u.material_id)"
+																			title="Delete" href="javascript:void(0)"><i
+																				class="fa fa-trash" aria-hidden="true"></i></a></li>
+																	</ol>
+																</li>
+															</ol>
+														</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</section>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<div class="form-group">
+					<button type="button" ng-click="ctrl.backtomaterials()"
+						class="btn btn-warning"
+						style="text-align: left; margin-top: 1%; width: auto;">Back</button>
+
+				</div>
+
+			</div>
+
+			<!-- End of Listing Training Materials -->
+
+		</div>
+
+		<!-- END OF TRAINING MATERIALS -->
+
+
+		<!--         START OF ATTENDEE ADD/VIEW FEEDBACK         -->
+
+		<div id="viewattendees" ng-show="ctrl.showtrainerlist">
+
+			<div id="trainerlist">
+
+				<div class="title-block"
+					style="padding-bottom: 5px; margin-bottom: 10px;">
+
+					<h6>
+						<b>Feedback</b>
+					</h6>
+				</div>
+
+				<div class="title-block"
+					style="padding-bottom: 5px; margin-bottom: 10px; padding-left: 3%;">
+					<b>Topic :</b>&nbsp; <input type="text"
+						ng-model="ctrl.training.topic" id="topic" name="topic"
+						readonly="readonly" style="height: 30px; width: 90%;" />
+				</div>
+
+				<section class="section">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="card">
+								<div class="card-block">
+									<section class="example">
+										<div class="table-responsive">
+											<table datatable="ng"
+												class="table table-striped table-bordered table-hover">
+
+												<thead>
+													<tr>
+														<th class="align_center">#</th>
+														<th class="align_center">Trainers</th>
+														<th class="align_center">Feedback</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr ng-repeat="t in ctrl.attendeelist">
+														<td class="align_center">{{$index+1}}</td>
+														<td class="align_center">{{t.firstName}}
+															{{t.lastName}}</td>
+
+														<td class="align_center" style="width: 20%">
+															<ol class="main_ul" ng-mouseleave="hoverOut()">
+																<li><a href="javascript:void(0)"
+																	ng-click="hoverIn()"
+																	class="dropbtn action_settings_butons"><i
+																		class="fa fa-cog fa-lg" aria-hidden="true"></i></a></li>
+																<li>
+																	<ol class="sub_ul" ng-show="hoverEdit">
+
+																		<li ng-if="t.count == 0"><a
+																			ng-click="ctrl.addFeedback(ctrl.training.topicid,t.user_id,t.firstName,t.lastName,ctrl.training.topic)"
+																			title="Add Feedback" href="javascript:void(0)"><i
+																				class="fa fa-comment-o" aria-hidden="true"></i></a></li>
+
+
+																		<li ng-if="t.count > 0"><a
+																			ng-click="ctrl.viewFeedback(ctrl.training.topicid,t.user_id,t.firstName,t.lastName)"
+																			title="View Feedback" href="javascript:void(0)"><i
+																				class="fa fa-comment" aria-hidden="true"></i></a></li>
+																	</ol>
+																</li>
+															</ol>
+														</td>
+													</tr>
+
+												</tbody>
+
+											</table>
+
+											<button type="button" ng-click="ctrl.backtoTopicList()"
+												class="btn btn-warning"
+												style="text-align: left; margin-top: 1%; width: auto;">Back</button>
+										</div>
+									</section>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+			</div>
+		</div>
+
+		<div id="showfeedbacks" ng-show="ctrl.showattendeefeedbacks">
+
+			<div class="title-block"
+				style="padding-bottom: 5px; margin-bottom: 10px;">
+
+				<h6>
+					<b>Feedback</b>
+				</h6>
+
+			</div>
+
+			<div class=""
+				style="margin-bottom: 1px; margin-left: 55px; padding-bottom: 20px; padding-top: 10px;">
+				<b>Topic</b>&nbsp;<input type="text" ng-model="ctrl.training.topic"
+					id="topic" name="topic" readonly="readonly"
+					style="height: 30px; width: 90%; margin-right: 10px" />
+				&nbsp;&nbsp;&nbsp;&nbsp; <b>Trainer</b>&nbsp;<input type="text"
+					ng-model="ctrl.trainername" id="topic" name="trainer"
+					style="width: 294px; height: 30px" readonly="readonly" />
+
+				<hr
+					style="margin-bottom: 5px; margin-left: -53px; margin-right: 0; margin-top: 18px;">
+			</div>
+
+			<div class="panel panel-default">
+				<br> <br>
+				<div class="container">
+					<table class="result_table" border="1"
+						style="width: 72%; margin-left: 14%;">
+						<tr>
+							<td width="70%">Feedback</td>
+							<td align="center" ng-if="ctrl.feedback.report ==0">Excellent</td>
+							<td align="center" ng-if="ctrl.feedback.report ==1">Good</td>
+							<td align="center" ng-if="ctrl.feedback.report ==2">Can
+								improve</td>
+						</tr>
+						<tr>
+							<td width="70%">Why you think this training was appropriate
+								for you? <br> Did it help you in your work?
+							</td>
+							<td align="center" ng-bind="ctrl.feedback.data"></td>
+
+						</tr>
+
+						<tr>
+							<td width="70%">Comments</td>
+							<td align="center" ng-bind="ctrl.feedback.comment"></td>
+						</tr>
+						<tr>
+							<td width="70%">Is follow-up needed ?</td>
+							<td align="center" ng-if="ctrl.feedback.followup ==0">No</td>
+							<td align="center" ng-if="ctrl.feedback.followup ==1">Yes</td>
+						</tr>
+						<tr>
+							<td width="70%">Is demo needed ?</td>
+							<td align="center" ng-if="ctrl.feedback.demo ==0">No</td>
+							<td align="center" ng-if="ctrl.feedback.demo ==1">Yes</td>
+							<td align="center" ng-if="ctrl.feedback.demo ==2">Not
+								Applicable</td>
+						</tr>
+					</table>
+					<br>
+					<button type="button" ng-click="ctrl.backtoTrainerList()"
+						class="btn btn-warning btn-sm"
+						style="margin-left: 80%; margin-bottom: 20px; width: 7%;">Back</button>
+				</div>
+			</div>
+		</div>
+
+		<div id="feedback" ng-show="ctrl.showaddfeedbackwindow">
+			<div class="card card-block sameheight-item">
+				<div class="title-block">
+					<h2 class="title">Feedback</h2>
+					<hr style="margin: 5px 0px;">
+				</div>
+				<form ng-submit="ctrl.giveFeedback($event)" name="feedbackform"
+					novalidate>
+
+					<div class="form-group">
+						<label class="control-label">Topic</label> <input type="text"
+							class="form-control underlined"
+							ng-model="ctrl.feedback.topicname" name="Topic" maxlength="100"
+							ng-readonly="true" /> <input type="hidden"
+							ng-model="ctrl.feedback.topicid">
+
+					</div>
+					<div class="form-group">
+						<label class="control-label">Trainer</label> <input type="text"
+							class="form-control underlined"
+							ng-model="ctrl.feedback.trainername" name="Topic" maxlength="100"
+							ng-readonly="true" /> <input type="hidden"
+							ng-model="ctrl.feedback.trainerid">
+					</div>
+					<div class="form-group" ng-init="ctrl.feedback.report" value="3">
+						<label class="control-label">Feedback</label>
+						<div>
+							<label> <input class="radio" type="radio" name="radios"
+								ng-checked="checked" ng-model="ctrl.feedback.report" value="5">
+								<span>Excellent</span>
+							</label>
+						</div>
+						<div>
+							<label> <input class="radio" type="radio" name="radios"
+								ng-model="ctrl.feedback.report" value="3"> <span>Good</span>
+							</label>
+						</div>
+						<div>
+							<label> <input class="radio" type="radio" name="radios"
+								ng-model="ctrl.feedback.report" value="1"> <span>Can
+									improve</span>
+							</label>
+						</div>
+						<span class="has-error"
+							ng-show="feedbackform.radios.$invalid && ctrl.showerrors">Choose
+							one option </span>
+					</div>
+					<div class="form-group"
+						ng-class="{ 'has-error': feedbackform.data.$invalid && ctrl.showerrors}">
+						<label class="control-lable"> Why you think this training
+							was appropriate for you? <br> Did it help you in your work?
+						</label>
+						<textarea ng-model="ctrl.feedback.data" maxlength="500"
+							class="form-control underlined" style="height: 60px;"
+							required="true" name="data" placeholder="Description" />
+						<span class="has-error"
+							ng-show="feedbackform.data.$invalid && ctrl.showerrors">Enter
+							your opinion</span>
+					</div>
+					<div class="form-group"
+						ng-class="{ 'has-error': feedbackform.comment.$invalid && ctrl.showerrors}">
+						<label class="control-lable"> Comment</label>
+						<textarea ng-model="ctrl.feedback.comment" maxlength="500"
+							class="form-control underlined" style="height: 60px;"
+							required="true" name="comment" placeholder="Comments" />
+						<span class="has-error"
+							ng-show="feedbackform.comment.$invalid && ctrl.showerrors">Enter
+							comments </span>
+					</div>
+					<div class="form-group">
+						<label class="control-lable">Follow-up session needed? </label>
+						<div>
+							<label> <input class="radio" type="radio"
+								name="inline-radios" ng-model="ctrl.feedback.followup" value="1">
+								<span>Yes</span>
+							</label> <label> <input class="radio" type="radio"
+								name="inline-radios" ng-model="ctrl.feedback.followup" value="0">
+								<span>No</span>
+							</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-lable">Demo needed? </label>
+						<div>
+							<label> <input class="radio" type="radio"
+								name="demo-radios" ng-model="ctrl.feedback.demo" value="1">
+								<span>Yes</span>
+							</label> <label> <input class="radio" type="radio"
+								name="demo-radios" ng-model="ctrl.feedback.demo" value="0">
+								<span>No</span>
+							</label> <label> <input class="radio" type="radio"
+								name="demo-radios" ng-model="ctrl.feedback.demo" value="2">
+								<span>Not applicable</span>
+							</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<input type="submit"
+							ng-show="ctrl.test.testId==null || ctrl.test.testId=='0'"
+							value="Save" class="btn btn-success"> <input
+							type="submit" value="Update"
+							ng-show="ctrl.test.testId!=null && ctrl.test.testId!='0'"
+							class="btn btn-success">
+						<button type="button" ng-click="ctrl.backtoTrainerList()"
+							class="btn btn-warning">Cancel</button>
+
+					</div>
+				</form>
+			</div>
+		</div>
+
+
+		<!--         END OF ATTENDEE VIEW/ADD FEEDBACK         -->
+	</div>
+</body>
+</html>

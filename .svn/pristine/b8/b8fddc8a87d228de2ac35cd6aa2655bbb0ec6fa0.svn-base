@@ -1,0 +1,31 @@
+jdbc.driverClassName = com.mysql.jdbc.Driver
+
+#jdbc.url = jdbc:mysql://74.208.158.41/tms
+#jdbc.username = tms
+#jdbc.password = Xqqk069_
+#tms.files.directory= /var/www/vhosts/pumexinfotech.com/tms.pumexinfotech.com/tms_uploads/uploads/
+
+
+#jdbc.url = jdbc:mysql://localhost/tmsdemo
+#jdbc.username = tmsdemo
+#jdbc.password = Xqqk069_
+#tms.files.directory= /var/www/vhosts/pumexinfotech.com/tms.pumexinfotech.com/uploads_demo/uploads/
+
+
+jdbc.url = jdbc:mysql://192.168.1.249:3306/tms
+jdbc.username = smarteruser
+jdbc.password = smarteruser
+tms.files.directory=/home/user/Desktop/uploads/
+
+#jdbc.url = jdbc:mysql://localhost/quoteapp
+#jdbc.username = root
+#jdbc.password = root
+
+hibernate.dialect = org.hibernate.dialect.MySQL5InnoDBDialect
+hibernate.show_sql = false
+hibernate.format_sql = true
+hibernate.table_autocreate=update
+hibernate.c3p0.min_size=5
+hibernate.c3p0.max_size=50
+hibernate.c3p0.timeout=3600
+hibernate.c3p0.max_statements=50

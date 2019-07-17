@@ -1,0 +1,277 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+.labelside {
+	margin-left: 10% !important;
+}
+
+.seperator {
+	margin-right: 10% !important;
+}
+
+.valueside {
+	margin-left: 5% !important;
+}
+</style>
+
+</head>
+<body>
+
+	<div id="tests" ng-controller="AttendTestController as ctrl">
+		<div id="startpage"
+			ng-show="!ctrl.isstarted && !ctrl.answeringbean.finished">
+			<div class="card card-block sameheight-item">
+				<div class="title-block">
+					<h2 class="title">{{ctrl.test.title}}</h2>
+					<hr style="margin: 5px 0px;">
+				</div>
+
+				<div class="form-group">
+					<p>{{ctrl.test.description}}</p>
+
+				</div>
+
+				<div class="form-group">
+					<br>
+					<button ng-click="ctrl.startTest()"
+						ng-show="!ctrl.isattented && !ctrl.test.finished"
+						class="btn btn-success  btn-sm">Start</button>
+					<button ng-click="ctrl.startTest()"
+						ng-show="ctrl.isattented && !ctrl.test.finished"
+						class="btn btn-success  btn-sm">Continue</button>
+					<button ng-click="ctrl.showResult()" ng-show="ctrl.test.finished"
+						class="btn btn-primary btn-sm">Show Result</button>
+					<button ng-click="ctrl.gotoTestsPage()"
+						class="btn btn-warning btn-sm">Back</button>
+				</div>
+			</div>
+		</div>
+
+		<div id="questionpage"
+			ng-show="ctrl.isstarted && !ctrl.answeringbean.finished && !ctrl.showTimeOut">
+
+			<div class="card card-block sameheight-item">
+				<div class="title-block" style="margin-bottom: 10px;">
+					<div class="col-xl-6" style="padding-left: 0px;">
+						<h2 class="title">Question
+							{{ctrl.answeringbean.questionNumber+' of '+ctrl.test.numberOfQuestions}}</h2>
+
+					</div>
+					<div class="col-xl-6" align="right">
+						Remaining Time : <span id="remainingTime">{{ctrl.remainingTime}}</span>
+					</div>
+
+				</div>
+				<hr style="margin: 5px 0px;">
+				<div class="form-group">
+					<p>
+					<h2 class="title">{{ctrl.answeringbean.question.question}}</h2>
+					</p>
+				</div>
+
+				<div class="form-group">
+					<h4 class="title">
+						<br> <label><input type="radio" value="1"
+							ng-model="ctrl.selectedAnswer">
+							{{ctrl.answeringbean.question.choice1}}</label> <br> <br> <label><input
+							type="radio" value="2" ng-model="ctrl.selectedAnswer">
+							{{ctrl.answeringbean.question.choice2}}</label> <br> <br> <label
+							ng-show="ctrl.answeringbean.question.noOfChoices=='3' || ctrl.answeringbean.question.noOfChoices=='4'">
+							<input type="radio" value="3" ng-model="ctrl.selectedAnswer">
+							{{ctrl.answeringbean.question.choice3}} <br> <br>
+						</label><br> <label
+							ng-show="ctrl.answeringbean.question.noOfChoices=='4'"> <input
+							type="radio" value="4" ng-model="ctrl.selectedAnswer">
+							{{ctrl.answeringbean.question.choice4}} <br> <br>
+						</label>
+					</h4>
+				</div>
+				<div class="form-group">
+					<div align="left" class="col-xl-6" style="padding-left: 0px;">
+						<button
+							ng-click="ctrl.nextQuestion(ctrl.answeringbean.question.id)"
+							ng-show="!ctrl.answeringbean.lastQuestion"
+							class="btn btn-primary btn-sm custom-width">Next</button>
+						<button ng-click="ctrl.finishTest(ctrl.answeringbean.question.id)"
+							ng-show="ctrl.answeringbean.lastQuestion"
+							class="btn btn-success btn-sm custom-width">Finish</button>
+						<button ng-show="ctrl.islastone"
+							class="btn btn-success btn-sm custom-width">Finish</button>
+					</div>
+					<div class="col-xl-6" align="right">
+					</div>
+					<br>
+				</div>
+			</div>
+		</div>
+
+		<div align="center" ng-show="ctrl.showTimeOut">
+			<h3 style="color: red;">
+				<b>TIME-OUT!</b>
+			</h3>
+			<img alt="" src="./images/timeout.gif">
+		</div>
+
+
+		<div id="startpage"
+			ng-show="ctrl.answeringbean.finished && !ctrl.showTimeOut">
+
+			<div class="card card-block sameheight-item">
+				<div class="title-block" style="margin-bottom: 10px;">
+					<div class="col-xl-6">
+						<h2 class="title">Test Result</h2>
+
+					</div>
+					<div class="col-xl-6" align="right">
+						<button ng-click="ctrl.gotoTestsPage()"
+							class="btn btn-primary btn-sm">My Tests</button>
+					</div>
+
+				</div>
+				<hr style="margin: 5px 0px;">
+				<div class="form-group" style="min-height: 30px;">
+					<div class="col-xl-12" ng-show="!ctrl.showingResult">
+						<br>
+						<h3 style="color: green;"
+							ng-show="ctrl.answeringbean.mark>=ctrl.answeringbean.passMark">Congratulations,
+							you have passed this test!</h3>
+						<h3 style="color: red;"
+							ng-show="ctrl.answeringbean.mark<ctrl.answeringbean.passMark">Sorry,
+							better luck next time !</h3>
+						<br>
+					</div>
+				</div>
+				<div class="title-block">
+					<div class="row">
+						<div class="col-xl-6">
+							<table class="result_table" border="1"
+								style="width: 98%; margin-left: 10px;">
+								<tr>
+									<td width="50%">Test Name</td>
+									<td align="center">{{ctrl.answeringbean.testName}}</td>
+								</tr>
+								<tr>
+									<td width="50%">Total questions</td>
+									<td align="center">{{ctrl.answeringbean.totalQuestions}}</td>
+								</tr>
+								<tr>
+									<td>Total answered</td>
+									<td align="center">{{ctrl.answeringbean.totalAnswered}}</td>
+								</tr>
+								<tr>
+									<td>Not answered</td>
+									<td align="center">{{ctrl.answeringbean.totalQuestions-ctrl.answeringbean.totalAnswered}}</td>
+								</tr>
+								<tr>
+									<td>Correct answers</td>
+									<td align="center">{{ctrl.answeringbean.correctAnswers}}</td>
+								</tr>
+								<tr>
+									<td>Incorrect answers</td>
+									<td align="center">{{ctrl.answeringbean.totalAnswered-ctrl.answeringbean.correctAnswers}}</td>
+								</tr>
+								<tr>
+									<td>Mark</td>
+									<td align="center">{{ctrl.answeringbean.mark}}/{{ctrl.answeringbean.maximumMark}}</td>
+								</tr>
+								<tr>
+									<td>Percentage</td>
+									<td align="center">{{ctrl.answeringbean.percentage}}%</td>
+								</tr>
+							</table>
+
+							<br> <br> <br>
+						</div>
+						<div class="col-xl-6">
+							<div class="form-group"
+								style="margin-top: -40px; margin-left: 15%;">
+								<nvd3 options="options" data="data"></nvd3>
+							</div>
+						</div>
+
+					</div>
+
+
+					<div class="row" style="margin: 10px;">
+
+						<h6 align="left">
+							<b>Answer Sheet</b>
+							<hr>
+						</h6>
+						<br>
+						<section class="example">
+						<div class="table-responsive">
+
+							<table datatable="ng"
+								class="table table-striped table-bordered table-hover">
+								<thead>
+									<tr>
+										<th style="text-align: center; width: 5%;">#</th>
+										<th style="text-align: center; width: 40%;">Question</th>
+										<th style="text-align: center; width: 20%;">Your Answer</th>
+										<th style="text-align: center; width: 5%;">Result</th>
+										<th style="text-align: center; width: 20%;">Correct
+											Answer</th>
+										<th style="text-align: center; width: 10%;">Mark</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="u in ctrl.answeringbean.answerList">
+										<td style="text-align: center;">{{$index + 1}}</td>
+
+										<td style="text-align: center;"><span></span>{{u.question}}</td>
+
+										<td style="text-align: center;"><span
+											ng-show="u.attendeeanswer==0"><I>Not Answered</I></span> <span
+											ng-show="u.attendeeanswer==1">{{u.choice1}}</span> <span
+											ng-show="u.attendeeanswer==2">{{u.choice2}}</span> <span
+											ng-show="u.attendeeanswer==3">{{u.choice3}}</span> <span
+											ng-show="u.attendeeanswer==4">{{u.choice4}}</span></td>
+
+
+										<td style="text-align: center;"><span
+											ng-show="u.attendeeanswer==u.correctanswer"><i
+												class="fa fa-check" aria-hidden="true"></i></span> <span
+											ng-show="u.attendeeanswer!=u.correctanswer && u.attendeeanswer!=0"><i
+												class="fa fa-times" aria-hidden="true"></i></span> <span
+											ng-show="u.attendeeanswer==0"><i
+												class="fa fa-exclamation-triangle" aria-hidden="true"></i></span></td>
+
+										<td style="text-align: center;"><span
+											ng-show="u.correctanswer==1">{{u.choice1}}</span> <span
+											ng-show="u.correctanswer==2">{{u.choice2}}</span> <span
+											ng-show="u.correctanswer==3">{{u.choice3}}</span> <span
+											ng-show="u.correctanswer==4">{{u.choice4}}</span></td>
+											
+										<td style="text-align: center;"><span
+											ng-show="u.attendeeanswer==u.correctanswer">{{ctrl.answeringbean.correctAnswerMark}}</span> <span
+											ng-show="u.attendeeanswer!=u.correctanswer && u.attendeeanswer!=0">{{-ctrl.answeringbean.wrongAnswerMark}}</span> <span
+											ng-show="u.attendeeanswer==0">{{-ctrl.answeringbean.notAttendedMark}}</span></td>
+
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						</section>
+
+
+
+
+
+					</div>
+				</div>
+
+			</div>
+
+
+
+
+
+
+		</div>
+	</div>
+</body>
+</html>

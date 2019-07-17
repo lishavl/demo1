@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	
+	<div ng-controller="ForumController as ctrl">
+		<div class="container">
+			<div id="post-623"
+				class="post post-623 page type-page status-publish hentry">
+				<div id="categoryview" class="sixteen columns"
+					ng-show="ctrl.categoryview">
+					<div id="af-wrapper">
+						<div class="breadcrumbs">
+							<span 
+								ng-click="ctrl.openCategoryList()"><i class="fa fa-home fa-2x"
+								aria-hidden="true" ></i> <a href="">Forum</a></span>
+						</div>
+						<div class="title-search-block">
+							<div class="items-search" style="float:right;margin-top:-50px;">
+								<form class="form-inline" name="searchform" ng-submit="ctrl.threadsearch()"> 
+									<div class="input-group">
+										<input class="form-control boxed rounded-s" type="text" placeholder="Search for..."
+										 ng-model="ctrl.searchtext" name="searchtext"  required />
+										<span class="input-group-btn">
+											<button class="btn btn-secondary rounded-s" type="button"  ng-disabled="searchform.searchtext.$invalid" ng-click="ctrl.threadsearch()">
+												<i class="fa fa-search"></i>
+											</button>
+										</span>
+									</div>
+								</form>
+							</div>
+						</div>
+						<div >
+							<div ng-if="!ctrl.feedbacklist.length" class="content-element space">
+							    <div id="forum-category-118" class="title-element" style=" height: 34px;border-bottom: 1px solid rgba(0, 0, 0, 0.15);"></div>
+								<div  id="forum-7" class="forum">
+									<div class="notice">No categories available</div>
+								</div>
+							</div>	
+						</div>
+					    <div ng-repeat="test in ctrl.feedbacklist">
+							<div id="forum-category-118" class="title-element">
+								<span
+									ng-click="ctrl.viewThreadview(test.id,test.categoryname,test.postbydetails.postby,test.postbydetails.postedon)">{{test.categoryname}}</span>
+							</div>
+							<div class="content-element space">
+								<div ng-if="!test.subcategory.length" id="forum-7" class="forum">
+									<div class="notice">No data available</div>
+								</div>
+								<div ng-if="test.subcategory!=null" id="forum-7" class="forum"
+									ng-repeat="subctgory in test.subcategory">
+									<div class="forum-status">
+										<i class="fa fa-align-justify" title="Align Justify" style="color: #2d89cc"></i>
+										
+										
+									</div>
+									<div class="forum-name">
+										<strong> <span
+											ng-click="ctrl.viewThreadview(subctgory.id,subctgory.categoryname,subctgory.postbydetails.postby,subctgory.postbydetails.postedon)">{{subctgory.categoryname}}</span>
+										</strong>
+									</div>
+									<div class="forum-stats">
+										<small>{{subctgory.noofthread}} Thread</small> <small>{{subctgory.noofposts}}
+											Replies</small>
+									</div>
+									<div class="forum-poster">
+										<small ng-if="subctgory.postbydetails==null">No
+											threads</small> 
+											
+										<small ng-if="subctgory.postbydetails!=null && subctgory.postbydetails.parentid==0">
+											Last thread by <strong>{{subctgory.postbydetails.postby}}</strong>
+										</small> 
+										<small ng-if="subctgory.postbydetails!=null && subctgory.postbydetails.parentid!=0">
+											Last reply  by <strong>{{subctgory.postbydetails.postby}}</strong>
+										</small> 
+										<small ng-if="subctgory.postbydetails!=null && subctgory.postbydetails.parentid!=0">,<strong>
+												<a ><span ng-click="ctrl.viewthreadandreplaylist(subctgory.postbydetails.parentid,subctgory.postbydetails.subject,subctgory.postbydetails.categoryid,subctgory.postbydetails.categoryname)">{{subctgory.postbydetails.subject}}</span></a>
+										</strong>
+										</small> 
+										<small ng-if="subctgory.postbydetails!=null && subctgory.postbydetails.parentid==0">,<strong>
+												<a><span ng-click="ctrl.viewthreadandreplaylist(subctgory.postbydetails.threadid,subctgory.postbydetails.subject,subctgory.postbydetails.categoryid,subctgory.postbydetails.categoryname)">{{subctgory.postbydetails.subject}}</span></a>
+										</strong>
+										</small> 
+										<small ng-if="subctgory.postbydetails!=null"> on <a><span
+												ng-bind="'{{subctgory.postbydetails.postedon | date:'MM/dd/yyyy HH:mm:ss'}}'"></span></a>
+										</small>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 			   	-------------------------Category view End--------------------- -->
+		<!-- 				--------------------------Thread Starting----------------------- -->
+		<div id="threadview" class="sixteen columns" ng-show="ctrl.threadview">
+			<div class="container">
+				<div id="post-623"
+					class="post post-623 page type-page status-publish hentry">
+					<div id="af-wrapper">
+						<div class="breadcrumbs">
+							<i class="fa fa-home fa-2x" aria-hidden="true"></i> <span
+								ng-click="ctrl.openCategoryList()"><a href="">Forum</a></span> <span
+								class="sep"> →</span> <span ng-click="ctrl.viewthreadList()"><a
+								href="">{{ctrl.categoryname}}</a></span>
+						</div>
+						<div class="forum-menu" " style="margin-top: -36px;">
+							<a style="color: black; height: 30px;"><i class="fa fa-file-text-o" aria-hidden="true"></i>
+							 <span  ng-click="ctrl.openNewThread()">New Thread</span>
+							</a>
+						</div>
+						<div>
+							<div id="forum-category-118" class="title-element">{{ctrl.categoryname}}</div>
+							<div class="content-element space">
+								<div ng-if="! ctrl.threadlist.length" id="forum-7" class="forum">
+									<div class="notice">No threads created yet</div>
+								</div>
+								<div id="forum-7" class="forum"
+									ng-repeat="thread in  ctrl.threadlist">
+									<div class="forum-status">
+									<i class="fa fa-align-justify" title="Align Justify" style="color: #2d89cc"></i>
+									</div>
+									<div class="forum-name">
+										<strong> <span
+											ng-click="ctrl.viewthreadandreplaylist(thread.id,thread.subject,thread.categoryid,ctrl.categoryname)">{{thread.subject}}</span>
+										</strong> <small> Created by: <i>{{thread.postby}}</i>
+										</small>
+										<small> on <a><span
+												ng-bind="'{{thread.postedon | date:'MM/dd/yyyy HH:mm:ss'}}'"></span></a></small>
+									</div>
+									<div class="forum-stats">
+										<small>{{thread.replies}} Replies</small> <small>{{thread.views}}
+											Views</small>
+									</div>
+									<div class="forum-poster" ng-if="thread.postbydetails !=null">
+										<small ng-if="thread.postbydetails !=null"> Last
+											Replied by <strong>{{thread.postbydetails.postby}}</strong>
+										</small> <small> on <a><span
+												ng-bind="'{{ctrl.postedon | date:'MM/dd/yyyy HH:mm:ss'}}'"></span></a>
+										</small> 
+									</div>
+									<div class="forum-poster" ng-if="thread.postbydetails ==null">
+										<small> No replies</small> 
+									</div>
+									 <div class="forum-status" ng-show="roleId==1">
+											 <a>
+											 	<span 
+												ng-click="ctrl.deleteThread(thread.id)"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</span>
+											</a>
+									  </div>
+									  
+								</div>
+							</div>
+						</div>
+						<div class="forum-menu">
+								<a style="color: black; height: 30px;"><i class="fa fa-file-text-o" aria-hidden="true"></i> <span
+								 ng-click="ctrl.openNewThread()">New
+									Thread</span>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- 			-------------------------End of Threads---------------------------------------- -->
+		<!-- ----------------------------Start of new thread creation-------------------------------- -->
+		<div ng-show="ctrl.newthreadview">
+			<div class="container">
+				<div class="sixteen columns">
+					<div id="af-wrapper">
+						<div class="breadcrumbs">
+							<i class="fa fa-home fa-2x" aria-hidden="true"></i> <span
+								ng-click="ctrl.openCategoryList()"><a href="">Forum</a></span> <span
+								class="sep">→</span> <span ng-click="ctrl.viewthreadList()">
+								<a href="">{{ctrl.categoryname}}</a>
+							</span> <span class="sep">→</span> New Thread
+						</div>
+						<form id="forum-editor-form" ng-submit="ctrl.submit($event)"
+							name="forumthread">
+							<div class="title-element">New Thread</div>
+							<div class="content-element">
+								<div class="editor-row-subject" ng-class="{ 'has-error': forumthread.subject.$invalid && ctrl.showerrors"}">
+									<label for="subject">Subject:</label> <span> <input
+										id="subject" type="text" value="" name="subject"
+										ng-model="ctrl.forum.subject" required="true">
+									</span> <span class="has-error"
+										ng-show="forumthread.subject.$invalid && ctrl.showerrors">Please
+										enter subject name</span>
+
+								</div>
+								<div class="editor-row no-padding" ng-class="{ 'has-error': forumthread.description.$invalid && ctrl.showerrors"}" >
+									<div text-angular ng-model="ctrl.forum.description" value=""
+										required="true" name="description"></div>
+									<span class="field_error" ng-show="forumthread.description.$invalid && ctrl.showerrors">Enter description
+									</span>
+								</div>
+								<div class="editor-row editor-row-uploads">
+								  
+								  	
+									<span class="row-title">Upload Files:</span>
+									 <md-button style="margin:0px;min-height: 31px;  min-width: 30px;"> <i class="fa fa-info-circle" aria-hidden="true"></i>
+								          <md-tooltip md-visible="demo.showTooltip" md-direction="right" style="font-size:12px;">
+								           Allowed file types: jpg, jpeg, gif, png, pdf, doc, docx, xls, xlsx
+								          </md-tooltip>
+							        </md-button>
+									<input type="file" name="file" file-model="forumFile"  ngf-max-size='1000'> 
+									<span class="field_error"
+										ng-show="forumthread.file.$invalid && ctrl.showerrors" style="color:red">
+										file size is more than excepted
+									</span>
+								</div>
+								<div class="editor-row">
+									<input type="submit" value="Submit">
+								</div>
+							</div>
+
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 			-----------------------------End of New ThreadView----------------------------------------------------- -->
+
+		<!-- 			-----------------------------------Start of Thread and replay list------------------------------------ -->
+
+		<div id="threadandreplaylist" class="sixteen columns"
+			ng-show="ctrl.threadandreplaylistview">
+			<div class="container">
+				<div id="post-623"
+					class="post post-623 page type-page status-publish hentry">
+					<div id="af-wrapper">
+						<div class="breadcrumbs">
+							<i class="fa fa-home fa-2x" aria-hidden="true"></i> <span
+								ng-click="ctrl.openCategoryList()"><a href="">Forum</a> </span>
+							<span class="sep">→ </span> <span
+								ng-click="ctrl.viewthreadList()"> <a href="">{{ctrl.categoryname}}</a>
+							</span> <span class="sep">→</span><span> <a href="">&nbsp;{{ctrl.subject}}</a>
+							</span>
+						</div>
+						<div>
+							<div class="forum-menu" " style="margin-top: -36px;">
+								<a style="color: black; height: 30px;"> <span 
+									
+									ng-click="ctrl.viewReplayView()"><i class="fa fa-reply-all" aria-hidden="true"></i>
+									<span>Reply </span></span>
+								</a>
+							</div>
+						</div>
+						<div id="forum-category-118" class="title-element">{{ctrl.subject}}</div>
+						<div class="content-element">
+							<div ng-if="! ctrl.replylist.length" id="postid-4" class="post">
+								<div class="notice">No one replied yet</div>
+							</div>
+							<div id="postid-4" class="post"
+								ng-repeat="replylist in  ctrl.replylist">
+								<div class="post-header">
+									<div class="post-date">
+										<span
+											ng-bind="'{{replylist.postedon | date:'MM/dd/yyyy HH:mm:ss'}}'"></span>
+									</div>
+									<div class="post-menu" ng-show="replylist.userid !=ctrl.userid && replylist.likestatus==0 ">
+									   <a style="color:black">{{replylist.likes}} &nbsp;<span  
+											ng-click="ctrl.likeReply(replylist.id)"><i class="fa fa-thumbs-up" aria-hidden="true"></i>
+											 </span>
+									  </a>
+								   </div>
+								   <div class="post-menu" ng-show="replylist.userid !=ctrl.userid && replylist.likestatus!=0 ">
+									    <a>{{replylist.likes}} &nbsp; <span  
+											ng-click="ctrl.dislikeReply(replylist.id)"><i class="fa fa-thumbs-up" aria-hidden="true"></i>
+											 </span>
+										</a>
+								   </div>		
+									<div class="post-menu" ng-show="userId==replylist.userid">
+										<a> <span  
+											ng-click="ctrl.editReply(replylist.id)"><i class="fa fa-quote-left fa-1x fa-pull-left fa-border" aria-hidden="true"></i> Edit</span>
+										</a>
+									</div>
+<!-- 									<div class="post-menu" ng-show="replylist.user.userId ==ctrl.userid"> -->
+<!-- 										<a> <span class="glyphicon glyphicon-music"  -->
+<!-- 											ng-click="ctrl.editReply(replylist.id)"><i class="fa fa-quote-left fa-1x fa-pull-left fa-border" aria-hidden="true"></i> Edit</span> -->
+<!-- 										</a> -->
+<!-- 									</div> -->
+									<div class="post-menu"  ng-show="roleId==1 && replylist.parentid!=0">
+										<a> <span 
+											ng-click="ctrl.deleteReply(replylist.id)"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</span>
+										</a>
+									</div>
+								</div>
+								<div class="post-content"  ng-if="replylist.parentid==0" style="background-color: #d7dde4;">
+									<div class="post-author">
+										<img
+											class="avatar avatar-60 wp-user-avatar wp-user-avatar-60 photo avatar-default"
+											width="60" height="60" alt=""
+											ng-src="./uploads/profileimages/{{replylist.userid}}.jpeg?">
+										<br> <strong>{{replylist.postby}}</strong>
+									</div>
+									<div class="post-message">
+										<p ng-bind-html="replylist.description"></p>
+										<div class="post-footer" ng-show="replylist.filepath!=null"> <strong>Uploaded Files:</strong>
+											<a href="./uploads/forum/{{replylist.filepath}}" style="width:60px;"
+											target="_blank">{{replylist.filepath}}</a>
+											
+									   </div>
+									</div>
+								</div>
+								<div class="post-content"  ng-if="replylist.parentid!=0">
+									<div class="post-author">
+										<img
+											class="avatar avatar-60 wp-user-avatar wp-user-avatar-60 photo avatar-default"
+											width="60" height="60" alt=""
+											src="./uploads/profileimages/{{replylist.userid}}.jpeg?">
+										<br> <strong>{{replylist.postby}}</strong>
+									</div>
+									<div class="post-message">
+										<p ng-bind-html="replylist.description"></p>
+										<div class="post-footer" ng-show="replylist.filepath!=null"> <strong>Uploaded File:</strong>
+											<a href="./uploads/forum/{{ctrl.filename}}" style="width:60px;"
+											target="_blank">{{replylist.filepath}}</a>
+											
+									   </div>
+									</div>
+								</div>
+
+							</div>
+						</div>
+						<div class="forum-menu">
+							<a style="color: black; height: 30px;"> <span
+								
+								ng-click="ctrl.viewReplayView()"><i class="fa fa-reply-all" aria-hidden="true"></i><span> Reply </span></span>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- 			------------------------------------------End Thread and replay list---------------------------------------- -->
+		<!-- ------------------------------------------Start of Edit View--------------------------------------------- -->
+
+		<div ng-show="ctrl.editview">
+			<div class="container">
+				<div class="sixteen columns">
+					<div id="af-wrapper">
+						<div class="breadcrumbs">
+							<i class="fa fa-home fa-2x" aria-hidden="true"></i> <span
+								ng-click="ctrl.openCategoryList()"> <a href="">Forum</a></span>
+							<span class="sep">→</span> <span
+								ng-click="ctrl.viewthreadList()"><a href="">{{ctrl.categoryname}}</a></span>
+							<span class="sep">→</span> <span
+								ng-click="ctrl.viewThreadReplyList()"> <a href="">{{ctrl.subject}}</a></span>
+							<span class="sep">→</span> <span>Reply Thread</span>
+						</div>
+						<form id="forum-editor-form" ng-submit="ctrl.submit($event)"
+							name="forumreply">
+							<div class="title-element">Post Reply: {{ctrl.subject}}</div>
+							<div class="content-element">
+								<div class="editor-row no-padding">
+									<div text-angular ng-model="ctrl.forum.description"
+										required="required" name="descr"></div>
+									<span class="field_error"
+										ng-show="forumreply.descr.$invalid && ctrl.showerrors">Please
+										enter description</span>
+
+								</div>
+								<div class="editor-row editor-row-uploads">
+									<span class="row-title">Upload Files:</span> 
+									 <md-button style="margin:0px;min-height: 31px;  min-width: 30px;"> <i class="fa fa-info-circle" aria-hidden="true"></i>
+								          <md-tooltip md-visible="demo.showTooltip" md-direction="right" style="font-size:12px;" >
+								           Allowed file types: jpg, jpeg, gif, png, pdf, doc, docx, xls, xlsx 
+								           <span
+												class="upload-filetypes"> Max file size: <i> 3 MB</i>
+											</span>
+								          </md-tooltip>
+							        </md-button>
+									<input type="file" file-model="forumFile" name="fileedit"> 
+									<span class="error_message"
+										ng-show="forumreply.fileedit.$invalid && ctrl.showerrors">Please
+										enter description</span>
+								</div>
+								<div class="editor-row">
+									<input type="submit" value="Submit">
+								</div>
+							</div>
+
+						</form>
+					</div>
+				</div>
+
+			</div>
+		</div>
+		
+<!-- 		------------------------------------Thread Search view------------------------------------------------- -->
+			<div id="threadsearchview" class="sixteen columns" ng-show="ctrl.threadsearchview">
+			<div class="container">
+				<div id="post-623"
+					class="post post-623 page type-page status-publish hentry">
+					<div id="af-wrapper">
+						<div class="breadcrumbs">
+							<i class="fa fa-home fa-2x" aria-hidden="true"></i> <span
+								ng-click="ctrl.openCategoryList()"><a href="">Forum</a>
+						</div>
+						<div class="forum-menu" style="margin-top: -36px;">
+							<a style="color: black; height: 30px;"><i class="fa fa-file-text-o" aria-hidden="true"></i>
+							 <span
+								 ng-click="ctrl.openNewThread()">New
+									Thread</span>
+							</a>
+						</div>
+						<div>
+							<div id="forum-category-118" class="title-element" style="height:32px;"></div>
+							<div class="content-element space">
+								<div ng-if="! ctrl.searchresult.length" id="forum-7" class="forum">
+									<div class="notice">No Search result found</div>
+								</div>
+								<div id="forum-7" class="forum"
+									ng-repeat="thread in  ctrl.searchresult">
+									<div class="forum-status">
+									<i class="fa fa-align-justify" title="Align Justify" style="color: #2d89cc"></i>
+									</div>
+									<div class="forum-name">
+										<strong> <span
+											ng-click="ctrl.viewthreadandreplaylist(thread.id,thread.subject,thread.categoryid,thread.categoryname)">{{thread.subject}}</span>
+										</strong> <small> Created by: <i>{{thread.postby}}</i>
+										</small>
+										<small> on <a><span
+												ng-bind="'{{thread.postedon | date:'MM/dd/yyyy HH:mm:ss'}}'"></span></a></small>
+									</div>
+									<div class="forum-stats">
+										<small>{{thread.replies}} Replies</small> <small>{{thread.views}}
+											Views</small>
+									</div>
+									<div class="forum-poster" ng-if="thread.postbydetails !=null">
+										<small ng-if="thread.postbydetails !=null"> Last
+											Replied by <strong>{{thread.postbydetails.postby}}</strong>
+										</small> <small> on <a><span
+												ng-bind="'{{thread.postbydetails.postedon | date:'MM/dd/yyyy HH:mm:ss'}}'"></span></a>
+										</small> 
+									</div>
+									<div class="forum-poster" ng-if="thread.postbydetails ==null">
+										<small> No Replies</small> 
+									</div>
+									 <div class="forum-status" ng-show="ctrl.userid ==1">
+											 <a>
+											 	<span 
+												ng-click="ctrl.deleteThread(thread.id)"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</span>
+											</a>
+									  </div>
+									  
+								</div>
+							</div>
+						</div>
+						<div class="forum-menu">
+								<a style="color: black; height: 30px;"><i class="fa fa-file-text-o" aria-hidden="true"></i> <span
+								 ng-click="ctrl.openNewThread()">New
+									Thread</span>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+</body>
+</html>

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Test Management</title>
+</head>
+<body>
+
+	<div ng-controller="ManageTestController as ctrl">
+
+		<div ng-show="ctrl.showaddwindow">
+
+			<div class="card card-block sameheight-item">
+				<div class="title-block">
+					<h2 class="title"
+						ng-show="ctrl.test.testId==null || ctrl.test.testId=='0'">Add
+						New Test</h2>
+					<h2 ng-show="ctrl.test.testId!=null && ctrl.test.testId!='0'"
+						class="title">Edit Test</h2>
+					<hr style="margin: 5px 0px;">
+				</div>
+				<form ng-submit="ctrl.submit($event)" name="addTestForm" novalidate>
+
+					<input type="hidden" ng-model="ctrl.test.testId">
+
+					<div class="form-group"
+						ng-class="{ 'has-error': addTestForm.title.$invalid && ctrl.showerrors}">
+						<label class="control-label">Title <span class="mandatory">*</span></label>
+						<input type="text" class="form-control underlined"
+							ng-model="ctrl.test.title" name="title" placeholder="Title"
+							required maxlength="100" /> <span class="has-error"
+							ng-show="addTestForm.title.$invalid && ctrl.showerrors">Enter
+							title </span>
+					</div>
+
+					<div class="form-group">
+						<label class="control-label">Description</label>
+						<textarea ng-model="ctrl.test.description" maxlength="500"
+							class="form-control underlined" style="height: 60px;"
+							placeholder="Description" />
+					</div>
+
+					<div class="form-group"
+						ng-class="{ 'has-error': addTestForm.training.$invalid && ctrl.showerrors}">
+						<label class="control-label">Training <span
+							class="mandatory">*</span></label> <select
+							class="form-control form-control-sm underlined width_30perc"
+							ng-model="ctrl.test.trainingId" name="training" required>
+							<option value="">Select</option>
+							<option ng-repeat="trn in ctrl.trainings" value="{{trn.id}}">
+								{{trn.topic}}</option>
+						</select> <span class="has-error"
+							ng-show="addTestForm.training.$invalid && ctrl.showerrors">Select
+							training</span>
+					</div>
+
+					<div class="form-group"
+						ng-class="{ 'has-error': addTestForm.numofqns.$invalid && ctrl.showerrors}">
+						<label class="control-label">No. of Questions <span
+							class="mandatory">*</span></label> <input type="number"
+							ng-model="ctrl.test.numberOfQuestions" required maxlength="3"
+							min="1" name="numofqns"
+							class="form-control underlined width_15perc"
+							placeholder="No. of questions" /> <span class="has-error"
+							ng-show="addTestForm.numofqns.$invalid && ctrl.showerrors">Enter
+							number of questions</span>
+					</div>
+
+					<div class="form-group"
+						ng-class="{ 'has-error': addTestForm.timeminutes.$invalid && ctrl.showerrors}">
+						<label class="control-label">Total Test Time (Minutes) <span
+							class="mandatory">*</span></label> <input type="number"
+							ng-model="ctrl.test.timeMinutes" required maxlength="3"
+							name="timeminutes" class="form-control underlined width_15perc"
+							placeholder="Time" /> <span class="has-error"
+							ng-show="addTestForm.timeminutes.$invalid && ctrl.showerrors">Enter
+							time minutes</span>
+					</div>
+
+					<div class="form-group"
+						ng-class="{ 'has-error': addTestForm.correctanswermark.$invalid && ctrl.showerrors }">
+						<label class="control-label">Correct Answer Weightage <span
+							class="mandatory">*</span></label> <input type="text"
+							ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/"
+							ng-model="ctrl.test.correctAnswerMark" name="correctanswermark"
+							class="form-control underlined width_15perc" required
+							maxlength="5" placeholder="Correct Answer Weightage" /> <span
+							class="has-error"
+							ng-show="addTestForm.correctanswermark.$invalid && ctrl.showerrors">Enter
+							a valid mark</span>
+					</div>
+
+					<div class="form-group"
+						ng-class="{ 'has-error': addTestForm.wronganswermark.$invalid && ctrl.showerrors }">
+						<label class="control-label">Wrong Answer Weightage (-ve)
+							<span class="mandatory">*</span>
+						</label> <input type="text" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/"
+							ng-model="ctrl.test.wrongAnswerMark" name="wronganswermark"
+							class="form-control underlined width_15perc" required
+							maxlength="5" placeholder="Wrong Answer Weightage" /> <span
+							class="has-error"
+							ng-show="addTestForm.wronganswermark.$invalid && ctrl.showerrors">Enter
+							a valid mark</span>
+					</div>
+
+					<div class="form-group"
+						ng-class="{ 'has-error': addTestForm.notattendedmark.$invalid && ctrl.showerrors }">
+						<label class="control-label">Not Attended Weightage (-ve)
+							<span class="mandatory">*</span>
+						</label> <input type="text" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/"
+							ng-model="ctrl.test.notAttendedMark" name="notattendedmark"
+							class="form-control underlined width_15perc" required
+							maxlength="5" placeholder="Not Attended Weightage" /> <span
+							class="has-error"
+							ng-show="addTestForm.notattendedmark.$invalid && ctrl.showerrors">Enter
+							a valid mark</span>
+					</div>
+
+					<div class="form-group"
+						ng-class="{ 'has-error': addTestForm.passmark.$invalid && ctrl.showerrors }">
+						<label class="control-label">Pass Mark <span
+							class="mandatory">*</span></label> <input type="text"
+							ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/"
+							ng-model="ctrl.test.passMark" name="passmark"
+							class="form-control underlined width_15perc" required
+							maxlength="5" placeholder="Pass mark" /> <span class="has-error"
+							ng-show="addTestForm.passmark.$invalid && ctrl.showerrors">Enter
+							a valid mark</span>
+					</div>
+
+					<div class="form-group">
+						<input type="submit"
+							ng-show="ctrl.test.testId==null || ctrl.test.testId=='0'"
+							value="Save" class="btn btn-success"> <input
+							type="button" ng-click="ctrl.saveAndCreateQuestion()"
+							ng-show="ctrl.test.testId==null || ctrl.test.testId=='0'"
+							value="Save & Create Question" class="btn btn-success"> <input
+							type="submit" value="Update"
+							ng-show="ctrl.test.testId!=null && ctrl.test.testId!='0'"
+							class="btn btn-success"> <input type="button"
+							ng-click="ctrl.saveAndCreateQuestion()"
+							ng-show="ctrl.test.testId!=null && ctrl.test.testId!='0'"
+							value="Update & Create Question" class="btn btn-success">
+
+
+						<button type="button" ng-click="ctrl.goBack()"
+							class="btn btn-warning">Cancel</button>
+
+					</div>
+				</form>
+			</div>
+		</div>
+
+		<div ng-show="ctrl.showlistwindow">
+			<div id="listusers">
+				<div class="title-block"
+					style="padding-bottom: 5px; margin-bottom: 10px;">
+
+					<h6>
+						<b>Manage Tests</b>
+					</h6>
+
+				</div>
+
+				<!-- Default panel contents -->
+
+				<section class="section">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="card">
+								<div class="card-block">
+									<section class="example">
+										<div class="table-responsive">
+											<div align="right">
+
+												<button type="button" ng-click="ctrl.addNewTest()"
+													class="btn btn-primary btn-sm">Add New</button>
+											</div>
+
+											<table datatable="ng"
+												class="table table-striped table-bordered table-hover">
+												<thead>
+													<tr>
+														<th class="align_center">#</th>
+														<th>Test</th>
+														<th>Topic</th>
+														<th class="align_center">Actions</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr ng-repeat="test in ctrl.tests">
+														<td class="align_center">{{$index+1}}</td>
+														<td width="30%">{{test.title}}</td>
+														<td width="40%">{{test.training.topic}}</td>
+														<td ng-mouseleave="hoverOut()">
+															<!-- 															<button type="button" ng-click="ctrl.edit(test.id)" -->
+															<!-- 																class="btn btn-warning  btn-sm">Edit</button> -->
+															<!-- 															<button type="button" ng-click="ctrl.deleteTest(test.id)" -->
+															<!-- 																class="btn btn-danger  btn-sm">Delete</button> -->
+															<!-- 															<button type="button" ng-show="test.status<2" -->
+															<!-- 																ng-click="ctrl.addQuestions(test.id)" -->
+															<!-- 																class="btn btn-primary btn-sm">Add Questions</button> -->
+															<!-- 															<button type="button" ng-show="test.status==2" -->
+															<!-- 																ng-click="ctrl.publishTest(test.id)" -->
+															<!-- 																class="btn btn-success  btn-sm">Publish</button> -->
+
+															<ol class="main_ul">
+																<li><a href="javascript:void(0)"
+																	ng-click="hoverIn()"
+																	class="dropbtn action_settings_butons"><i
+																		class="fa fa-cog fa-lg" aria-hidden="true"></i></a></li>
+																<li>
+																	<ol class="sub_ul" ng-show="hoverEdit">
+																		<li><a ng-click="ctrl.edit(test.id)" title="Edit"
+																			href="javascript:void(0)"><i
+																				class="fa fa-pencil-square-o" aria-hidden="true"></i></a></li>
+																		<li><a ng-click="ctrl.deleteTest(test.id)"
+																			title="Delete" href="javascript:void(0)"><i
+																				class="fa fa-trash" aria-hidden="true"></i></a></li>
+																		<li><a ng-click="ctrl.showQuestions(test.id)"
+																			title="Show Questions" href="javascript:void(0)"><i
+																				class="fa fa-list-ul" aria-hidden="true"></i></a></li>
+																		<li><a ng-click="ctrl.publishTest(test.id)"
+																			title="Publish" ng-show="test.status==2"
+																			href="javascript:void(0)"><i
+																				class="fa fa-bullhorn" aria-hidden="true"></i></a></li>
+
+																	</ol>
+
+																</li>
+															</ol>
+
+														</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</section>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+
+			</div>
+		</div>
+	</div>
+</body>
+</html>

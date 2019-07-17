@@ -1,0 +1,235 @@
+
+<!-- /**
+ * @Author JOSSINA JOSE.
+ */
+ -->
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="UTF-8">
+<title>View Feedbacks</title>
+</head>
+<body>
+	<div ng-controller="AdminFeedbackViewController as ctrl">
+		<div ng-show="ctrl.showAttendeeList">
+			<div class="title-block"
+				style="padding-bottom: 5px; margin-bottom: 10px;">
+
+				<h6>
+					<b>Feedbacks</b>
+				</h6>
+
+			</div>	 
+		<div class="panel-heading" style="margin-bottom: 10px;">
+						Topic : &nbsp;  <select class="criteria-form-control underlined"
+							    style="height: 30px; width: 30%;"
+								ng-model="ctrl.topicid" name="training"
+								ng-change="ctrl.getAllTrainers()">
+								<option value='' disabled selected>Select</option>
+								<option ng-repeat="tpn in ctrl.topicnames" value="{{tpn.id}}">{{tpn.topic}}</option>
+								<span style="color: red;" ng-show="ctrl.selecttopic">Please
+									select topic</span>
+							</select>&nbsp;&nbsp;&nbsp;&nbsp;
+
+							Trainer &nbsp; <select class="criteria-form-control underlined"
+							    style="height: 30px; width: 30%;"
+								ng-model="ctrl.trainerid" name="trainername"
+								ng-change="ctrl.getAllAttendees()">
+								<option value='' disabled selected="selected">Select</option>
+								<option ng-repeat="trn in ctrl.trainernames"
+									value="{{trn.trainer.userId}}">{{trn.trainer.firstName}}
+									{{trn.trainer.lastName}}</option>
+							</select>
+
+				</div>
+			
+				<section class="section">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="card">
+							<div class="card-block">
+								<section class="example">
+									<div class="table-responsive">
+										<table datatable="ng"
+											class="table table-striped table-bordered table-hover">
+											<thead>
+												<tr>
+													<th style="text-align: center;">#</th>
+													<th style="text-align: center;">Attendee</th>
+													<th style="text-align: center;">Actions</th>
+												</tr>
+																	</thead>
+											<tbody>
+													<tr ng-repeat="test in ctrl.attendees">
+														<td style="text-align: center;">{{$index+1}}</td>
+														<td style="text-align: center;">{{test.attendee}} {{test.attendeelastname}}</td>
+														<td style="text-align: center;">
+														<button ng-if="test.count > 0" type="button"
+																ng-click="ctrl.viewFeedback(test.userId,test.topic,test.trainernames,test.attendee,test.attendeelastname)"
+																class="btn btn-success  custom-width"
+																style="margin-left: 13px">View</button> 
+														<span
+															 ng-if="test.count ==0 && test.attendedStatus!=0">Pending
+														</span>
+																	
+														<span
+															 ng-if="test.attendedStatus==0 && test.count ==0">Absent
+														</span>
+													</tr>
+											</tbody>
+										</table>
+									</div>
+								</section>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+			
+		</div>
+
+
+		<!-- -----------------------------------------------------------------------------
+	Feedback view for admin -->
+
+		<div id="showfeedbacks" ng-show="ctrl.showfeedbacks">
+			<div class="title-block"
+				style="padding-bottom: 5px; margin-bottom: 10px;">
+
+				<h6>
+					<b>Feedback</b>
+				</h6>
+
+			</div>	
+				<div class="row form-group">
+					<div class="col-xs-3">
+						<b>Topic :</b>&nbsp;<input type="text" ng-model="ctrl.topicview" 	id="topic" name="topic" readonly="readonly"
+							style=" height: 30px" />
+					</div>
+					<div class="col-xs-1">
+						<b>Trainers :</b>
+					</div>
+					<div class="col-xs-3" style=" background-color: white;"">
+								<span ng-repeat="names in ctrl.trainernames"><pre style="font-family: Arial;">{{names}}</pre>
+						       </span>
+					</div>
+					<div class="col-xs-4">
+					<b>Attendee : </b>&nbsp;<input type="text"
+						ng-model="ctrl.attndeename" id="attendee" name="trainer"
+						style=" height: 30px" readonly="readonly" />
+				
+					</div>
+				</div>			
+			<div class="panel panel-default">
+			<br>
+			<br>
+				<div class="container">
+					<table class="result_table" border="1" style="width: 72%; margin-left: 14%;">
+						
+							<tr>
+								<td width="70%">Feedback </td>
+								
+								<td  ng-if="ctrl.feedback.report ==5" align="center">Excellent</td>
+								<td  ng-if="ctrl.feedback.report ==3" align="center">Good</td>
+								<td  ng-if="ctrl.feedback.report ==1" align="center">Can improve</td>
+									
+							</tr>
+							<tr>
+								<td width="70%"> Why you think this training was appropriate for you? Did it help you in your work?
+								</td>
+								<td align="center"
+									 ng-bind="ctrl.feedback.data"></td>
+
+							</tr>
+							<tr>
+								<td  width="70%">Comments </td>
+								<td ng-bind="ctrl.feedback.comment" align="center"></td>
+							</tr>
+							<tr>
+								<td width="70%">Is demo needed
+									?</td>
+								<td  ng-if="ctrl.feedback.demo ==0"  align="center">No</td>
+								<td  ng-if="ctrl.feedback.demo ==1"  align="center">Yes</td>
+							</tr>
+							<tr>
+								<td width="70%">Is follow-up
+									needed ?</td>
+								<td  ng-if="ctrl.feedback.followup ==0"  align="center">No</td>
+								<td  ng-if="ctrl.feedback.followup ==1"  align="center">Yes</td>
+							</tr>
+					</table>
+                   <br>
+					<button type="button" ng-click="ctrl.back()"
+						class="btn btn-warning btn-sm" style="margin-left: 80%;margin-bottom:20px;">Back</button>
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

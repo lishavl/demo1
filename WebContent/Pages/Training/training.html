@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Schedule Training</title>
+</head>
+<body>
+	<div id="scheduletraining"
+		ng-controller="ScheduleTrainingController as ctrl">
+
+		<div id="Schedule" ng-show="ctrl.showaddwindow">
+
+			<div class="card card-block sameheight-item">
+				<div class="title-block">
+					<h2 class="title"
+						ng-show="ctrl.tschedule.id==null || ctrl.tschedule.id=='0'">Add
+						New Training Schedule</h2>
+					<h2 class="title"
+						ng-show="ctrl.tschedule.id!=null && ctrl.tschedule.id!='0'">Edit
+						Training Schedule</h2>
+					<hr style="margin: 5px 0px;">
+				</div>
+
+				<form ng-submit="ctrl.submit($event)" name="trainingForm" novalidate>
+
+					<div class="form-group"
+						ng-class="{ 'has-error': trainingForm.topic.$invalid && ctrl.showerrors}">
+						<label class="control-lable">Topic <span class="mandatory">*</span></label>
+						<input type="text" class="form-control underlined"
+							ng-model="ctrl.tschedule.topic" id="topic" name="topic"
+							placeholder="Topic" required maxlength="100" /> <span
+							class="has-error"
+							ng-show="trainingForm.topic.$invalid && ctrl.showerrors">Enter
+							topic </span>
+					</div>
+
+					<div class="form-group"
+						ng-class="{ 'has-error': trainingForm.category.$invalid && ctrl.showerrors}">
+						<label class="control-label">Category <span
+							class="mandatory">*</span></label> <select
+							class="form-control form-control-sm underlined width_30perc"
+							ng-model="ctrl.tschedule.maincategory"
+							ng-change="chooseSubCategory()" name="category" required>
+
+							<option value='' disabled selected>Select</option>
+							<option value=0>Add New</option>
+							<option ng-repeat="x in ctrl.category" value="{{x.id}}">{{x.category}}</option>
+						</select> <span class="has-error"
+							ng-show="trainingForm.category.$invalid && ctrl.showerrors">Select
+							category</span>
+					</div>
+
+					<div class="form-group" ng-show=ctrl.showmaincategory>
+						<label class="control-label">Category Name</label><input
+							type="text" class="form-control underlined"
+							ng-model="ctrl.tschedule.categoryName" id="categoryName"
+							placeholder="Category Name" />
+					</div>
+
+
+
+
+					<div class="form-group">
+						<label class="control-label">Sub Category</label> <select
+							class="form-control form-control-sm underlined width_30perc"
+							ng-model="ctrl.tschedule.subCategory"
+							ng-change="showSubCategory()">
+							<option value='' disabled selected>Select</option>
+							<option value=0>Add New</option>
+							<option ng-repeat="x in ctrl.subcategory" value="{{x.id}}">{{x.category}}</option>
+						</select>
+					</div>
+
+
+					<div class="form-group" ng-show=ctrl.showsubcategory>
+						<label class="control-label">Sub Category Name</label> <input
+							type="text" class="form-control underlined"
+							ng-model="ctrl.tschedule.subCategoryName" id="subCategoryName"
+							placeholder="SubCategory" />
+					</div>
+
+
+
+
+					<div class="form-group">
+						<label class="control-label">Syllabus</label>
+
+						<textarea style="height: 60px" maxlength="500"
+							ng-model="ctrl.tschedule.description" id="description"
+							placeholder="Syllabus" class="form-control underlined"></textarea>
+
+					</div>
+
+
+
+					<div class="form-group"
+						ng-class="{ 'has-error': trainingForm.sdate.$invalid && ctrl.showerrors || ctrl.startdateerror||ctrl.dateerror||ctrl.starttimeerror}">
+						<label class="control-label">Start Date & Time <span
+							class="mandatory">*</span>
+						</label> <input ng-model="ctrl.tschedule.startDateTime" datetime-picker
+							date-format="yyyy-MM-dd HH:mm:ss" close-on-select="false"
+							size="30" name="sdate" required class="form-control underlined"
+							style="width: 360px; height: 30px;"
+							placeholder="Start Date & Time" /> <span class="field_error"
+							ng-show="trainingForm.sdate.$invalid && ctrl.showerrors">Select
+							start date & time</span> <span class="field_error"
+							ng-show="ctrl.startdateerror"> Please select date less
+							than end date</span> <span class="field_error" ng-show="ctrl.dateerror">Start
+							date should not be before today</span> <span class="field_error"
+							ng-show="ctrl.starttimeerror">Select valid start time</span>
+					</div>
+
+
+
+					<div class="form-group"
+						ng-class="{ 'has-error': trainingForm.edate.$invalid && ctrl.showerrors ||ctrl.enddateerror||ctrl.dateerror||ctrl.endtimeerror}">
+						<label class="control-label">End Date & Time <span
+							class="mandatory">*</span>
+						</label> <input ng-model="ctrl.tschedule.endDateTime" datetime-picker
+							date-format="yyyy-MM-dd HH:mm:ss" min-date="model.startDate"
+							close-on-select="false" size="30" name="edate"
+							required="required" style="width: 360px; height: 30px;"
+							class="form-control underlined" /> <span class="field_error"
+							ng-show="trainingForm.edate.$invalid && ctrl.showerrors">Select
+							end date & time</span> <span class="field_error"
+							ng-show="ctrl.enddateerror"> Please select date greater
+							than start date</span> <span class="field_error"
+							ng-show="ctrl.dateerror">end date should not be before
+							today</span> <span class="field_error" ng-show="ctrl.endtimeerror">Select
+							valid end time</span>
+					</div>
+
+
+					<div class="form-group"
+						ng-class="{ 'has-error': trainingForm.trainer.$invalid && ctrl.showerrors || ctrl.err}">
+						<label class="control-label"> Trainer(s) <span
+							class="mandatory">*</span>
+						</label>
+
+						<tags-input ng-model="trainers" add-on-paste="true"
+							required="true" name="trainer" key-property="user_id"
+							display-property="text" class="form-control underlined"
+							add-from-autocomplete-only="true"
+							replace-spaces-with-dashes="false"> <auto-complete
+							source="loadTrainers($query)" min-length="1"></auto-complete> </tags-input>
+						<span class="field_error"
+							ng-show="trainingForm.trainer.$invalid && ctrl.showerrors">Add
+							trainers </span> <span class="field_error" ng-show="ctrl.err">No
+							Result Found</span>
+					</div>
+
+					<div class="form-group" ng-show="ctrl.showaddbutton">
+						<a href="" ng-click="ctrl.showAttendees()">Add Attendee</a>
+					</div>
+
+					<div class="form-group" ng-show="ctrl.showattendee">
+						<label class="control-label">Attendee </label>
+						<tags-input ng-model="attendees" add-on-paste="true"
+							name="attendee" key-property="user_id" display-property="text"
+							class="form-control underlined" add-from-autocomplete-only="true"
+							replace-spaces-with-dashes="false"> <auto-complete
+							source="loadAttendees($query)" min-length="1"></auto-complete> </tags-input>
+					</div>
+
+					<div class="form-group">
+						<input type="submit"
+							ng-show="ctrl.tschedule.id==null || ctrl.tschedule.id=='0'"
+							value="Save" class="btn btn-success custom-width"> <input
+							type="submit" value="Update"
+							ng-show="ctrl.tschedule.id!=null && ctrl.tschedule.id!='0'"
+							class="btn btn-success custom-width">
+						<button type="button" ng-click="ctrl.cancel()"
+							class="btn btn-warning">Cancel</button>
+					</div>
+
+				</form>
+
+			</div>
+		</div>
+
+
+		<div id="listtrainingschedules" ng-show="ctrl.showlistwindow">
+
+			<div id="listtrainingcategory">
+
+				<div class="title-block"
+					style="padding-bottom: 5px; margin-bottom: 10px;">
+
+					<h6>
+						<b>Training Schedules </b>
+					</h6>
+				</div>
+				<!-- Default panel contents -->
+
+				<section class="section">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="card">
+								<div class="card-block">
+									<section class="example">
+										<div class="table-responsive">
+
+											<div align="right">
+												<button type="button" ng-click="ctrl.add()"
+													class="btn btn-primary btn-sm">Add New</button>
+											</div>
+
+											<table datatable="ng"
+												class="table table-striped table-bordered table-hover">
+												<thead>
+													<tr>
+														<th class="align_center">#</th>
+														<th>Topic</th>
+														<th>Category</th>
+														<th>Start Date</th>
+														<th>End Date</th>
+														<th class="align_center">Actions</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr ng-repeat="t in ctrl.trainingSchedules">
+														<td class="align_center">{{$index+1}}</td>
+														<td>{{t.topic}}</td>
+														<td>{{t.category.category}}</td>
+														<td>{{t.startDateTime | date:'MM/dd/yyyy HH:mm' :
+															timezone}}</td>
+														<td>{{t.endDateTime | date:'MM/dd/yyyy HH:mm' :
+															timezone}}</td>
+														<td class="align_center" style="width:20%">
+
+															<ol class="main_ul" ng-mouseleave="hoverOut()">
+																<li><a href="javascript:void(0)"
+																	ng-click="hoverIn()"
+																	class="dropbtn action_settings_butons"><i
+																		class="fa fa-cog fa-lg" aria-hidden="true"></i></a></li>
+																<li>
+																	<ol class="sub_ul" ng-show="hoverEdit">
+
+																		<li><a ng-click="ctrl.edit(t.id)" title="Edit"
+																			href="javascript:void(0)"><i
+																				class="fa fa-pencil-square-o" aria-hidden="true"></i></a></li>
+
+
+																		<li><a ng-click="ctrl.deleteSchedule(t.id)"
+																			title="Delete" href="javascript:void(0)"><i
+																				class="fa fa-trash" aria-hidden="true"></i></a></li>
+																	</ol> <!-- 															<button type="button" class="btn btn-warning  btn-sm" -->
+																	<!-- 																ng-click="ctrl.edit(t.id)">Edit</button> -->
+																	<!-- 															<button type="button" class="btn btn-danger  btn-sm" -->
+																	<!-- 																ng-click="ctrl.deleteSchedule(t.id)">Delete</button> -->
+														</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</section>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

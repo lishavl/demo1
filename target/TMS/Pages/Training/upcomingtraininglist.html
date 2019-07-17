@@ -1,0 +1,235 @@
+<!-- 
+/**
+ * @Author JOSSINA JOSE.
+ */
+ -->
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div id="upcomingtraining"
+		ng-controller="UpcomingTrainingController as ctrl">
+
+		<div class="card sameheight-item" data-exclude="xs"
+			style="height: auto;">
+			<div class="card-header card-header-sm bordered">
+				<div class="header-block">
+					<h3 class="title">Programs</h3>
+				</div>
+				<ul class="nav nav-tabs pull-right" role="tablist">
+					<li class="nav-item"><a class="nav-link"
+						ng-class="{ 'active': ctrl.showUpcomingTab }"
+						href="javascript:void(0)" role="tab" data-toggle="tab"
+						ng-click="openUpcomingTab()">Upcoming</a></li>
+					<li class="nav-item"><a class="nav-link"
+						href="javascript:void(0)"
+						ng-class="{ 'active': !ctrl.showUpcomingTab }"
+						ng-click="openCompletedTab()" role="tab" data-toggle="tab">Completed</a></li>
+				</ul>
+			</div>
+			<!-- 			 <div class="card-block"> -->
+			<div class="tab-content">
+				<div role="tabpanel" class="tab-pane active fade in"
+					id="upcomingtab">
+					<div class="item-list striped" ng-show="ctrl.showUpcomingTab">
+						<div id="msgdiv" style="text-align: center;">
+							<span class="err_message" ng-show="ctrl.showerrmsg">{{ctrl.errmsg}}</span>
+							<span class="success_message" ng-show="ctrl.showsuccmsg">{{ctrl.succmsg}}</span>
+						</div>
+
+						<section class="section">
+							<div class="row">
+								<div class="col-md-12">
+									<div class="card">
+										<div class="card-block">
+											<section class="example">
+												<div class="table-responsive">
+
+													<table datatable="ng"
+														class="table table-striped table-bordered table-hover">
+														<thead>
+															<tr>
+																<th style="text-align: center; width: 1%;">#</th>
+																<th style="text-align: center; width: 1%;">Start
+																	Date</th>
+																<th style="text-align: center; width: 1%;">End Date</th>
+																<th style="text-align: center; width: 1%;">Topic</th>
+																<th style="text-align: center; width: 1%;">Trainer</th>
+																<th style="text-align: center; width: 1%;">Actions</th>
+															</tr>
+														</thead>
+														<tbody>
+															<tr ng-repeat="u in ctrl.upcomingtrainings">
+																<td style="text-align: center; height: 50px;">{{$index
+																	+ 1}}</td>
+																<td style="text-align: center; height: 50px;"><span>{{u.startDateTime
+																		| date:'MM/dd/yyyy HH:mm' : timezone}}</span></td>
+																<td style="text-align: center; height: 50px;"><span>{{u.endDateTime
+																		| date:'MM/dd/yyyy HH:mm' : timezone}}</span></td>
+																<td style="text-align: center; height: 50px;"><span
+																	ng-bind="'{{u.topicname}}'"></span></td>
+																<td style="text-align: center; height: 50px;"><span
+																	ng-repeat="names in u.trainernames"><pre
+																			style="font-family: Arial;">{{names}}</pre> </span></td>
+
+
+																<td style="text-align: center; height: 50px;">
+
+																	<button ng-if="u.count == 0"
+																		ng-click="ctrl.sendMail(u.topicid)"
+																		class="btn btn-primary btn-sm" style="width: 119px;">Show
+																		Interest</button> <span style="color: green;"
+																	ng-if="u.count == 1 && u.status >= 0">Enrolled</span> <span
+																	style="color: green;" ng-if="u.status == -1">Pending</span>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</section>
+
+										</div>
+									</div>
+								</div>
+							</div>
+						</section>
+
+					</div>
+					<!-- 						------------------------------completed training---------------------------------------------		 -->
+					<div class="item-list striped" ng-show="!ctrl.showUpcomingTab">
+
+						<section class="section">
+							<div class="row">
+								<div class="col-md-12">
+									<div class="card">
+										<div class="card-block">
+											<section class="example">
+												<div class="table-responsive">
+
+													<table datatable="ng"
+														class="table table-striped table-bordered table-hover">
+														<thead>
+															<tr>
+																<th style="text-align: center; width: 1%;">#</th>
+																<th style="text-align: center; width: 1%;">Date</th>
+																<th style="text-align: center; width: 1%;">Topic</th>
+																<th style="text-align: center; width: 1%;">Trainer</th>
+																<th style="text-align: center; width: 1%;">Actions</th>
+															</tr>
+														</thead>
+														<tbody>
+															<tr ng-repeat="u in ctrl.completedtrainings">
+																<td style="text-align: center; height: 50px;">{{$index
+																	+ 1}}</td>
+																<td style="text-align: center; height: 50px;"><span>{{u.startDateTime
+																		| date:'MM/dd/yyyy HH:mm' : timezone}}</span></td>
+																<td style="text-align: center; height: 50px;"><span
+																	ng-bind="'{{u.topicname}}'"></span></td>
+																<td style="text-align: center; height: 50px;"><span
+																	ng-repeat="names in u.trainernames"><pre
+																			style="font-family: Arial;">{{names}}</pre> </span></td>
+
+
+																<td style="text-align: center; height: 50px;">
+																	<!-- 																				<button ng-if="u.count == 0" -->
+																	<!-- 																					ng-click="ctrl.sendMail(u.topicid)" -->
+																	<!-- 																					class="btn btn-primary btn-sm" style="width: 119px;">Show -->
+																	<!-- 																					Interest</button>  --> <span
+																	style="color: green;"
+																	ng-if="u.count == 1 && u.status >= 0">Enrolled/completed</span>
+																	<span style="color: green;" ng-if="u.count == 0">completed</span>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</section>
+
+										</div>
+									</div>
+								</div>
+							</div>
+						</section>
+
+					</div>
+
+				</div>
+			</div>
+		</div>
+		<!-- 		</div> -->
+
+
+
+		<!-- 			<div class="title-block" -->
+		<!-- 				style="padding-bottom: 5px; margin-bottom: 10px;"> -->
+
+		<!-- 				<h6> -->
+		<!-- 					<b>Upcoming Trainings</b> -->
+		<!-- 				</h6> -->
+
+		<!-- 			</div> -->
+		<!-- 				<div id="msgdiv" -->
+		<!-- 					style="text-align: center;"> -->
+		<!--                         <span class="err_message" ng-show="ctrl.showerrmsg">{{ctrl.errmsg}}</span> -->
+		<!-- 					    <span class="success_message" ng-show="ctrl.showsuccmsg">{{ctrl.succmsg}}</span> -->
+		<!-- 				</div> -->
+
+		<!-- 			<section class="section"> -->
+		<!-- 				<div class="row"> -->
+		<!-- 					<div class="col-md-12"> -->
+		<!-- 						<div class="card"> -->
+		<!-- 							<div class="card-block"> -->
+		<!-- 								<section class="example"> -->
+		<!-- 									<div class="table-responsive"> -->
+
+		<!-- 										<table datatable="ng" -->
+		<!-- 											class="table table-striped table-bordered table-hover"> -->
+		<!-- 											<thead> -->
+		<!-- 												<tr> -->
+		<!-- 												    <th style="text-align: center; width: 1%;">#</th> -->
+		<!-- 													<th style="text-align: center; width: 1%;">Date</th> -->
+		<!-- 													<th style="text-align: center; width: 1%;">Topic</th> -->
+		<!-- 													<th style="text-align: center; width: 1%;">Trainer</th> -->
+		<!-- 													<th style="text-align: center; width: 1%;">Actions</th> -->
+		<!-- 												</tr> -->
+		<!-- 											</thead> -->
+		<!-- 											<tbody> -->
+		<!-- 												<tr ng-repeat="u in ctrl.upcomingtrainings"> -->
+		<!-- 												    <td style="text-align: center;height:50px;">{{$index + 1}}</td> -->
+		<!-- 													<td style="text-align: center;height:50px;"><span -->
+		<!-- 														ng-bind="'{{u.startDateTime | date:'MM/dd/yyyy HH:mm:ss'}}'"></span></td> -->
+		<!-- 													<td style="text-align: center;height:50px;"><span -->
+		<!-- 														ng-bind="'{{u.topicname}}'"></span></td> -->
+		<!-- 													<td style="text-align: center;height:50px;" > -->
+		<!-- 													<span ng-repeat="names in u.trainernames"><pre -->
+		<!-- 																							style="font-family: Arial;">{{names}}</pre> -->
+		<!-- 																				</span></td> -->
+
+
+		<!-- 													<td style="text-align: center;height:50px;"> -->
+
+		<!-- 														<button ng-if="u.count == 0" -->
+		<!-- 															ng-click="ctrl.sendMail(u.topicid)" -->
+		<!-- 															class="btn btn-primary btn-sm" style="width: 119px;">Show -->
+		<!-- 															Interest</button>  -->
+		<!-- 															<span style="color: green;" ng-if="u.count == 1 && u.status >= 0">Enrolled</span> -->
+		<!-- 															<span style="color: green;" ng-if="u.status == -1">Pending</span> -->
+		<!-- 													</td> -->
+		<!-- 												</tr> -->
+		<!-- 											</tbody> -->
+		<!-- 										</table> -->
+		<!-- 									</div> -->
+		<!-- 								</section> -->
+
+		<!-- 							</div> -->
+		<!-- 						</div> -->
+		<!-- 					</div> -->
+		<!-- 				</div> -->
+		<!-- 			</section> -->
+	</div>
+</body>
+</html>

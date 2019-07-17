@@ -1,0 +1,700 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+
+<style type="text/css">
+#slides_control>div {
+	height: 200px;
+}
+
+img {
+	margin: auto;
+	width: 400px;
+}
+
+#slides_control {
+	position: absolute;
+	width: 400px;
+	left: 50%;
+	top: 20px;
+	margin-left: -200px;
+}
+</style>
+
+</head>
+<body>
+
+	<div ng-controller="HomeController as dashCtrl">
+		<div ng-show="!fullyLoaded" align="center" style="margin-top: 15%;">
+			<div id="spinningSquaresG">
+				<div id="spinningSquaresG_1" class="spinningSquaresG"></div>
+				<div id="spinningSquaresG_2" class="spinningSquaresG"></div>
+				<div id="spinningSquaresG_3" class="spinningSquaresG"></div>
+				<div id="spinningSquaresG_4" class="spinningSquaresG"></div>
+				<div id="spinningSquaresG_5" class="spinningSquaresG"></div>
+				<div id="spinningSquaresG_6" class="spinningSquaresG"></div>
+				<div id="spinningSquaresG_7" class="spinningSquaresG"></div>
+				<div id="spinningSquaresG_8" class="spinningSquaresG"></div>
+			</div>
+		</div>
+
+		<div ng-show="roleId!=null && roleId!=0 && fullyLoaded" ng-cloak>
+			<section class="section">
+			<div class="row sameheight-container">
+				<div class="col col-xs-12 col-sm-12 col-md-6 col-xl-5 stats-col">
+					<div class="card sameheight-item stats" data-exclude="xs"
+						style="height: 340px;">
+						<div class="card-block">
+							<div class="title-block">
+								<h4 class="title">Stats</h4>
+								<p class="title-description">Aggregated metrics at a glance</p>
+							</div>
+							<div class="row row-sm stats-container">
+								<div class="col-xs-12 col-sm-6 stat-col">
+									<div class="stat-icon">
+										<i class="fa fa-bullhorn"></i>
+									</div>
+									<div class="stat">
+										<div class="value" ng-show="!showThrobber">
+											<a href="javascript:void(0)"
+												ng-click="dashCtrl.openPrograms('Upcoming')">{{dashCtrl.statistics.upcomingPgmCount}}</a>
+										</div>
+										<div class="value" ng-show="showThrobber">
+											<img class="smal_throbber_img_style" alt="" src="./images/round_throbber.gif">
+										</div>
+										<div class="name">Upcoming Programs</div>
+									</div>
+									<progress class="progress stat-progress"
+										value="{{dashCtrl.statistics.upcomingPgmCount}}"
+										max="{{dashCtrl.statistics.upcomingPgmCount+dashCtrl.statistics.completedPgmCount}}">
+									<div class="progress">
+										<span class="progress-bar" style="width: 75%;"></span>
+									</div>
+									</progress>
+								</div>
+								<div class="col-xs-12 col-sm-6 stat-col">
+									<div class="stat-icon">
+										<i class="fa fa-check"></i>
+									</div>
+									<div class="stat">
+										<div class="value" ng-show="!showThrobber">
+											<a href="javascript:void(0)"
+												ng-click="dashCtrl.openPrograms('Completed')">{{dashCtrl.statistics.completedPgmCount}}</a>
+										</div>
+										<div class="value" ng-show="showThrobber">
+											<img class="smal_throbber_img_style" alt="" src="./images/round_throbber.gif">
+										</div>
+										<div class="name">Completed Programs</div>
+									</div>
+									<progress class="progress stat-progress"
+										value="{{dashCtrl.statistics.completedPgmCount}}"
+										max="{{dashCtrl.statistics.upcomingPgmCount+dashCtrl.statistics.completedPgmCount}}">
+									<div class="progress">
+										<span class="progress-bar" style="width: 25%;"></span>
+									</div>
+									</progress>
+								</div>
+								<div class="col-xs-12 col-sm-6  stat-col">
+									<div class="stat-icon">
+										<i class="fa fa-calendar"></i>
+									</div>
+									<div class="stat">
+										<div class="value" ng-show="!showThrobber">{{dashCtrl.statistics.monthlyPgmCount}}</div>
+										<div class="value" ng-show="showThrobber">
+											<img class="smal_throbber_img_style" alt="" src="./images/round_throbber.gif">
+										</div>
+										<div class="name">Monthly Programs</div>
+									</div>
+									<progress class="progress stat-progress"
+										value="{{dashCtrl.statistics.monthlyPgmCount}}"
+										max="{{dashCtrl.statistics.monthlyPgmCount+10}}">
+									<div class="progress">
+										<span class="progress-bar" style="width: 60%;"></span>
+									</div>
+									</progress>
+								</div>
+								<div class="col-xs-12 col-sm-6  stat-col">
+									<div class="stat-icon">
+										<i class="fa fa-user"></i>
+									</div>
+									<div class="stat">
+										<div class="value" ng-show="!showThrobber">{{dashCtrl.statistics.monthlyAttendedPgmCount}}</div>
+										<div class="value" ng-show="showThrobber">
+											<img class="smal_throbber_img_style" alt="" src="./images/round_throbber.gif">
+										</div>
+										<div class="name">Monthly Attended</div>
+									</div>
+									<progress class="progress stat-progress"
+										value="{{dashCtrl.statistics.monthlyAttendedPgmCount}}"
+										max="{{dashCtrl.statistics.monthlyPgmCount}}">
+									<div class="progress">
+										<span class="progress-bar" style="width: 34%;"></span>
+									</div>
+									</progress>
+								</div>
+								<div class="col-xs-12 col-sm-6  stat-col">
+									<div class="stat-icon">
+										<i class="{{ roleId!=3 ? 'fa fa-archive' : 'fa fa-list-alt'}}"></i>
+									</div>
+									<div class="stat">
+										<div class="value" ng-show="!showThrobber">{{ roleId!=3
+											? dashCtrl.statistics.totalPgmCount :
+											dashCtrl.statistics.attendedTests}}</div>
+										<div class="value" ng-show="showThrobber">
+											<img class="smal_throbber_img_style" alt="" src="./images/round_throbber.gif">
+										</div>
+										<div class="name">{{roleId!=3 ? 'Total Programs' :
+											'Attended Tests'}}</div>
+									</div>
+									<progress class="progress stat-progress"
+										value="{{ roleId!=3? dashCtrl.statistics.totalPgmCount : dashCtrl.statistics.attendedTests}}"
+										max="{{ roleId!=3? dashCtrl.statistics.totalPgmCount+10 : dashCtrl.statistics.attendedTests+10}}">
+									<div class="progress">
+										<span class="progress-bar" style="width: 49%;"></span>
+									</div>
+									</progress>
+								</div>
+								<div class="col-xs-12 col-sm-6 stat-col">
+									<div class="stat-icon">
+										<i class="{{ roleId!=3 ? 'fa fa-users' : 'fa fa-archive'}}"></i>
+									</div>
+									<div class="stat">
+										<div class="value" ng-show="!showThrobber">{{ roleId!=3
+											? dashCtrl.statistics.totalUsersCount :
+											dashCtrl.statistics.pendingTests}}</div>
+										<div class="value" ng-show="showThrobber">
+											<img class="smal_throbber_img_style" alt="" src="./images/round_throbber.gif">
+										</div>
+										<div class="name">{{roleId!=3 ? 'Total Users' : 'Pending
+											Tests'}}</div>
+									</div>
+									<progress class="progress stat-progress"
+										value="{{ roleId!=3 ? dashCtrl.statistics.totalUsersCount : dashCtrl.statistics.pendingTests}}"
+										max="{{ roleId!=3 ? dashCtrl.statistics.totalUsersCount+40 : dashCtrl.statistics.pendingTests+40}}">
+									<div class="progress">
+										<span class="progress-bar" style="width: 15%;"></span>
+									</div>
+									</progress>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col col-xs-12 col-sm-12 col-md-6 col-xl-7 history-col">
+					<div class="card sameheight-item" data-exclude="xs"
+						style="height: 340px;">
+						<div class="card-header card-header-sm bordered">
+							<div class="header-block">
+								<h3 class="title">Programs</h3>
+							</div>
+							<ul class="nav nav-tabs pull-right" role="tablist">
+								<li class="nav-item"><a class="nav-link"
+									ng-class="{ 'active': dashCtrl.showUpcomingTab }"
+									href="javascript:void(0)" role="tab" data-toggle="tab"
+									ng-click="openUpcomingTab()">Upcoming</a></li>
+								<li class="nav-item"><a class="nav-link"
+									href="javascript:void(0)"
+									ng-class="{ 'active': !dashCtrl.showUpcomingTab }"
+									ng-click="openCompletedTab()" role="tab" data-toggle="tab">Completed</a></li>
+							</ul>
+						</div>
+						<div class="card-block">
+							<div class="tab-content">
+								<div role="tabpanel" class="tab-pane active fade in"
+									id="upcomingtab">
+									<ul class="item-list striped"
+										ng-show="dashCtrl.showUpcomingTab">
+										<li class="item item-list-header hidden-sm-down">
+											<div class="item-row">
+												<div class="item-col item-col-header fixed item-col-img xs">#</div>
+												<div class="item-col item-col-header item-col-title">
+													<div>
+														<span>Program</span>
+													</div>
+												</div>
+												<div class="item-col item-col-header" align="center">
+													<div>
+														<span>On</span>
+													</div>
+												</div>
+											</div>
+										</li>
+										<li class="item"
+											ng-repeat="tp in dashCtrl.upcomingTrainingPrograms">
+											<div class="item-row">
+												<div class="item-col fixed item-col-img xs">{{$index+1}}</div>
+												<div class="item-col item-col-title no-overflow">
+													<div>
+														<h4 class="item-title no-wrap">{{tp.topic}}</h4>
+													</div>
+												</div>
+												<div class="item-col item-col-header" align="center">
+													<div>
+														<span>{{tp.date | date:'dd MMM hh:mm a' : timezone
+															}} </span>
+													</div>
+												</div>
+											</div>
+										</li>
+										<li class="item"
+											ng-show="dashCtrl.upcomingTrainingPrograms.length<=0">
+											<div class="item-row">
+												<div class="item-col item-col-title" align="center">
+													<i style="color: gray; width: 100%;">No upcoming
+														programs</i>
+												</div>
+											</div>
+										</li>
+
+
+									</ul>
+
+
+									<ul class="item-list striped"
+										ng-show="!dashCtrl.showUpcomingTab">
+										<li class="item item-list-header hidden-sm-down">
+											<div class="item-row">
+												<div class="item-col item-col-header fixed item-col-img xs">#</div>
+												<div class="item-col item-col-header item-col-title">
+													<div>
+														<span>Program</span>
+													</div>
+												</div>
+												<div class="item-col item-col-header" align="center">
+													<div>
+														<span>On</span>
+													</div>
+												</div>
+											</div>
+										</li>
+										<li class="item"
+											ng-repeat="tp in dashCtrl.completedTrainingPrograms">
+											<div class="item-row">
+												<div class="item-col fixed item-col-img xs">{{$index+1}}</div>
+												<div class="item-col item-col-title no-overflow">
+													<div>
+														<h4 class="item-title no-wrap">{{tp.topic}}</h4>
+													</div>
+												</div>
+												<div class="item-col item-col-header" align="center">
+													<div>
+														<span>{{tp.date | date:'dd MMM hh:mm a' :
+															timezone}} </span>
+													</div>
+												</div>
+											</div>
+										</li>
+
+										<li class="item"
+											ng-show="dashCtrl.completedTrainingPrograms.length<=0">
+											<div class="item-row">
+												<div class="item-col item-col-title" align="center">
+													<i style="color: gray; width: 100%;">No completed
+														programs</i>
+												</div>
+											</div>
+										</li>
+
+									</ul>
+
+
+
+
+								</div>
+								<div role="tabpanel" class="tab-pane fade" id="completedtab">
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			</section>
+
+
+
+
+			<section class="section">
+			<div class="row sameheight-container">
+				<div class="col-xl-8">
+					<div class="card sameheight-item items" style="min-height: 350px;">
+						<div class="card-header bordered">
+							<div class="header-block">
+								<h3 class="title">Discussions</h3>
+								<a href="#forum" class="btn btn-primary btn-sm rounded">
+									Open Forum</a>
+							</div>
+							<div class="header-block pull-right"></div>
+						</div>
+						<ul class="item-list striped">
+							<li class="item item-list-header hidden-sm-down">
+								<div class="item-row">
+									<div class="item-col item-col-header fixed item-col-img xs"></div>
+									<div class="item-col item-col-header item-col-title">
+										<div>
+											<span>Thread</span>
+										</div>
+									</div>
+									<div class="item-col item-col-header">
+										<div>
+											<span>Category</span>
+										</div>
+									</div>
+									<div class="item-col item-col-header fixed item-col-img xs"
+										align="center">
+										<div>
+											<span>Likes</span>
+										</div>
+									</div>
+									<div class="item-col item-col-header item-col-date">
+										<div>
+											<span>Created</span>
+										</div>
+									</div>
+								</div>
+							</li>
+							<li class="item" ng-repeat="ft in dashCtrl.forumThreads">
+								<div class="item-row">
+									<div class="item-col fixed item-col-img xs">
+										<div class="item-img xs rounded">
+											<img ng-src="./uploads/profileimages/{{ft.userid}}.jpeg"
+												err-src="./images/defaultuser.png"
+												style="max-width: 30px; max-height: 30px;" />
+										</div>
+									</div>
+									<div class="item-col item-col-title no-overflow">
+										<div>
+											<a href="javascript:void(0)"
+												ng-click="dashCtrl.openForumThread(ft.id)">
+												<h4 class="item-title no-wrap">{{ft.subject}}</h4>
+											</a>
+										</div>
+									</div>
+									<div class="item-col">
+										<div>
+											<h5 class="item-title no-wrap">{{ft.categoryname}}</h5>
+										</div>
+									</div>
+									<div class="item-col fixed item-col-img xs" align="center">
+										<div>
+											<h5 class="item-title no-wrap">{{ft.likes}}</h5>
+										</div>
+									</div>
+									<div class="item-col item-col-date">
+										<div>{{ft.postedon | date:'dd MMM HH:mm' : timezone}}</div>
+									</div>
+								</div>
+							</li>
+							<li class="item" ng-show="dashCtrl.forumThreads.length<=0">
+								<div class="item-row">
+									<div class="item-col" align="center">
+										<div class="no_data_available">No discussions found</div>
+									</div>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-xl-4" align="center">
+
+					<div class="card sameheight-item items" style="height: 350px;"
+						ng-show="roleId!=null && roleId==3">
+						<div class="card-header bordered">
+							<div class="header-block">
+								<h3 class="title">Pending Tests</h3>
+								<a href="#mytests" class="btn btn-primary btn-sm rounded">My
+									Tests</a>
+							</div>
+							<div class="header-block pull-right"></div>
+						</div>
+						<ul class="item-list striped">
+							<li class="item item-list-header hidden-sm-down">
+								<div class="item-row">
+									<div class="item-col item-col-header item-col-title">
+										<div align="left">
+											<span>Test</span>
+										</div>
+									</div>
+								</div>
+							</li>
+							<li class="item" ng-repeat="pt in dashCtrl.pendingTests">
+								<div class="item-row">
+									<div class="item-col item-col-title no-overflow">
+										<div align="left">
+											<a href="javascript:void(0)"
+												ng-click="dashCtrl.attendTest(pt)">
+												<h5 class="item-title no-wrap">{{pt.title}}</h5>
+											</a>
+										</div>
+									</div>
+								</div>
+							</li>
+							<li class="item"
+								ng-show="dashCtrl.pendingTests==null || dashCtrl.pendingTests.length<=0">
+								<div class="item-row">
+									<div class="item-col item-col-title no-overflow">
+										<div class="no_data_available" align="center">No pending
+											tests</div>
+									</div>
+								</div>
+							</li>
+						</ul>
+					</div>
+
+					<div class="card sameheight-item sales-breakdown"
+						style="height: 350px;" ng-show="roleId!=null && roleId!=3"
+						data-exclude="xs,sm,lg" align="center">
+
+						<div class="card-header bordered">
+							<div class="header-block">
+								<h3 class="title">Top 5 Trainers</h3>
+							</div>
+							<div class="header-block pull-right"></div>
+						</div>
+						<ul class="item-list striped">
+							<li class="item item-list-header hidden-sm-down">
+								<div class="item-row">
+									<div class="item-col item-col-header item-col-title">
+										<div align="left">
+											<span>Trainer</span>
+										</div>
+									</div>
+									<div class="item-col item-col-header item-col-title">
+										<div align="center">
+											<span>Rating</span>
+										</div>
+									</div>
+								</div>
+							</li>
+							<li class="item" ng-repeat="tt in dashCtrl.topTrainers">
+								<div class="item-row">
+									<div class="item-col item-col-title no-overflow">
+										<div align="left">
+											<h5 class="item-title no-wrap">{{tt[0]}}</h5>
+										</div>
+									</div>
+									<div class="item-col item-col-title no-overflow">
+										<div align="center">
+
+											<ol class="rating" readonly="true" style="padding: 0;">
+												<li ng-repeat="star in stars | reverse" class="rating__star"
+													ng-class="{ is_active: tt[1] > star }"
+													title="{{'Rating : '}} {{ tt[1] | number:1}}{{'\nVotes : '+ tt[2]}}"></li>
+											</ol>
+										</div>
+
+									</div>
+								</div>
+							</li>
+							<li class="item"
+								ng-show="dashCtrl.topTrainers==null || dashCtrl.topTrainers.length<=0">
+								<div class="item-row">
+									<div class="item-col item-col-title no-overflow">
+										<div class="no_data_available" align="center">No data
+											available</div>
+									</div>
+								</div>
+							</li>
+						</ul>
+
+
+
+					</div>
+
+
+				</div>
+			</div>
+			</section>
+
+
+
+
+			<section class="section">
+			<div class="row sameheight-container">
+				<div class="col-xl-8">
+					<div class="card sameheight-item sales-breakdown"
+						data-exclude="xs,sm,lg" align="center">
+						<div class="card-header">
+							<div class="header-block">
+								<h3 class="title">Attendance Status</h3>
+							</div>
+						</div>
+						<hr style="padding: 0; margin: 0;">
+						<div class="card-block" style="height: 350px;" align="center"
+							ng-show="dashCtrl.showAttendanceChart">
+							<br> <br>
+							<div google-chart chart="myChart"></div>
+
+						</div>
+						<div ng-show="!dashCtrl.showAttendanceChart">
+							<div class="no_data_available"
+								style="width: 100%; height: 350px;" align="center">
+								<br> <br> No data available
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-xl-4">
+					<div class="card sameheight-item sales-breakdown"
+						data-exclude="xs,sm,lg" align="center"
+						ng-include="'Pages/Dashboard/testgraph.html'"></div>
+				</div>
+			</div>
+			</section>
+
+
+			<section class="section">
+			<div class="row sameheight-container">
+				<div class="col-xl-6"></div>
+				<div class="col-xl-6"></div>
+			</div>
+			</section>
+
+		</div>
+
+
+		<div style="width: 100%; background-image: none;"
+			ng-show="roleId==null && fullyLoaded" ng-cloak>
+
+			<div class="col-lg-12" style="padding: 0;">
+
+				<div class="col-lg-12" style="width: 100%; padding: 0;"
+					align="right">
+
+					<div>
+						<img style="width: 100%;" alt=""
+							src="./images/banners/home_banner.jpg" />
+					</div>
+
+					<br> <br>
+
+				</div>
+				<div class="col-lg-12" style="padding-bottom: 30px;">
+					<div class="col-lg-6">
+						<div class="col-lg-3">
+							<img style="max-width: 100px;" style="max-width: 200px;"
+								src="./images/about_icons/assessment.png" alt="Online edting"
+								class="scale-with-grid">
+						</div>
+						<div class="col-lg-9">
+							<p class="block_text_style">
+								<b>Assessments</b><br>A vital part to identify the
+								performance requirements, knowledge, skills, and abilities of
+								students
+							</p>
+						</div>
+					</div>
+					<div class="col-lg-6">
+						<div class="col-lg-3">
+							<img style="max-width: 100px;"
+								src="./images/about_icons/dashboard.png" alt="Read-only mode"
+								class="scale-with-grid">
+						</div>
+						<div class="col-lg-9">
+							<p class="block_text_style">
+								<b>Dashboard</b><br> Provides at-a-glance views of key
+								performance indicators of training programs, aggregated statics,
+								ratings and others
+							</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-12" style="padding-bottom: 30px;">
+					<div class="col-lg-6">
+						<div class="col-lg-3">
+							<img style="max-width: 100px;"
+								src="./images/about_icons/forum.png" alt="Save as"
+								class="scale-with-grid">
+						</div>
+						<div class="col-lg-9">
+							<p class="block_text_style">
+								<b>Forum</b><br> A great way of sharing wide range of
+								information and access at any point of time
+							</p>
+						</div>
+					</div>
+					<div class="col-lg-6">
+						<div class="col-lg-3">
+							<img style="max-width: 100px;"
+								src="./images/about_icons/graphical.png"
+								alt="Simultaneous editing" class="scale-with-grid">
+						</div>
+						<div class="col-lg-9">
+							<p class="block_text_style">
+								<b>Graphical Interface</b><br> Offers an attractive and
+								easy representation of the data, aids in comparative analysis,
+								decision making and interpretation
+							</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-12" style="padding-bottom: 30px;">
+					<div class="col-lg-6">
+						<div class="col-lg-3">
+							<img style="max-width: 100px;"
+								src="./images/about_icons/customer_login.png"
+								alt="Editable region control" class="scale-with-grid">
+						</div>
+						<div class="col-lg-9">
+							<p class="block_text_style">
+								<b>Individual Portals</b><br> Discrete access rights for
+								trainer and attendees
+							</p>
+						</div>
+					</div>
+					<div class="col-lg-6">
+						<div class="col-lg-3">
+							<img style="max-width: 100px;"
+								src="./images/about_icons/media.png" alt="Data fill"
+								class="scale-with-grid">
+						</div>
+						<div class="col-lg-9">
+							<p class="block_text_style">
+								<b>Media Management</b><br> Trainers can upload medias such
+								as documents, links and videos for every training program which
+								are accessible by attendees of program at any point of time
+							</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-12" style="padding-bottom: 30px;">
+					<div class="col-lg-6 clearfix">
+						<div class="col-lg-3 center">
+							<img style="max-width: 100px;"
+								src="./images/about_icons/star.png" alt="Data sumbit"
+								class="scale-with-grid">
+						</div>
+						<div class="col-lg-9 left">
+							<p class="block_text_style">
+								<b>Ratings </b><br> Know your top trainers! Top 5 trainers
+								are showcased based on attendee feedback
+							</p>
+						</div>
+					</div>
+					<div class="col-lg-2 clearfix">&nbsp;&nbsp;&nbsp;</div>
+					<div class="col-lg-6 clearfix">
+						<div class="col-lg-3 center">
+							<img style="max-width: 100px;"
+								src="./images/about_icons/training.png" alt="VBA support"
+								class="scale-with-grid">
+						</div>
+						<div class="col-lg-9 left">
+							<p class="block_text_style">
+								<b>Training Programs</b><br> An effective training program
+								can increase the efficiency and boost confidence of an
+								individual
+							</p>
+							<br> <br> <br>
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+	<div id="tests" ng-controller="ShowMyTestController as ctrl">
+
+
+
+		<div class="card card-block sameheight-item">
+			<div class="title-block">
+				<h2 class="title">Online Tests</h2>
+				<hr style="margin: 5px 0px;">
+			</div>
+
+			<div class="form-group">
+				<p ng-show="ctrl.tests.length > 0">Your available tests are :</p>
+				<p ng-show="ctrl.tests.length <= 0">
+					<i>Sorry, no test available at the moment. Please check back
+						later.</i>
+				</p>
+
+			</div>
+			<div class="form-group">
+				<ul>
+					<li ng-repeat="test in ctrl.tests">
+						<h2 class="title">
+							<a ng-click="ctrl.attendtest(test)" style="cursor: pointer;"><span title="{{test.finished ? 'Test attended' : ''}}" 
+								class="last">{{test.title}} <i style="color: green;" class="fa fa-check-square-o fa-2x" ng-show="test.finished"></i></span></a>
+						</h2>
+						<p>{{test.description}}</p>
+					</li>
+				</ul>
+			</div>
+
+		</div>
+	</div>
+</body>
+</html>

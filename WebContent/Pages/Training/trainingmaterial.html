@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Training Material Management</title>
+</head>
+<body>
+
+
+	<!-- Start of Add Training Materials -->
+
+
+	<div id="trainingmaterialmanagement"
+		ng-controller="TrainingMaterialController as ctrl">
+
+		<div id="adduser" ng-show="ctrl.showaddwindow">
+
+			<div class="card card-block sameheight-item">
+
+				<div class="title-block">
+					<h2 class="title"
+						ng-show="ctrl.material.material_id==null || ctrl.material.material_id=='0'"
+						class="last">Add New Training Material</h2>
+					<h2 class="title"
+						ng-show="ctrl.material.material_id!=null && ctrl.material.material_id!='0'"
+						class="last">
+						Edit Training Material</span>
+					</h2>
+
+					<hr style="margin: 5px 0px;">
+				</div>
+
+				<form ng-submit="ctrl.submit($event)" name="addTrainingMaterialForm"
+					novalidate>
+
+					<div class="form-group"
+						ng-class="{ 'has-error': ctrl.showfileerror || addTrainingMaterialForm.material.$invalid && ctrl.showerrors}">
+						<label class="control-lable">Material: </label>
+						
+						<md-button style="margin:0px;min-height: 31px;  min-width: 30px;"> <i class="fa fa-info-circle" aria-hidden="true"></i>
+								          <md-tooltip md-visible="demo.showTooltip" md-direction="right" style="font-size:12px;" >
+								          (Maximum file size allowed is 1 MB)
+								          </md-tooltip>
+							        </md-button>
+								
+						 <input type="file" file-model="myFile" name="material"
+							required="required" class="form-control underlined" /> 
+							<span
+							class="field_error" ng-show="ctrl.showfileerror">Choose
+							file</span><span class="field_error"
+							ng-show="addTrainingMaterialForm.material.$invalid && ctrl.showerrors">Maximum
+							size allowed is 1 MB</span>
+
+					</div>
+
+					<div class="form-group">
+						<label class="control-lable">Description</label>
+						<textarea style="height: 60px" maxlength="500"
+							ng-model="ctrl.material.description" id="description"
+							class="form-control underlined"></textarea>
+					</div>
+
+
+
+					<div class="form-group">
+						<label class="control-lable">Reference </label> <label
+							style="font-weight: initial">(Use comma to add multiple
+							links)</label>
+
+						<textarea style="height: 60px" maxlength="500"
+							ng-model="ctrl.material.reference" id="reference"
+							class="form-control underlined"></textarea>
+					</div>
+
+
+					<div class="form-group">
+						<input type="submit"
+							ng-show="ctrl.material.material_id==null || ctrl.material.material_id=='0'"
+							value="Save" class="btn btn-success custom-width"> <input
+							type="submit" value="Update"
+							ng-show="ctrl.material.material_id!=null && ctrl.material.material_id!='0'"
+							class="btn btn-success custom-width">
+						<button type="button" ng-click="ctrl.cancel()"
+							class="btn btn-warning">Cancel</button>
+					</div>
+				</form>
+			</div>
+		</div>
+
+		<!-- Start of Add Training Materials -->
+
+
+		<!-- Start of Listing Training Topics -->
+
+
+		<div id="listtrainingschedules" ng-show="ctrl.showtopiclistwindow">
+
+			<div id="listtrainingtopics">
+
+				<div class="title-block"
+					style="padding-bottom: 5px; margin-bottom: 10px;">
+
+					<h6>
+						<b>Training Materials</b>
+					</h6>
+				</div>
+				<!-- Default panel contents -->
+
+				<section class="section">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="card">
+								<div class="card-block">
+									<section class="example">
+										<div class="table-responsive">
+
+											<table datatable="ng"
+												class="table table-striped table-bordered table-hover">
+												<thead>
+													<tr>
+														<th class="align_center">#</th>
+														<th class="align_center">Topic</th>
+														<th class="align_center">Resources</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr ng-repeat="u in ctrl.topics">
+														<td class="align_center">{{$index+1}}</td>
+														<td class="align_center">{{u.topic}}</td>
+														<td class="align_center">
+
+															<ol class="main_ul" ng-mouseleave="hoverOut()">
+																<li><a href="javascript:void(0)"
+																	ng-click="hoverIn()"
+																	class="dropbtn action_settings_butons"><i
+																		class="fa fa-cog fa-lg" aria-hidden="true"></i></a></li>
+																<li>
+																	<ol class="sub_ul" ng-show="hoverEdit">
+
+																		<li><a
+																			ng-click="ctrl.viewMaterial(u.topic,u.topicid)"
+																			title="View" href="javascript:void(0)"><i
+																				class="fa fa-eye" aria-hidden="true"></i></a></li>
+																	</ol> <!-- 															<button type="button" --> <!-- 																ng-click="ctrl.viewMaterial(u.topic,u.topicid)" -->
+																	<!-- 																class="btn btn-primary btn-sm">View</button> -->
+														</td>
+													</tr>
+												</tbody>
+											</table>
+
+										</div>
+									</section>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+
+			</div>
+		</div>
+
+		<!-- End of Listing Training Topics -->
+
+
+		<!--Start  of Listing Training Materials -->
+
+		<div id="materiallist" ng-show="ctrl.showlistwindow">
+			<div id="listmaterials">
+
+
+				<div class="title-block"
+					style="padding-bottom: 5px; margin-bottom: 10px;">
+
+					<h6>
+						<b>Training Materials</b>
+					</h6>
+				</div>
+
+				<div class="panel panel-default padding_top_10">
+					<!-- Default panel contents -->
+					<div class="panel-heading" style="margin-bottom: 10px;">
+						Training Topic : &nbsp; <input type="text"
+							ng-model="ctrl.material.topic" id="topic" name="topic"
+							readonly="readonly" style="height: 30px; width: 20%;" />
+					</div>
+
+					<section class="section">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="card">
+									<div class="card-block">
+										<section class="example">
+											<div class="table-responsive">
+
+												<div align="right">
+													<button type="button" ng-click="ctrl.add()"
+														class="btn btn-primary btn-sm">Add New</button>
+												</div>
+
+												<table datatable="ng"
+													class="table table-striped table-bordered table-hover">
+													<thead>
+														<tr>
+															<th class="align_center">#</th>
+															<th class="align_center">Material</th>
+															<th class="align_center" style="width: 20%;">Reference</th>
+															<th class="align_center" style="width: 20%;">Description</th>
+															<th class="align_center">Actions</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr ng-repeat="u in ctrl.materials">
+															<td class="align_center">{{$index+1}}</td>
+															<td class="align_center"><a
+																href="./uploads/trainingmaterials/{{u.filepath}}"
+																target="_blank"> <img
+																	style="width: 20px; height: 20px;"
+																	src="images/attachment.png" alt="" /></a></td>
+
+
+															<td style="width: 50%;"><span
+																ng-if="u.reference != ''"
+																ng-repeat="a in u.reference.split(',')"><i
+																	class="fa fa-arrow-circle-right" aria-hidden="true"
+																	ng-if="u.reference.length != 0"></i> <a href="{{a}}"
+																	target="_blank"> {{a}}</a><br></span> <span
+																ng-if="u.reference == ''"><i>No links added</i></span></td>
+
+
+
+															<td style="width: 20%">{{u.description}} <span
+																ng-if="u.description == ''"><i>No text</i></span>
+															</td>
+
+															<td class="align_center" style="width: 20%">
+																<ol class="main_ul" ng-mouseleave="hoverOut()">
+																	<li><a href="javascript:void(0)"
+																		ng-click="hoverIn()"
+																		class="dropbtn action_settings_butons"><i
+																			class="fa fa-cog fa-lg" aria-hidden="true"></i></a></li>
+																	<li>
+																		<ol class="sub_ul" ng-show="hoverEdit">
+
+																			<li><a ng-click="ctrl.edit(u.material_id)"
+																				title="Edit" href="javascript:void(0)"><i
+																					class="fa fa-pencil-square-o" aria-hidden="true"></i></a></li>
+
+
+																			<li><a
+																				ng-click="ctrl.deleteMaterial(u.material_id)"
+																				title="Delete" href="javascript:void(0)"><i
+																					class="fa fa-trash" aria-hidden="true"></i></a></li>
+																		</ol> <!-- 																		<button type="button" --> <!-- 																			ng-click="ctrl.edit(u.material_id)" -->
+																		<!-- 																			class="btn btn-warning  btn-sm">Edit</button> -->
+
+																		<!-- 																		<button type="button" --> <!-- 																			ng-click="ctrl.deleteMaterial(u.material_id)" -->
+																		<!-- 																			class="btn btn-danger  btn-sm">Delete</button> -->
+															</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+										</section>
+									</div>
+								</div>
+							</div>
+						</div>
+					</section>
+
+					<div class="form-group">
+						<button type="button" ng-click="ctrl.back()"
+							class="btn btn-primary" style="margin-left: 90%; margin-top: 1%;">Back</button>
+
+					</div>
+
+				</div>
+			</div>
+			<!-- End of Listing Training Materials -->
+
+		</div>
+</body>
+</html>

@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Question Management</title>
+</head>
+<body>
+
+	<div ng-controller="QuestionController as ctrl">
+
+		<div ng-show="ctrl.showaddwindow" id="addQuestionDiv">
+
+			<div class="card card-block sameheight-item">
+				<div class="title-block">
+					<h2 class="title"
+						ng-show="ctrl.question.id==null || ctrl.question.id=='' || ctrl.question.id=='0'">Add
+						New Question</h2>
+					<h2
+						ng-show="ctrl.question.id!=null && ctrl.question.id!='' && ctrl.question.id!='0'"
+						class="title">Edit Question</h2>
+					<hr style="margin: 5px 0px;">
+				</div>
+
+
+				<form ng-submit="ctrl.submit($event)" name="addQuestionForm"
+					novalidate>
+
+					<input type="hidden" ng-model="ctrl.question.id">
+
+					<div class="form-group"
+						ng-class="{ 'has-error': addQuestionForm.testselect.$invalid && ctrl.showerrors || ctrl.questionsover}">
+						<label class="control-label">Test <span class="mandatory">*</span></label>
+						<select class="form-control underlined width_30perc"
+							ng-model="ctrl.question.testId"
+							ng-change="ctrl.checkQuestionsOver()" name="testselect" required>
+							<option value="">Select</option>
+							<option ng-repeat="ts in ctrl.tests" value="{{ts.testId}}">
+								{{ts.title}}</option>
+						</select> <span class="field_error"
+							ng-show="addQuestionForm.testselect.$invalid && ctrl.showerrors">Select
+							test paper</span> <span class="field_error" ng-show="ctrl.questionsover">You
+							can't add more questions to this test</span>
+
+					</div>
+
+
+					<div class="form-group"
+						ng-class="{ 'has-error': addQuestionForm.question.$invalid && ctrl.showerrors}">
+						<label class="control-label">Question <span
+							class="mandatory">*</span></label>
+
+						<textarea class="form-control underlined"
+							ng-model="ctrl.question.question" name="question"
+							class="form-control input-sm" placeholder="Question" required
+							maxlength="2000" />
+
+						<span class="has-error"
+							ng-show="addQuestionForm.question.$invalid && ctrl.showerrors">Enter
+							question </span>
+					</div>
+
+					<div class="form-group"
+						ng-class="{ 'has-error': addQuestionForm.noofquestions.$invalid && ctrl.showerrors}">
+						<label class="control-label">No. of Choices <span
+							class="mandatory">*</span></label> <select
+							class="form-control underlined width_15perc"
+							ng-model="ctrl.question.noOfChoices"
+							ng-change="ctrl.noOfQnsChangeEvent()" name="noofquestions"
+							required>
+							<option value="2">2</option>
+							<option value="3">3</option>
+							<option value="4">4</option>
+						</select> <span class="has-error"
+							ng-show="addQuestionForm.noofquestions.$invalid && ctrl.showerrors">Select
+							no. of choices</span>
+					</div>
+
+					<div class="form-group"
+						ng-class="{ 'has-error': addQuestionForm.choice1.$invalid && ctrl.showerrors}">
+						<label class="control-label">Choice A <span
+							class="mandatory">*</span></label>
+
+						<textarea ng-model="ctrl.question.choice1" name="choice1"
+							class="form-control underlined" placeholder="Choice A" required
+							maxlength="500" />
+
+						<span class="has-error"
+							ng-show="addQuestionForm.choice1.$invalid && ctrl.showerrors">Enter
+							choice </span>
+					</div>
+
+					<div class="form-group"
+						ng-class="{ 'has-error': addQuestionForm.choice2.$invalid && ctrl.showerrors}">
+						<label class="control-label">Choice B <span
+							class="mandatory">*</span></label>
+
+						<textarea ng-model="ctrl.question.choice2" name="choice2"
+							class="form-control underlined" placeholder="Choice B" required
+							maxlength="500" />
+
+						<span class="has-error"
+							ng-show="addQuestionForm.choice2.$invalid && ctrl.showerrors">Enter
+							choice </span>
+					</div>
+
+					<div class="form-group"
+						ng-show="ctrl.question.noOfChoices=='3' || ctrl.question.noOfChoices=='4'"
+						ng-class="{ 'has-error': addQuestionForm.choice3.$invalid && ctrl.showerrors}">
+						<label class="control-label">Choice C <span
+							class="mandatory">*</span></label>
+
+						<textarea ng-model="ctrl.question.choice3" name="choice3"
+							class="form-control underlined" placeholder="Choice C"
+							ng-required="ctrl.optionCRequired" maxlength="500" />
+
+						<span class="has-error"
+							ng-show="addQuestionForm.choice3.$invalid && ctrl.showerrors">Enter
+							choice </span>
+					</div>
+
+					<div class="form-group" ng-show="ctrl.question.noOfChoices=='4'"
+						ng-class="{ 'has-error': addQuestionForm.choice4.$invalid && ctrl.showerrors}">
+						<label class="control-label">Choice D <span
+							class="mandatory">*</span></label>
+
+						<textarea ng-model="ctrl.question.choice4" name="choice4"
+							class="form-control underlined" placeholder="Choice D"
+							ng-required="ctrl.optionDRequired" maxlength="500" />
+
+						<span class="has-error"
+							ng-show="addQuestionForm.choice4.$invalid && ctrl.showerrors">Enter
+							choice </span>
+					</div>
+
+					<div class="form-group"
+						ng-class="{ 'has-error': addQuestionForm.answer.$invalid && ctrl.showerrors}">
+						<label class="control-label">Answer <span
+							class="mandatory">*</span></label>
+						<div class="form-control underlined">
+							<label> <input name="answer" type="radio"
+								ng-model="ctrl.question.answer" value="1"
+								style="margin-bottom: 5px;" required> A
+							</label>&emsp; <label> <input name="answer" type="radio"
+								ng-model="ctrl.question.answer" value="2" required> B
+							</label>&emsp; <label
+								ng-show="ctrl.question.noOfChoices=='3' || ctrl.question.noOfChoices=='4'">
+								<input name="answer" type="radio"
+								ng-model="ctrl.question.answer" value="3" required> C
+							</label>&emsp; <label ng-show="ctrl.question.noOfChoices=='4'"> <input
+								name="answer" type="radio" ng-model="ctrl.question.answer"
+								value="4" required> D
+							</label>
+						</div>
+						<span class="has-error"
+							ng-show="addQuestionForm.answer.$invalid && ctrl.showerrors">Select
+							answer </span>
+
+					</div>
+
+					<div class="form-group">
+						<span class="success_message"
+							ng-show="ctrl.showSuccessNotification">{{ctrl.notification}}</span>
+						<span class="err_message" ng-show="ctrl.showErrorNotification">{{ctrl.notification}}</span>
+					</div>
+
+
+					<div class="form-group">
+						<input type="submit" value="Save & Create New"
+							ng-click="ctrl.saveAndCreateNew($event)"
+							ng-show="ctrl.question.id==null || ctrl.question.id=='' || ctrl.question.id=='0'"
+							class="btn btn-success"> <input type="submit"
+							value="Save"
+							ng-show="ctrl.question.id==null || ctrl.question.id=='' || ctrl.question.id=='0'"
+							class="btn btn-success"> <input type="submit"
+							value="Update"
+							ng-show="ctrl.question.id!=null && ctrl.question.id!='' && ctrl.question.id!='0'"
+							class="btn btn-success">
+						<button type="button" ng-click="ctrl.goBack()"
+							class="btn btn-warning">Cancel</button>
+
+					</div>
+
+				</form>
+			</div>
+		</div>
+
+		<div ng-show="ctrl.showlistwindow">
+			<div id="listquestions">
+
+				<div class="title-block"
+					style="padding-bottom: 5px; margin-bottom: 10px;">
+
+					<h6>
+						<b>Manage Questions</b>
+					</h6>
+
+				</div>
+
+				<div class="panel panel-default padding_top_10">
+					<!-- Default panel contents -->
+					<div class="panel-heading" style="margin-bottom: 10px;">
+						Test : &nbsp; <select class="criteria-form-control underlined"
+							style="height: 30px; width: 30%;"
+							ng-change="ctrl.fetchAllQuestions()"
+							ng-model="ctrl.criteriaTestId" name="testcriteria" required>
+							<option value="0">Select</option>
+							<option ng-repeat="ts in ctrl.tests" value="{{ts.testId}}">
+								{{ts.title}}</option>
+						</select> &nbsp;&nbsp;&nbsp;
+						<button type="button" ng-show="ctrl.questionsCompleted"
+							ng-click="ctrl.submitTest()" class="btn btn-success btn-sm">Submit
+							Test</button>
+						<button type="button" ng-click="ctrl.addNewQuestion()"
+							class="btn btn-primary btn-sm custom-width add_new_button">Add
+							New</button>
+
+						<span ng-show="ctrl.criteriaTestId!='0'">Total Questions :
+							{{ctrl.totalQuestions}} </span> &nbsp;&nbsp;&nbsp; <span
+							ng-show="ctrl.criteriaTestId!='0'" style="color: green;">Created
+							: {{ctrl.questions.length}}</span> &nbsp;&nbsp;&nbsp; <span
+							ng-show="ctrl.criteriaTestId!='0' && ctrl.totalQuestions-ctrl.questions.length>0"
+							style="color: red;">Remaining :
+							{{ctrl.totalQuestions-ctrl.questions.length}}</span>
+
+					</div>
+
+					<section class="section">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="card">
+									<div class="card-block">
+										<section class="example">
+											<div class="table-responsive">
+
+												<table datatable="ng"
+													class="table table-striped table-bordered table-hover">
+													<thead>
+														<tr>
+															<th>#</th>
+															<th>Questions</th>
+															<th>Answer</th>
+															<th class="align_center"
+																ng-show="!ctrl.isTestSubmitted || roleId==1">Actions</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr ng-repeat="qn in ctrl.questions" aria-hidden="false">
+															<td class="align_center">{{$index + 1}}</td>
+															<td>{{qn.question}}</td>
+															<td>{{qn.answer==1 ? qn.choice1 :
+																qn.answer==2?qn.choice2 : qn.answer==3?qn.choice3 :
+																qn.choice4}}</td>
+
+															<td style="width: 20%;" class="align_center"
+																ng-show="!ctrl.isTestSubmitted || roleId==1"
+																ng-mouseleave="hoverOut()">
+																<!-- <button type="button" ng-show="qn.test.status<2"
+																	ng-click="ctrl.edit(qn.id)"
+																	class="btn btn-warning btn-sm">Edit</button>
+																<button type="button" ng-show="qn.test.status<2"
+																	ng-click="ctrl.deleteQuestion(qn.id)"
+																	class="btn btn-danger btn-sm">Delete</button> -->
+
+																<ol class="main_ul"
+																	ng-show="qn.test.status<2 || roleId==1">
+																	<li><a href="javascript:void(0)"
+																		ng-click="hoverIn()"
+																		class="dropbtn action_settings_butons"><i
+																			class="fa fa-cog fa-lg" aria-hidden="true"></i></a></li>
+																	<li>
+																		<ol class="sub_ul" ng-show="hoverEdit">
+																			<li><a ng-click="ctrl.edit(qn.id)" title="Edit"
+																				href="javascript:void(0)"><i
+																					class="fa fa-pencil-square-o" aria-hidden="true"></i></a></li>
+																			<li><a ng-click="ctrl.deleteQuestion(qn.id)"
+																				ng-show="qn.test.status<3" title="Delete"
+																				href="javascript:void(0)"><i class="fa fa-trash"
+																					aria-hidden="true"></i></a></li>
+
+																		</ol>
+
+																	</li>
+																</ol>
+
+
+
+															</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+										</section>
+
+										<button type="button" ng-click="ctrl.backToTest()"
+											class="btn btn-info btn-sm">Back</button>
+
+									</div>
+								</div>
+							</div>
+						</div>
+					</section>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

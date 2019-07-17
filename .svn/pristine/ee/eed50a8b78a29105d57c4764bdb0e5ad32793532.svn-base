@@ -1,0 +1,48 @@
+<!-- 
+/**
+ * @Author Jinshad P.T.
+ */
+ -->
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div ng-controller="UserActivationController as ctrl">
+
+		<div style="visibility: hidden">
+			<div class="md-dialog-container" id="accountActivatedDialoge">
+				<md-dialog>
+
+				<div style="margin: 10% 10% 10% 10%;">
+					<div align="center">
+						<div style="text-align: center;" ng-show="ctrl.activationSuccess">
+							<br> <br> <span class="success_message">Your
+								account has been successfully activated! </span> <br> <br>
+						</div>
+
+						<div style="text-align: center;" ng-show="!ctrl.activationSuccess">
+							<br> <br> <span class="error_message">Account
+								activation failed. Please contact administrator.</span> <br> <br>
+						</div>
+						<button type="button" ng-click="ctrl.doLogin()"
+							class="btn btn-secondary" data-dismiss="modal"
+							ng-show="roleId==null">Login</button>
+						<button type="button" ng-click="ctrl.closeWindow()"
+							class="btn btn-info" data-dismiss="modal">Close</button>
+
+					</div>
+
+				</div>
+
+				</md-dialog>
+			</div>
+		</div>
+
+	</div>
+
+</body>
+</html>
