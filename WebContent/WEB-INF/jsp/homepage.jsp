@@ -388,7 +388,7 @@
 							err-src="./images/logo.png"
 							style="max-width: 100px; height: auto;">
 
-							&nbsp;&nbsp;&nbsp;&nbsp; Copyright © 2016 Pumex Infotech</li>
+							&nbsp;&nbsp;&nbsp;&nbsp; Copyright Â© 2019 Pumex Infotech</li>
 					</ul>
 
 				</div>
