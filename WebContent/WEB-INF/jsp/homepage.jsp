@@ -1,5 +1,5 @@
 <!doctype html>
-<html clas="no-js" lang="en">
+<html class="no-js" lang="en">
 
 <head>
 <meta charset="utf-8">
@@ -14,7 +14,7 @@
 <link href="css/colorpicker.min.css" rel="stylesheet">
 <link href="css/angular-bootstrap-calendar.min.css" rel="stylesheet">
 
-<link rel="stylesheet" href="css/angular-material.min.css">
+<link rel="stylesheet" href="css/angular-material.min.">
 
 <script src="js/angular/lib/jquery.min.js"></script>
 
