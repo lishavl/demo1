@@ -275,7 +275,7 @@
 		<sourceDirectory>${basedir}/src</sourceDirectory>
 		<resources>
 			<resource>
-				<!--<directory>${basedir}/src</directory>-->
+				<directory>${basedir}/src</directory>
 			</resource>
 		</resources>
 		<finalName>TMS</finalName>
