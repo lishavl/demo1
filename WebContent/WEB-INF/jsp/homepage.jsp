@@ -14,7 +14,7 @@
 <link href="css/colorpicker.min.css" rel="stylesheet">
 <link href="css/angular-bootstrap-calendar.min.css" rel="stylesheet">
 
-<link rel="stylesheet" href="css/angular-material.min.">
+<link rel="stylesheet" href="css/angular-material.min.css">
 
 <script src="js/angular/lib/jquery.min.js"></script>
 
